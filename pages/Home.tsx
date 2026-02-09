@@ -11,9 +11,9 @@ const Home: React.FC = () => {
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <img 
-            src="https://images.unsplash.com/photo-1504813184591-01572f98c85f?auto=format&fit=crop&q=80" 
-            alt="Medical Team" 
+          <img
+            src="https://images.unsplash.com/photo-1504813184591-01572f98c85f?auto=format&fit=crop&q=80"
+            alt="Medical Team"
             className="w-full h-full object-cover opacity-10"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent"></div>
@@ -33,15 +33,15 @@ const Home: React.FC = () => {
               Experience the future of healthcare at The Clinics. We combine state-of-the-art technology with compassionate, personalized care for you and your family.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <button 
+              <button
                 onClick={openBookingModal}
                 className="inline-flex items-center justify-center px-8 py-4 bg-accent-500 hover:bg-accent-600 text-white rounded-lg font-semibold transition-all shadow-lg shadow-accent-500/30 hover:shadow-xl hover:-translate-y-1"
               >
                 Book an Appointment
                 <ArrowRight className="ml-2 w-5 h-5" />
               </button>
-              <Link 
-                to="/services" 
+              <Link
+                to="/services"
                 className="inline-flex items-center justify-center px-8 py-4 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 rounded-lg font-semibold transition-all hover:border-slate-300"
               >
                 Our Services
@@ -96,10 +96,10 @@ const Home: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { title: 'Primary Care', icon: <Stethoscope size={32} />, desc: 'Preventive care, check-ups, and health management.' },
-              { title: 'Cardiology', icon: <Heart size={32} />, desc: 'Expert heart health diagnostics and treatments.' },
-              { title: 'Pediatrics', icon: <Baby size={32} />, desc: 'Compassionate care for infants, children, and teens.' },
-              { title: 'Urgent Care', icon: <Activity size={32} />, desc: 'Immediate attention for non-life-threatening conditions.' },
+              { title: 'Primary Care', icon: <Stethoscope size={32} />, desc: 'Comprehensive health management for individuals and families.' },
+              { title: 'Gastroenterology', icon: <Activity size={32} />, desc: 'Specialized care for digestive health and disease management.' },
+              { title: 'Podiatry', icon: <Shield size={32} />, desc: 'Expert diagnosis and surgical treatment for foot and ankle disorders.' },
+              { title: 'Access2Day Health', icon: <Clock size={32} />, desc: 'Convenient access to healthcare services when you need them.' },
             ].map((service, idx) => (
               <div key={idx} className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-lg hover:border-medical-200 transition-all group">
                 <div className="w-14 h-14 bg-medical-50 text-medical-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
@@ -115,7 +115,7 @@ const Home: React.FC = () => {
               </div>
             ))}
           </div>
-          
+
           <div className="text-center mt-12">
             <Link to="/services" className="inline-block border-b-2 border-slate-900 pb-1 text-slate-900 font-semibold hover:text-medical-700 hover:border-medical-700 transition-all">
               View All Services
@@ -126,34 +126,34 @@ const Home: React.FC = () => {
 
       {/* Health Tips Section (New) */}
       <section className="py-20 bg-white">
-         <div className="container mx-auto px-4 md:px-6">
-           <div className="flex flex-col md:flex-row justify-between items-end mb-12">
-             <div>
-               <h2 className="text-3xl md:text-4xl font-serif-heading font-bold text-slate-900 mb-4">Health & Wellness</h2>
-               <p className="text-slate-600 max-w-xl">Stay informed with the latest health tips and news from our medical experts.</p>
-             </div>
-             <button className="hidden md:flex items-center text-medical-700 font-semibold hover:text-medical-900">
-               Read all articles <ChevronRight size={20} />
-             </button>
-           </div>
-           
-           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-             {[
-               { title: "5 Heart-Healthy Foods to Add to Your Diet", category: "Cardiology", img: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&q=80" },
-               { title: "Understanding Childhood Immunizations", category: "Pediatrics", img: "https://images.unsplash.com/photo-1632053001099-e68a416a445d?auto=format&fit=crop&q=80" },
-               { title: "Managing Stress in the Modern World", category: "Mental Health", img: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80" }
-             ].map((post, idx) => (
-               <div key={idx} className="group cursor-pointer">
-                 <div className="overflow-hidden rounded-xl mb-4">
-                   <img src={post.img} alt={post.title} className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500" />
-                 </div>
-                 <div className="text-xs font-bold text-medical-600 uppercase mb-2">{post.category}</div>
-                 <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-medical-700 transition-colors">{post.title}</h3>
-                 <p className="text-slate-500 text-sm line-clamp-2">Read our latest expert advice on how to improve your lifestyle and long-term health outcomes...</p>
-               </div>
-             ))}
-           </div>
-         </div>
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-12">
+            <div>
+              <h2 className="text-3xl md:text-4xl font-serif-heading font-bold text-slate-900 mb-4">Health & Wellness</h2>
+              <p className="text-slate-600 max-w-xl">Stay informed with the latest health tips and news from our medical experts.</p>
+            </div>
+            <button className="hidden md:flex items-center text-medical-700 font-semibold hover:text-medical-900">
+              Read all articles <ChevronRight size={20} />
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              { title: "5 Heart-Healthy Foods to Add to Your Diet", category: "Cardiology", img: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&q=80" },
+              { title: "Understanding Childhood Immunizations", category: "Pediatrics", img: "https://images.unsplash.com/photo-1632053001099-e68a416a445d?auto=format&fit=crop&q=80" },
+              { title: "Managing Stress in the Modern World", category: "Mental Health", img: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80" }
+            ].map((post, idx) => (
+              <div key={idx} className="group cursor-pointer">
+                <div className="overflow-hidden rounded-xl mb-4">
+                  <img src={post.img} alt={post.title} className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500" />
+                </div>
+                <div className="text-xs font-bold text-medical-600 uppercase mb-2">{post.category}</div>
+                <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-medical-700 transition-colors">{post.title}</h3>
+                <p className="text-slate-500 text-sm line-clamp-2">Read our latest expert advice on how to improve your lifestyle and long-term health outcomes...</p>
+              </div>
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* Trust/Testimonial Section */}
@@ -166,7 +166,7 @@ const Home: React.FC = () => {
                 <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80" alt="Doctor" className="rounded-2xl shadow-xl w-full h-64 object-cover transform translate-y-8" />
                 <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80" alt="Patient Care" className="rounded-2xl shadow-xl w-full h-64 object-cover" />
               </div>
-              
+
               {/* Floating Stat Card */}
               <div className="absolute bottom-8 -right-8 bg-white p-6 rounded-xl shadow-2xl max-w-xs animate-in fade-in slide-in-from-bottom-5 duration-700">
                 <div className="flex items-center gap-2 mb-2 text-yellow-400">
@@ -188,7 +188,7 @@ const Home: React.FC = () => {
               <p className="text-slate-600 text-lg mb-8 leading-relaxed">
                 We believe healthcare should be accessible, understandable, and deeply personal. Our team of dedicated professionals takes the time to listen, ensuring you never feel like just a number.
               </p>
-              
+
               <div className="space-y-6">
                 <div className="flex gap-4">
                   <div className="w-10 h-10 rounded-full bg-medical-100 text-medical-700 flex items-center justify-center flex-shrink-0 font-bold">1</div>
@@ -214,28 +214,28 @@ const Home: React.FC = () => {
               </div>
 
               <div className="mt-10">
-                 <Link to="/about" className="bg-medical-800 text-white px-6 py-3 rounded-lg hover:bg-medical-900 transition-colors inline-block font-medium">
-                   Meet Our Team
-                 </Link>
+                <Link to="/about" className="bg-medical-800 text-white px-6 py-3 rounded-lg hover:bg-medical-900 transition-colors inline-block font-medium">
+                  Meet Our Team
+                </Link>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-       {/* CTA Strip */}
-       <section className="py-16 bg-gradient-to-r from-medical-600 to-medical-800 text-white">
+      {/* CTA Strip */}
+      <section className="py-16 bg-gradient-to-r from-medical-600 to-medical-800 text-white">
         <div className="container mx-auto px-4 md:px-6 text-center">
           <h2 className="text-3xl font-serif-heading font-bold mb-4">Ready to prioritize your health?</h2>
           <p className="text-medical-100 mb-8 max-w-2xl mx-auto">Book your appointment today or speak with our virtual assistant to find the right care for you.</p>
-          <button 
+          <button
             onClick={openBookingModal}
             className="inline-block bg-white text-medical-800 px-8 py-3 rounded-full font-bold hover:bg-medical-50 transition-colors shadow-lg"
           >
             Schedule Now
           </button>
         </div>
-       </section>
+      </section>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Stethoscope, Heart, Baby, Brain, Eye, Activity, Bone, Smile, Calendar } from 'lucide-react';
+import { Stethoscope, Heart, Baby, Brain, Eye, Activity, Bone, Smile, Calendar, Clock } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { SERVICES } from '../data/clinicData';
 import { useUI } from '../context/UIContext';
@@ -11,7 +11,8 @@ const IconMap: Record<string, React.FC<any>> = {
   'Baby': Baby,
   'Brain': Brain,
   'Eye': Eye,
-  'Activity': Activity
+  'Activity': Activity,
+  'Clock': Clock
 };
 
 const Services: React.FC = () => {
@@ -42,7 +43,7 @@ const Services: React.FC = () => {
                   {service.description}
                 </p>
                 <div className="mt-auto pt-4 border-t border-slate-50">
-                  <button 
+                  <button
                     onClick={() => openBookingWithService(service.id)}
                     className="w-full py-3 rounded-lg border-2 border-medical-100 text-medical-700 font-semibold hover:border-medical-600 hover:bg-medical-600 hover:text-white transition-all flex items-center justify-center gap-2"
                   >
@@ -60,12 +61,12 @@ const Services: React.FC = () => {
         <div className="container mx-auto px-4 md:px-6 text-center">
           <h2 className="text-2xl font-bold text-slate-900 mb-8">Accepted Insurance Plans</h2>
           <div className="flex flex-wrap justify-center gap-8 md:gap-12 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
-             {/* Text placeholders for logos */}
-             {['BlueCross', 'Aetna', 'Cigna', 'UnitedHealth', 'Medicare', 'Humana'].map(name => (
-               <span key={name} className="text-xl font-bold text-slate-400 hover:text-medical-600 cursor-default transition-colors">
-                 {name}
-               </span>
-             ))}
+            {/* Text placeholders for logos */}
+            {['BlueCross', 'Aetna', 'Cigna', 'UnitedHealth', 'Medicare', 'Humana'].map(name => (
+              <span key={name} className="text-xl font-bold text-slate-400 hover:text-medical-600 cursor-default transition-colors">
+                {name}
+              </span>
+            ))}
           </div>
           <p className="mt-8 text-slate-500 text-sm">
             Don't see your provider? <Link to="/contact" className="text-medical-600 underline">Contact us</Link> to verify coverage.

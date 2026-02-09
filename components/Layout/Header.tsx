@@ -10,7 +10,7 @@ const Header: React.FC = () => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  
+
   const { openBookingModal, openLoginModal, user, logout } = useUI();
 
   useEffect(() => {
@@ -31,10 +31,9 @@ const Header: React.FC = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <header 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-white shadow-md py-3' : 'bg-white/90 backdrop-blur-md py-5'
-      }`}
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-md py-3' : 'bg-white/90 backdrop-blur-md py-5'
+        }`}
     >
       <div className="container mx-auto px-4 md:px-6 flex justify-between items-center">
         {/* Logo */}
@@ -43,7 +42,7 @@ const Header: React.FC = () => {
             TC
           </div>
           <div className="flex flex-col">
-            <span className="text-xl font-serif-heading font-bold text-slate-800 leading-none">The Clinics</span>
+            <span className="text-xl font-serif-heading font-bold text-slate-800 leading-none">theCLINICS</span>
             <span className="text-xs text-slate-500 uppercase tracking-widest">Excellence in Care</span>
           </div>
         </Link>
@@ -51,12 +50,11 @@ const Header: React.FC = () => {
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
-            <Link 
-              key={link.path} 
+            <Link
+              key={link.path}
               to={link.path}
-              className={`text-sm font-medium transition-colors hover:text-medical-600 ${
-                isActive(link.path) ? 'text-medical-800 font-semibold' : 'text-slate-600'
-              }`}
+              className={`text-sm font-medium transition-colors hover:text-medical-600 ${isActive(link.path) ? 'text-medical-800 font-semibold' : 'text-slate-600'
+                }`}
             >
               {link.name}
             </Link>
@@ -65,34 +63,38 @@ const Header: React.FC = () => {
 
         {/* Desktop CTA */}
         <div className="hidden md:flex items-center gap-4">
-          <a href="tel:+15551234567" className="flex items-center gap-2 text-slate-600 hover:text-medical-800 transition-colors">
+          <a href="tel:3184459823" className="flex items-center gap-2 text-slate-600 hover:text-medical-800 transition-colors">
             <Phone size={18} />
-            <span className="font-medium text-sm">(555) 123-4567</span>
+            <span className="font-medium text-sm">(318) 445-9823</span>
           </a>
-          
+
+          <Link to={PageRoute.PATIENT_RESOURCES} className="hidden lg:flex items-center gap-2 text-slate-600 hover:text-medical-800 transition-colors">
+            <span className="font-medium text-sm">Patient Resources</span>
+          </Link>
+
           {user ? (
             <div className="relative">
-              <button 
+              <button
                 onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                 className="flex items-center gap-2 pl-2 pr-4 py-1.5 rounded-full border border-slate-200 hover:bg-slate-50 transition-colors"
               >
                 <img src={user.avatar} alt={user.name} className="w-8 h-8 rounded-full" />
                 <span className="font-medium text-sm text-slate-700">{user.name.split(' ')[0]}</span>
               </button>
-              
+
               {isUserMenuOpen && (
                 <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-slate-100 py-2 animate-in fade-in slide-in-from-top-2">
                   <div className="px-4 py-2 border-b border-slate-50 mb-2">
                     <p className="text-xs text-slate-500">Signed in as</p>
                     <p className="font-bold text-slate-900 truncate">{user.email}</p>
                   </div>
-                  <button 
+                  <button
                     onClick={() => { navigate(PageRoute.DASHBOARD); setIsUserMenuOpen(false); }}
                     className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-medical-700 flex items-center gap-2"
                   >
                     <LayoutDashboard size={16} /> Dashboard
                   </button>
-                  <button 
+                  <button
                     onClick={() => { logout(); setIsUserMenuOpen(false); navigate('/'); }}
                     className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"
                   >
@@ -102,15 +104,15 @@ const Header: React.FC = () => {
               )}
             </div>
           ) : (
-             <button 
-               onClick={openLoginModal}
-               className="text-slate-700 font-medium text-sm hover:text-medical-700"
-             >
-               Patient Login
-             </button>
+            <button
+              onClick={openLoginModal}
+              className="text-slate-700 font-medium text-sm hover:text-medical-700"
+            >
+              Patient Login
+            </button>
           )}
 
-          <button 
+          <button
             onClick={openBookingModal}
             className="bg-accent-500 hover:bg-accent-600 text-white px-5 py-2.5 rounded-full font-medium text-sm transition-all shadow-sm hover:shadow-md flex items-center gap-2"
           >
@@ -120,7 +122,7 @@ const Header: React.FC = () => {
         </div>
 
         {/* Mobile Toggle */}
-        <button 
+        <button
           className="md:hidden text-slate-700 p-2"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
@@ -132,19 +134,25 @@ const Header: React.FC = () => {
       {isMobileMenuOpen && (
         <div className="md:hidden absolute top-full left-0 right-0 bg-white border-t border-slate-100 shadow-lg py-4 px-4 flex flex-col gap-4">
           {navLinks.map((link) => (
-            <Link 
-              key={link.path} 
+            <Link
+              key={link.path}
               to={link.path}
               onClick={() => setIsMobileMenuOpen(false)}
-              className={`text-base font-medium py-2 border-b border-slate-50 last:border-0 ${
-                isActive(link.path) ? 'text-medical-800' : 'text-slate-600'
-              }`}
+              className={`text-base font-medium py-2 border-b border-slate-50 last:border-0 ${isActive(link.path) ? 'text-medical-800' : 'text-slate-600'
+                }`}
             >
               {link.name}
             </Link>
           ))}
+          <Link
+            to={PageRoute.PATIENT_RESOURCES}
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="text-base font-medium py-2 border-b border-slate-50 text-slate-600"
+          >
+            Patient Resources
+          </Link>
           {user ? (
-            <Link 
+            <Link
               to={PageRoute.DASHBOARD}
               onClick={() => setIsMobileMenuOpen(false)}
               className="text-base font-medium py-2 text-medical-800 flex items-center gap-2"
@@ -152,14 +160,14 @@ const Header: React.FC = () => {
               <LayoutDashboard size={18} /> My Dashboard
             </Link>
           ) : (
-            <button 
+            <button
               onClick={() => { setIsMobileMenuOpen(false); openLoginModal(); }}
               className="text-base font-medium py-2 text-slate-600 text-left"
             >
               Patient Login
             </button>
           )}
-          <button 
+          <button
             onClick={() => {
               setIsMobileMenuOpen(false);
               openBookingModal();

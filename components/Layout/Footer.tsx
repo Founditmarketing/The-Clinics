@@ -6,15 +6,15 @@ const Footer: React.FC = () => {
   return (
     <footer className="bg-slate-900 text-slate-300 pt-16 pb-8">
       <div className="container mx-auto px-4 md:px-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-          
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+
           {/* Brand */}
-          <div className="col-span-1 md:col-span-1">
+          <div>
             <div className="flex items-center gap-2 mb-6">
               <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center text-white font-bold">
                 TC
               </div>
-              <span className="text-xl font-serif-heading font-bold text-white">The Clinics</span>
+              <span className="text-xl font-serif-heading font-bold text-white">theCLINICS</span>
             </div>
             <p className="text-sm text-slate-400 leading-relaxed mb-6">
               Providing world-class healthcare with a personal touch. Our multi-specialty clinics are dedicated to your well-being.
@@ -39,20 +39,38 @@ const Footer: React.FC = () => {
               <li><Link to="/" className="text-sm hover:text-white transition-colors">Home</Link></li>
               <li><Link to="/about" className="text-sm hover:text-white transition-colors">About Us</Link></li>
               <li><Link to="/services" className="text-sm hover:text-white transition-colors">Medical Services</Link></li>
-              <li><Link to="/contact" className="text-sm hover:text-white transition-colors">Patient Portal</Link></li>
+              <li><Link to="/patient-resources" className="text-sm hover:text-white transition-colors">Patient Portal</Link></li>
               <li><Link to="/contact" className="text-sm hover:text-white transition-colors">Careers</Link></li>
             </ul>
           </div>
 
-          {/* Services */}
+          {/* Office Hours */}
+          <div>
+            <h3 className="text-white font-semibold mb-6">Office Hours</h3>
+            <ul className="space-y-2">
+              <li className="flex justify-between text-sm">
+                <span className="text-slate-400">Mon - Thu:</span>
+                <span>7:45 AM - 5:00 PM</span>
+              </li>
+              <li className="flex justify-between text-sm">
+                <span className="text-slate-400">Friday:</span>
+                <span>7:45 AM - 12:00 PM</span>
+              </li>
+              <li className="flex justify-between text-sm">
+                <span className="text-slate-400">Sat - Sun:</span>
+                <span>Closed</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Our Specialties */}
           <div>
             <h3 className="text-white font-semibold mb-6">Our Specialties</h3>
             <ul className="space-y-3">
               <li><Link to="/services" className="text-sm hover:text-white transition-colors">Primary Care</Link></li>
-              <li><Link to="/services" className="text-sm hover:text-white transition-colors">Cardiology</Link></li>
-              <li><Link to="/services" className="text-sm hover:text-white transition-colors">Pediatrics</Link></li>
-              <li><Link to="/services" className="text-sm hover:text-white transition-colors">Neurology</Link></li>
-              <li><Link to="/services" className="text-sm hover:text-white transition-colors">Urgent Care</Link></li>
+              <li><Link to="/services" className="text-sm hover:text-white transition-colors">Gastroenterology</Link></li>
+              <li><Link to="/services" className="text-sm hover:text-white transition-colors">Podiatry</Link></li>
+              <li><Link to="/services" className="text-sm hover:text-white transition-colors">Access2Day Health</Link></li>
             </ul>
           </div>
 
@@ -62,11 +80,11 @@ const Footer: React.FC = () => {
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
                 <MapPin size={18} className="text-medical-500 mt-0.5" />
-                <span className="text-sm">123 Health Ave, Suite 100<br />Marksville, LA 71351</span>
+                <span className="text-sm">1587 N Bolton Ave<br />Alexandria, LA 71303</span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone size={18} className="text-medical-500" />
-                <span className="text-sm">(555) 123-4567</span>
+                <span className="text-sm">(318) 445-9823</span>
               </li>
               <li className="flex items-center gap-3">
                 <Mail size={18} className="text-medical-500" />

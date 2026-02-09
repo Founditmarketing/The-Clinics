@@ -2,7 +2,7 @@ export interface ServiceItem {
   id: string;
   title: string;
   description: string;
-  iconName: 'Stethoscope' | 'Heart' | 'Activity' | 'Baby' | 'Brain' | 'Eye';
+  iconName: 'Stethoscope' | 'Heart' | 'Activity' | 'Baby' | 'Brain' | 'Eye' | 'Clock';
 }
 
 export interface Doctor {
@@ -11,6 +11,10 @@ export interface Doctor {
   specialty: string;
   image: string;
   bio: string;
+  phone?: string;
+  location?: string;
+  officeHours?: string[];
+  patientPortalUrl?: string; // Optional override if specific doctors have different portals
 }
 
 export interface ChatMessage {
@@ -40,5 +44,7 @@ export enum PageRoute {
   SERVICES = '/services',
   ABOUT = '/about',
   CONTACT = '/contact',
-  DASHBOARD = '/dashboard'
+  DASHBOARD = '/dashboard',
+  DOCTOR_PROFILE = '/doctor/:id',
+  PATIENT_RESOURCES = '/patient-resources'
 }

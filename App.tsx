@@ -12,6 +12,8 @@ import BookingModal from './components/Booking/BookingModal';
 import LoginModal from './components/Auth/LoginModal';
 import { UIProvider } from './context/UIContext';
 import { PageRoute } from './types';
+import DoctorProfile from './pages/DoctorProfile';
+import PatientResources from './pages/PatientResources';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -37,6 +39,8 @@ const App: React.FC = () => {
               <Route path={PageRoute.ABOUT} element={<About />} />
               <Route path={PageRoute.CONTACT} element={<Contact />} />
               <Route path={PageRoute.DASHBOARD} element={<Dashboard />} />
+              <Route path={PageRoute.DOCTOR_PROFILE} element={<DoctorProfile />} />
+              <Route path={PageRoute.PATIENT_RESOURCES} element={<PatientResources />} />
             </Routes>
           </main>
           <Footer />
