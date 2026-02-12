@@ -15,12 +15,12 @@ const servicesList = SERVICES.map(s => s.title).join(', ');
 
 export const generateHealthResponse = async (userMessage: string): Promise<string> => {
   if (!ai) {
-    return "I'm sorry, my AI connection is currently unavailable. Please contact the clinic directly at (555) 123-4567.";
+    return "I'm sorry, my AI connection is currently unavailable. Please contact the clinic directly at (318) 445-9823.";
   }
 
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-3-flash-preview',
+      model: 'gemini-2.0-flash-exp',
       contents: userMessage,
       config: {
         systemInstruction: `You are 'Clara', the AI Health Assistant for 'The Clinics'.
@@ -28,8 +28,8 @@ export const generateHealthResponse = async (userMessage: string): Promise<strin
         CONTEXT DATA:
         - Our Doctors: ${doctorsList}
         - Our Services: ${servicesList}
-        - Location: 123 Health Ave, Suite 100, Marksville, LA 71351
-        - Hours: Mon-Fri 8am-6pm, Sat 9am-1pm.
+        - Location: 1587 N Bolton Ave, Alexandria, LA 71303
+        - Hours: Mon-Thu 7:45am-5pm, Fri 7:45am-12pm, Sat-Sun Closed.
         
         YOUR GOAL:
         Help patients navigate the website, understand our specific services, and find the right doctor.

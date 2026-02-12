@@ -11,7 +11,7 @@ const Footer: React.FC = () => {
           {/* Brand */}
           <div>
             <Link to="/" className="inline-block mb-6">
-              <img src="/logo.png" alt="theCLINICS" className="h-12 w-auto brightness-0 invert opacity-90 hover:opacity-100 transition-opacity" />
+              <img src="/logo.png" alt="theCLINICS" className="h-12 w-auto bg-white rounded-lg p-1" />
             </Link>
             <p className="text-sm text-slate-400 leading-relaxed mb-6">
               Providing world-class healthcare with a personal touch. Our multi-specialty clinics are dedicated to your well-being.
