@@ -107,5 +107,53 @@ export const SERVICES: ServiceItem[] = [
     title: "Access2Day Health",
     description: "Convenient access to healthcare services ensuring you get the care you need, when you need it.",
     iconName: 'Clock'
+  },
+  {
+    id: 's5',
+    title: "Bone Density",
+    description: "Advanced imaging to measure bone strength and assess risk for osteoporosis and fractures.",
+    iconName: 'Bone'
+  },
+  {
+    id: 's6',
+    title: "Holter Monitors",
+    description: "Continuous heart rhythm monitoring to detect irregularities over 24-48 hours.",
+    iconName: 'Monitor'
+  },
+  {
+    id: 's7',
+    title: "Electrocardiogram (EKG)",
+    description: "Quick and painless test to record the electrical signals in your heart.",
+    iconName: 'Zap'
+  },
+  {
+    id: 's8',
+    title: "Stress Test",
+    description: "Evaluation of heart function and blood flow during physical exertion.",
+    iconName: 'Activity'
+  },
+  {
+    id: 's9',
+    title: "Pulmonary Function",
+    description: "Comprehensive testing to measure lung volume, capacity, and flow rates.",
+    iconName: 'Wind'
+  },
+  {
+    id: 's10',
+    title: "Lab Work",
+    description: "On-site diagnostic laboratory services for blood work and specimen testing.",
+    iconName: 'Lab'
+  },
+  {
+    id: 's11',
+    title: "Cardiac Ultrasound",
+    description: "Non-invasive imaging to visualize heart structure and function.",
+    iconName: 'Heart'
+  },
+  {
+    id: 's12',
+    title: "X-ray Services",
+    description: "Digital radiography for immediate diagnostic imaging of bones and internal structures.",
+    iconName: 'Scan'
   }
 ];

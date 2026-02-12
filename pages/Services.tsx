@@ -1,5 +1,5 @@
 import React from 'react';
-import { Stethoscope, Heart, Baby, Brain, Eye, Activity, Bone, Smile, Calendar, Clock, Phone } from 'lucide-react';
+import { Stethoscope, Heart, Baby, Brain, Eye, Activity, Bone, Smile, Calendar, Clock, Phone, Beaker, Wind, Zap, Scan, Monitor, FlaskConical } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { SERVICES } from '../data/clinicData';
 import { useUI } from '../context/UIContext';
@@ -12,7 +12,14 @@ const IconMap: Record<string, React.FC<any>> = {
   'Brain': Brain,
   'Eye': Eye,
   'Activity': Activity,
-  'Clock': Clock
+  'Clock': Clock,
+  'Bone': Bone,
+  'Lab': FlaskConical,
+  'Wind': Wind,
+  'Zap': Zap,
+  'Scan': Scan,
+  'Monitor': Monitor,
+  'Syringe': Beaker
 };
 
 const Services: React.FC = () => {

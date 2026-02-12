@@ -2,7 +2,7 @@ export interface ServiceItem {
   id: string;
   title: string;
   description: string;
-  iconName: 'Stethoscope' | 'Heart' | 'Activity' | 'Baby' | 'Brain' | 'Eye' | 'Clock';
+  iconName: 'Stethoscope' | 'Heart' | 'Activity' | 'Baby' | 'Brain' | 'Eye' | 'Clock' | 'Bone' | 'Lab' | 'Wind' | 'Zap' | 'Scan' | 'Monitor' | 'Syringe';
 }
 
 export interface Doctor {
