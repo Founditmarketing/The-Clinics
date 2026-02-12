@@ -15,16 +15,16 @@ export default {
             },
             colors: {
                 medical: {
-                    50: '#f9fafb',   // slate-50
-                    100: '#f3f4f6',  // slate-100
-                    500: '#ef4444',  // red-500
-                    600: '#dc2626',  // red-600
-                    800: '#991b1b',  // red-800
-                    900: '#000000',  // black
+                    50: '#f0f9ff',   // sky-50 (light background)
+                    100: '#e0f2fe',  // sky-100
+                    500: '#0ea5e9',  // sky-500 (primary interface blue)
+                    600: '#0284c7',  // sky-600 (hover state)
+                    800: '#075985',  // sky-800 (dark text/background)
+                    900: '#0c4a6e',  // sky-900 (deep navy)
                 },
                 accent: {
-                    500: '#ef4444', // Red
-                    600: '#dc2626', // Darker Red
+                    500: '#0d9488', // Teal-600 (Calm, distinct accent)
+                    600: '#0f766e', // Teal-700
                 }
             }
         }
