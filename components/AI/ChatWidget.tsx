@@ -2,10 +2,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send, Bot, User, Sparkles } from 'lucide-react';
 import { generateHealthResponse } from '../../services/geminiService';
 import { ChatMessage } from '../../types';
-import { useUI } from '../../context/UIContext';
+// const { openBookingModal } = useUI();
 
 const SUGGESTION_CHIPS = [
-  "Book Appointment",
+  "Schedule Appointment",
   "Who are your doctors?",
   "Clinic Hours",
   "Do you offer Pediatrics?",
@@ -16,28 +16,28 @@ const SUGGESTION_CHIPS = [
 const FormattedText: React.FC<{ text: string }> = ({ text }) => {
   // Split by newlines first
   const lines = text.split('\n');
-  
+
   return (
     <div className="space-y-1">
       {lines.map((line, i) => {
         if (!line.trim()) return <br key={i} />;
-        
+
         // Handle bullet points
         if (line.trim().startsWith('- ') || line.trim().startsWith('* ')) {
-           return (
-             <div key={i} className="flex gap-2 ml-2">
-               <span className="text-medical-600 mt-1.5 w-1.5 h-1.5 bg-medical-600 rounded-full flex-shrink-0"></span>
-               <span dangerouslySetInnerHTML={{ 
-                 __html: line.substring(2).replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
-               }} />
-             </div>
-           );
+          return (
+            <div key={i} className="flex gap-2 ml-2">
+              <span className="text-medical-600 mt-1.5 w-1.5 h-1.5 bg-medical-600 rounded-full flex-shrink-0"></span>
+              <span dangerouslySetInnerHTML={{
+                __html: line.substring(2).replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+              }} />
+            </div>
+          );
         }
 
         // Standard text with bold support
         return (
-          <p key={i} dangerouslySetInnerHTML={{ 
-            __html: line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
+          <p key={i} dangerouslySetInnerHTML={{
+            __html: line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
           }} />
         );
       })}
@@ -59,8 +59,8 @@ const ChatWidget: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  
-  const { openBookingModal } = useUI();
+
+  // const { openBookingModal } = useUI();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -77,9 +77,15 @@ const ChatWidget: React.FC = () => {
     if (!text.trim() || isLoading) return;
 
     // Special handler for scheduling
-    if (text === "Book Appointment") {
-      setIsOpen(false);
-      openBookingModal();
+    if (text === "Schedule Appointment" || text.toLowerCase().includes("book") || text.toLowerCase().includes("appointment")) {
+      const botMsg: ChatMessage = {
+        id: (Date.now() + 1).toString(),
+        role: 'model',
+        text: "To schedule an appointment, please give us a call at **(318) 445-9823**. Our team is ready to assist you!",
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, { id: Date.now().toString(), role: 'user', text, timestamp: new Date() }, botMsg]);
+      setInputValue('');
       return;
     }
 
@@ -96,14 +102,14 @@ const ChatWidget: React.FC = () => {
 
     try {
       const responseText = await generateHealthResponse(text);
-      
+
       const botMsg: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: 'model',
         text: responseText,
         timestamp: new Date()
       };
-      
+
       setMessages(prev => [...prev, botMsg]);
     } catch (error) {
       console.error(error);
@@ -149,8 +155,8 @@ const ChatWidget: React.FC = () => {
           {/* Messages */}
           <div className="flex-1 overflow-y-auto p-4 bg-slate-50 space-y-6">
             {messages.map((msg) => (
-              <div 
-                key={msg.id} 
+              <div
+                key={msg.id}
                 className={`flex gap-3 ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}
               >
                 <div className={`
@@ -161,8 +167,8 @@ const ChatWidget: React.FC = () => {
                 </div>
                 <div className={`
                   max-w-[85%] px-4 py-3 rounded-2xl text-sm leading-relaxed shadow-sm
-                  ${msg.role === 'user' 
-                    ? 'bg-medical-600 text-white rounded-tr-none' 
+                  ${msg.role === 'user'
+                    ? 'bg-medical-600 text-white rounded-tr-none'
                     : 'bg-white text-slate-700 border border-slate-100 rounded-tl-none'}
                 `}>
                   <FormattedText text={msg.text} />
@@ -172,7 +178,7 @@ const ChatWidget: React.FC = () => {
                 </div>
               </div>
             ))}
-            
+
             {isLoading && (
               <div className="flex gap-3">
                 <div className="w-8 h-8 rounded-full bg-medical-100 text-medical-600 flex items-center justify-center flex-shrink-0">
@@ -216,7 +222,7 @@ const ChatWidget: React.FC = () => {
               placeholder="Type your message..."
               className="flex-1 bg-slate-50 border border-slate-200 rounded-full px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-medical-500 focus:border-transparent transition-all"
             />
-            <button 
+            <button
               onClick={() => handleSend(inputValue)}
               disabled={isLoading || !inputValue.trim()}
               className="w-10 h-10 bg-medical-800 hover:bg-medical-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white rounded-full flex items-center justify-center transition-colors shadow-sm"
@@ -230,13 +236,12 @@ const ChatWidget: React.FC = () => {
       {/* Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`w-14 h-14 rounded-full shadow-xl flex items-center justify-center transition-all duration-300 transform hover:scale-105 ${
-          isOpen ? 'bg-slate-700 rotate-90' : 'bg-medical-600 hover:bg-medical-500'
-        }`}
+        className={`w-14 h-14 rounded-full shadow-xl flex items-center justify-center transition-all duration-300 transform hover:scale-105 ${isOpen ? 'bg-slate-700 rotate-90' : 'bg-medical-600 hover:bg-medical-500'
+          }`}
       >
         {isOpen ? <X size={24} className="text-white" /> : <MessageCircle size={28} className="text-white" />}
         {!isOpen && (
-           <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-white"></span>
+          <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-white"></span>
         )}
       </button>
     </div>

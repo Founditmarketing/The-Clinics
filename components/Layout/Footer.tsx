@@ -10,12 +10,9 @@ const Footer: React.FC = () => {
 
           {/* Brand */}
           <div>
-            <div className="flex items-center gap-2 mb-6">
-              <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center text-white font-bold">
-                TC
-              </div>
-              <span className="text-xl font-serif-heading font-bold text-white">theCLINICS</span>
-            </div>
+            <Link to="/" className="inline-block mb-6">
+              <img src="/logo.png" alt="theCLINICS" className="h-12 w-auto brightness-0 invert opacity-90 hover:opacity-100 transition-opacity" />
+            </Link>
             <p className="text-sm text-slate-400 leading-relaxed mb-6">
               Providing world-class healthcare with a personal touch. Our multi-specialty clinics are dedicated to your well-being.
             </p>
@@ -95,7 +92,7 @@ const Footer: React.FC = () => {
         </div>
 
         <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-slate-500">© 2024 The Clinics. All rights reserved.</p>
+          <p className="text-xs text-slate-500">© 2024 theCLINICS. All rights reserved.</p>
           <div className="flex gap-6">
             <a href="#" className="text-xs text-slate-500 hover:text-white">Privacy Policy</a>
             <a href="#" className="text-xs text-slate-500 hover:text-white">Terms of Service</a>

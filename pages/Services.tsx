@@ -1,5 +1,5 @@
 import React from 'react';
-import { Stethoscope, Heart, Baby, Brain, Eye, Activity, Bone, Smile, Calendar, Clock } from 'lucide-react';
+import { Stethoscope, Heart, Baby, Brain, Eye, Activity, Bone, Smile, Calendar, Clock, Phone } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { SERVICES } from '../data/clinicData';
 import { useUI } from '../context/UIContext';
@@ -16,7 +16,7 @@ const IconMap: Record<string, React.FC<any>> = {
 };
 
 const Services: React.FC = () => {
-  const { openBookingWithService } = useUI();
+  // const { openBookingWithService } = useUI();
 
   return (
     <div className="pt-24 min-h-screen bg-slate-50">
@@ -43,12 +43,12 @@ const Services: React.FC = () => {
                   {service.description}
                 </p>
                 <div className="mt-auto pt-4 border-t border-slate-50">
-                  <button
-                    onClick={() => openBookingWithService(service.id)}
+                  <a
+                    href="tel:3184459823"
                     className="w-full py-3 rounded-lg border-2 border-medical-100 text-medical-700 font-semibold hover:border-medical-600 hover:bg-medical-600 hover:text-white transition-all flex items-center justify-center gap-2"
                   >
-                    <Calendar size={18} /> Book Consultation
-                  </button>
+                    <Phone size={18} /> Call to Schedule
+                  </a>
                 </div>
               </div>
             );

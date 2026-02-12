@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Star, Shield, Clock, Award, Stethoscope, Heart, Activity, Baby, ChevronRight } from 'lucide-react';
+import { ArrowRight, Star, Shield, Clock, Award, Stethoscope, Heart, Activity, Baby, ChevronRight, Phone } from 'lucide-react';
 import { useUI } from '../context/UIContext';
 
 const Home: React.FC = () => {
-  const { openBookingModal } = useUI();
+  // const { openBookingModal } = useUI();
 
   return (
     <div className="min-h-screen">
@@ -30,16 +30,16 @@ const Home: React.FC = () => {
               <span className="text-medical-800">Our Priority.</span>
             </h1>
             <p className="text-lg md:text-xl text-slate-600 mb-10 leading-relaxed max-w-2xl">
-              Experience the future of healthcare at The Clinics. We combine state-of-the-art technology with compassionate, personalized care for you and your family.
+              Experience the future of healthcare at theCLINICS. We combine state-of-the-art technology with compassionate, personalized care for you and your family.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <button
-                onClick={openBookingModal}
+              <a
+                href="tel:3184459823"
                 className="inline-flex items-center justify-center px-8 py-4 bg-accent-500 hover:bg-accent-600 text-white rounded-lg font-semibold transition-all shadow-lg shadow-accent-500/30 hover:shadow-xl hover:-translate-y-1"
               >
-                Book an Appointment
-                <ArrowRight className="ml-2 w-5 h-5" />
-              </button>
+                Call to Book
+                <Phone className="ml-2 w-5 h-5" />
+              </a>
               <Link
                 to="/services"
                 className="inline-flex items-center justify-center px-8 py-4 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 rounded-lg font-semibold transition-all hover:border-slate-300"
@@ -183,7 +183,7 @@ const Home: React.FC = () => {
 
             <div className="lg:w-1/2">
               <h2 className="text-3xl md:text-4xl font-serif-heading font-bold text-slate-900 mb-6">
-                Why families trust <span className="text-medical-700">The Clinics</span>
+                Why families trust <span className="text-medical-700">theCLINICS</span>
               </h2>
               <p className="text-slate-600 text-lg mb-8 leading-relaxed">
                 We believe healthcare should be accessible, understandable, and deeply personal. Our team of dedicated professionals takes the time to listen, ensuring you never feel like just a number.
@@ -228,12 +228,13 @@ const Home: React.FC = () => {
         <div className="container mx-auto px-4 md:px-6 text-center">
           <h2 className="text-3xl font-serif-heading font-bold mb-4">Ready to prioritize your health?</h2>
           <p className="text-medical-100 mb-8 max-w-2xl mx-auto">Book your appointment today or speak with our virtual assistant to find the right care for you.</p>
-          <button
-            onClick={openBookingModal}
-            className="inline-block bg-white text-medical-800 px-8 py-3 rounded-full font-bold hover:bg-medical-50 transition-colors shadow-lg"
+          <a
+            href="tel:3184459823"
+            className="inline-block bg-white text-medical-800 px-8 py-3 rounded-full font-bold hover:bg-medical-50 transition-colors shadow-lg flex items-center gap-2 justify-center mx-auto w-fit"
           >
-            Schedule Now
-          </button>
+            <Phone size={20} />
+            Call to Schedule Now
+          </a>
         </div>
       </section>
     </div>

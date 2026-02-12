@@ -7,13 +7,13 @@ import { Doctor } from '../types';
 
 const DoctorProfile: React.FC = () => {
     const { id } = useParams<{ id: string }>();
-    const { openBookingWithDoctor } = useUI();
+    // const { openBookingWithDoctor } = useUI();
 
     const doctor = DOCTORS.find(d => d.id === id);
 
     useEffect(() => {
         if (doctor) {
-            document.title = `${doctor.name} - The Clinics`;
+            document.title = `${doctor.name} - theCLINICS`;
             // In a real app with SSR, we'd set meta tags here too
         }
     }, [doctor]);
@@ -131,12 +131,12 @@ const DoctorProfile: React.FC = () => {
                                             </li>
                                         </ul>
 
-                                        <button
-                                            onClick={() => openBookingWithDoctor(doctor.id)}
+                                        <a
+                                            href={`tel:${doctor.phone?.replace(/[^0-9]/g, '') || '3184459823'}`}
                                             className="w-full bg-medical-600 text-white font-bold py-3 rounded-lg shadow-md hover:bg-medical-700 transition-colors flex items-center justify-center gap-2"
                                         >
-                                            <Calendar size={18} /> Book Appointment
-                                        </button>
+                                            <Phone size={18} /> Call to Schedule
+                                        </a>
 
                                         {doctor.patientPortalUrl && (
                                             <a

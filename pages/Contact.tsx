@@ -26,12 +26,12 @@ const Contact: React.FC = () => {
     <div className="pt-24 min-h-screen bg-slate-50">
       <div className="container mx-auto px-4 md:px-6 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          
+
           {/* Contact Info */}
           <div>
             <h1 className="text-4xl font-serif-heading font-bold text-slate-900 mb-6">Get in Touch</h1>
             <p className="text-slate-600 mb-10 text-lg">
-              Have a question or need to schedule an appointment? Fill out the form or reach out to us directly. We are here to help.
+              Need to schedule an appointment? Please give us a call directly. For general questions, feel free to use the form below.
             </p>
 
             <div className="space-y-8">
@@ -92,7 +92,7 @@ const Contact: React.FC = () => {
                 </div>
                 <h3 className="text-2xl font-bold text-slate-900 mb-2">Message Sent!</h3>
                 <p className="text-slate-600">Thank you for contacting us. We will get back to you shortly.</p>
-                <button 
+                <button
                   onClick={() => setSubmitted(false)}
                   className="mt-8 text-medical-600 font-medium hover:underline"
                 >
@@ -101,13 +101,13 @@ const Contact: React.FC = () => {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
-                <h3 className="text-2xl font-bold text-slate-900 mb-2">Book an Appointment</h3>
-                
+                <h3 className="text-2xl font-bold text-slate-900 mb-2">Send a Message</h3>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-2">Full Name</label>
-                    <input 
-                      type="text" 
+                    <input
+                      type="text"
                       name="name"
                       required
                       className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-medical-500 focus:ring-2 focus:ring-medical-200 outline-none transition-all"
@@ -117,8 +117,8 @@ const Contact: React.FC = () => {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-2">Email Address</label>
-                    <input 
-                      type="email" 
+                    <input
+                      type="email"
                       name="email"
                       required
                       className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-medical-500 focus:ring-2 focus:ring-medical-200 outline-none transition-all"
@@ -131,8 +131,8 @@ const Contact: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-2">Phone Number</label>
-                    <input 
-                      type="tel" 
+                    <input
+                      type="tel"
                       name="phone"
                       required
                       className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-medical-500 focus:ring-2 focus:ring-medical-200 outline-none transition-all"
@@ -142,7 +142,7 @@ const Contact: React.FC = () => {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-2">Department</label>
-                    <select 
+                    <select
                       name="department"
                       className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-medical-500 focus:ring-2 focus:ring-medical-200 outline-none transition-all bg-white"
                       onChange={handleChange}
@@ -158,7 +158,7 @@ const Contact: React.FC = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">Message / Reason for Visit</label>
-                  <textarea 
+                  <textarea
                     name="message"
                     rows={4}
                     className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-medical-500 focus:ring-2 focus:ring-medical-200 outline-none transition-all resize-none"
@@ -167,11 +167,11 @@ const Contact: React.FC = () => {
                   ></textarea>
                 </div>
 
-                <button 
+                <button
                   type="submit"
                   className="w-full bg-medical-600 hover:bg-medical-700 text-white font-bold py-4 rounded-lg transition-colors shadow-md hover:shadow-lg"
                 >
-                  Request Appointment
+                  Send Message
                 </button>
                 <p className="text-xs text-slate-400 text-center mt-4">
                   By submitting this form, you agree to our privacy policy. This form is for non-emergency scheduling only.

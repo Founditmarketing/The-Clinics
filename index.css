@@ -1,14 +1,23 @@
 @import "tailwindcss";
 @config "./tailwind.config.js";
 
-@layer base {
-    body {
-        @apply font-sans;
-    }
+@font-face {
+    font-family: 'Century Gothic';
+    src: local('Century Gothic'), local('CenturyGothic');
+    font-display: swap;
 }
 
-.font-serif-heading {
-    font-family: 'Merriweather', serif;
+body {
+    font-family: 'Century Gothic', sans-serif;
+    @apply text-slate-900;
+}
+
+body,
+button,
+input,
+select,
+textarea {
+    font-family: 'Century Gothic', sans-serif !important;
 }
 
 /* Custom Scrollbar */

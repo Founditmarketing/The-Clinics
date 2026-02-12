@@ -32,9 +32,12 @@ const Dashboard: React.FC = () => {
                 <Bell size={20} />
                 <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border border-medical-900"></span>
               </button>
-              <button className="bg-accent-500 hover:bg-accent-600 text-white px-4 py-2 rounded-lg font-medium text-sm transition-colors shadow-lg">
-                New Appointment
-              </button>
+              <a
+                href="tel:3184459823"
+                className="bg-accent-500 hover:bg-accent-600 text-white px-4 py-2 rounded-lg font-medium text-sm transition-colors shadow-lg flex items-center gap-2"
+              >
+                <Pill size={16} /> Call to Book
+              </a>
             </div>
           </div>
         </div>
@@ -42,10 +45,10 @@ const Dashboard: React.FC = () => {
 
       <div className="container mx-auto px-4 md:px-6 -mt-16 pb-16">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          
+
           {/* Main Column */}
           <div className="lg:col-span-2 space-y-8">
-            
+
             {/* Next Appointment Card */}
             {nextAppt ? (
               <div className="bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden">
@@ -85,14 +88,14 @@ const Dashboard: React.FC = () => {
                 </div>
               </div>
             ) : (
-               <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-8 text-center">
-                 <div className="w-16 h-16 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mx-auto mb-4">
-                   <Calendar size={32} />
-                 </div>
-                 <h3 className="text-lg font-bold text-slate-900">No Upcoming Appointments</h3>
-                 <p className="text-slate-500 mb-6">You are all caught up!</p>
-                 <Link to="/services" className="text-medical-600 font-medium hover:underline">Browse Services</Link>
-               </div>
+              <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-8 text-center">
+                <div className="w-16 h-16 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Calendar size={32} />
+                </div>
+                <h3 className="text-lg font-bold text-slate-900">No Upcoming Appointments</h3>
+                <p className="text-slate-500 mb-6">You are all caught up!</p>
+                <Link to="/services" className="text-medical-600 font-medium hover:underline">Browse Services</Link>
+              </div>
             )}
 
             {/* Health Vitals */}
@@ -132,15 +135,15 @@ const Dashboard: React.FC = () => {
                 {appointments.map((appt) => (
                   <div key={appt.id} className="flex items-center justify-between border-b border-slate-50 pb-6 last:border-0 last:pb-0">
                     <div className="flex items-center gap-4">
-                       <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm
                          ${appt.status === 'Completed' ? 'bg-slate-100 text-slate-500' : 'bg-medical-100 text-medical-700'}
                        `}>
-                         {appt.date.split(' ')[1]}
-                       </div>
-                       <div>
-                         <div className="font-bold text-slate-900">{appt.serviceName}</div>
-                         <div className="text-xs text-slate-500">{appt.doctorName} • {appt.status}</div>
-                       </div>
+                        {appt.date.split(' ')[1]}
+                      </div>
+                      <div>
+                        <div className="font-bold text-slate-900">{appt.serviceName}</div>
+                        <div className="text-xs text-slate-500">{appt.doctorName} • {appt.status}</div>
+                      </div>
                     </div>
                     <button className="p-2 text-slate-400 hover:text-medical-600 transition-colors">
                       <ChevronRight size={20} />
@@ -161,12 +164,12 @@ const Dashboard: React.FC = () => {
                   <span className="font-medium text-sm">Message Doctor</span>
                 </button>
                 <button className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 text-slate-700 transition-colors text-left group">
-                   <div className="bg-green-50 text-green-600 p-2 rounded-lg group-hover:bg-green-100"><Pill size={18} /></div>
-                   <span className="font-medium text-sm">Refill Prescriptions</span>
+                  <div className="bg-green-50 text-green-600 p-2 rounded-lg group-hover:bg-green-100"><Pill size={18} /></div>
+                  <span className="font-medium text-sm">Refill Prescriptions</span>
                 </button>
                 <button className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 text-slate-700 transition-colors text-left group">
-                   <div className="bg-purple-50 text-purple-600 p-2 rounded-lg group-hover:bg-purple-100"><FileText size={18} /></div>
-                   <span className="font-medium text-sm">Lab Results</span>
+                  <div className="bg-purple-50 text-purple-600 p-2 rounded-lg group-hover:bg-purple-100"><FileText size={18} /></div>
+                  <span className="font-medium text-sm">Lab Results</span>
                 </button>
               </div>
             </div>

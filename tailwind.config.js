@@ -10,21 +10,21 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Inter', 'sans-serif'],
-                serif: ['Merriweather', 'serif'],
+                sans: ['"Century Gothic"', 'sans-serif'],
+                serif: ['"Century Gothic"', 'sans-serif'],
             },
             colors: {
                 medical: {
-                    50: '#f0f9ff',
-                    100: '#e0f2fe',
-                    500: '#0ea5e9',
-                    600: '#0284c7',
-                    800: '#075985',
-                    900: '#0c4a6e',
+                    50: '#f9fafb',   // slate-50
+                    100: '#f3f4f6',  // slate-100
+                    500: '#ef4444',  // red-500
+                    600: '#dc2626',  // red-600
+                    800: '#991b1b',  // red-800
+                    900: '#000000',  // black
                 },
                 accent: {
-                    500: '#f59e0b', // Gold/Orange for CTAs
-                    600: '#d97706',
+                    500: '#ef4444', // Red
+                    600: '#dc2626', // Darker Red
                 }
             }
         }

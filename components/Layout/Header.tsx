@@ -11,7 +11,7 @@ const Header: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { openBookingModal, openLoginModal, user, logout } = useUI();
+  const { openLoginModal, user, logout } = useUI();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -37,14 +37,8 @@ const Header: React.FC = () => {
     >
       <div className="container mx-auto px-4 md:px-6 flex justify-between items-center">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2 group">
-          <div className="w-10 h-10 bg-medical-800 rounded-lg flex items-center justify-center text-white font-bold text-xl group-hover:bg-medical-600 transition-colors">
-            TC
-          </div>
-          <div className="flex flex-col">
-            <span className="text-xl font-serif-heading font-bold text-slate-800 leading-none">theCLINICS</span>
-            <span className="text-xs text-slate-500 uppercase tracking-widest">Excellence in Care</span>
-          </div>
+        <Link to="/" className="group py-2">
+          <img src="/logo.png" alt="theCLINICS" className="h-14 w-auto object-contain" />
         </Link>
 
         {/* Desktop Nav */}
@@ -112,13 +106,13 @@ const Header: React.FC = () => {
             </button>
           )}
 
-          <button
-            onClick={openBookingModal}
+          <a
+            href="tel:3184459823"
             className="bg-accent-500 hover:bg-accent-600 text-white px-5 py-2.5 rounded-full font-medium text-sm transition-all shadow-sm hover:shadow-md flex items-center gap-2"
           >
-            <Calendar size={16} />
-            Book Appointment
-          </button>
+            <Phone size={16} />
+            Call to Book
+          </a>
         </div>
 
         {/* Mobile Toggle */}
@@ -167,15 +161,14 @@ const Header: React.FC = () => {
               Patient Login
             </button>
           )}
-          <button
-            onClick={() => {
-              setIsMobileMenuOpen(false);
-              openBookingModal();
-            }}
-            className="bg-medical-800 text-white w-full py-3 rounded-lg text-center font-medium mt-2"
+          <a
+            href="tel:3184459823"
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="bg-medical-800 text-white w-full py-3 rounded-lg text-center font-medium mt-2 flex items-center justify-center gap-2"
           >
-            Book Appointment Now
-          </button>
+            <Phone size={18} />
+            Call to Book Now
+          </a>
         </div>
       )}
     </header>
