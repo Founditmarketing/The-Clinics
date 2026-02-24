@@ -211,11 +211,11 @@ const Home: React.FC = () => {
           >
             <div>
               <h2 className="text-3xl md:text-4xl font-serif-heading font-bold text-slate-900 mb-4">Health & Wellness</h2>
-              <p className="text-slate-600 max-w-xl">Stay informed with the latest health tips and news from our medical experts.</p>
+              <p className="text-slate-600 max-w-xl">Comprehensive care tailored to your needs. Discover our specialized medical services.</p>
             </div>
-            <button className="hidden md:flex items-center text-medical-700 font-semibold hover:text-medical-900">
-              Read all articles <ChevronRight size={20} />
-            </button>
+            <Link to="/services" className="hidden md:flex items-center text-medical-700 font-semibold hover:text-medical-900">
+              Explore all services <ChevronRight size={20} />
+            </Link>
           </motion.div>
 
           <motion.div
@@ -226,17 +226,22 @@ const Home: React.FC = () => {
             viewport={{ once: true, margin: "-100px" }}
           >
             {[
-              { title: "5 Heart-Healthy Foods to Add to Your Diet", category: "Cardiology", img: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&q=80" },
-              { title: "Understanding Childhood Immunizations", category: "Pediatrics", img: "/immunizations.png" },
-              { title: "Managing Stress in the Modern World", category: "Mental Health", img: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80" }
-            ].map((post, idx) => (
-              <motion.div key={idx} variants={itemVariants} className="group cursor-pointer">
+              { title: "Advanced Cardiology", category: "Heart Health", img: "/cardiology_service.png", desc: "State-of-the-art diagnostic and treatment services for comprehensive cardiac care." },
+              { title: "Pediatric Care", category: "Children's Health", img: "/immunizations.png", desc: "Expert medical care and immunizations dedicated to the health and growth of your children." },
+              { title: "Mental Health Services", category: "Well-being", img: "/mental_health_service.png", desc: "Professional and compassionate support for your mental and emotional wellness." }
+            ].map((service, idx) => (
+              <motion.div
+                key={idx}
+                variants={itemVariants}
+                className="group cursor-pointer"
+                onClick={() => window.location.href = '#/services'}
+              >
                 <div className="overflow-hidden rounded-xl mb-4">
-                  <img src={post.img} alt={post.title} className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <img src={service.img} alt={service.title} className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500" />
                 </div>
-                <div className="text-xs font-bold text-medical-600 uppercase mb-2">{post.category}</div>
-                <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-medical-700 transition-colors">{post.title}</h3>
-                <p className="text-slate-500 text-sm line-clamp-2">Read our latest expert advice on how to improve your lifestyle and long-term health outcomes...</p>
+                <div className="text-xs font-bold text-medical-600 uppercase mb-2">{service.category}</div>
+                <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-medical-700 transition-colors">{service.title}</h3>
+                <p className="text-slate-500 text-sm">{service.desc}</p>
               </motion.div>
             ))}
           </motion.div>
