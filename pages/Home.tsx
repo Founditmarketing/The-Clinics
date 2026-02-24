@@ -210,11 +210,11 @@ const Home: React.FC = () => {
             transition={{ duration: 0.6 }}
           >
             <div>
-              <h2 className="text-3xl md:text-4xl font-serif-heading font-bold text-slate-900 mb-4">Health & Wellness</h2>
-              <p className="text-slate-600 max-w-xl">Comprehensive care tailored to your needs. Discover our specialized medical services.</p>
+              <h2 className="text-3xl md:text-4xl font-serif-heading font-bold text-slate-900 mb-4">Patient Resources</h2>
+              <p className="text-slate-600 max-w-xl">Quick access to the tools and information you need to manage your healthcare journey.</p>
             </div>
-            <Link to="/services" className="hidden md:flex items-center text-medical-700 font-semibold hover:text-medical-900">
-              Explore all services <ChevronRight size={20} />
+            <Link to="/patient-resources" className="hidden md:flex items-center text-medical-700 font-semibold hover:text-medical-900">
+              View all resources <ChevronRight size={20} />
             </Link>
           </motion.div>
 
@@ -226,22 +226,22 @@ const Home: React.FC = () => {
             viewport={{ once: true, margin: "-100px" }}
           >
             {[
-              { title: "Advanced Cardiology", category: "Heart Health", img: "/cardiology_service.png", desc: "State-of-the-art diagnostic and treatment services for comprehensive cardiac care." },
-              { title: "Pediatric Care", category: "Children's Health", img: "/immunizations.png", desc: "Expert medical care and immunizations dedicated to the health and growth of your children." },
-              { title: "Mental Health Services", category: "Well-being", img: "/mental_health_service.png", desc: "Professional and compassionate support for your mental and emotional wellness." }
-            ].map((service, idx) => (
+              { title: "Pay Your Bill", category: "Payments", img: "/pay_bill.png", desc: "Safe and secure online bill payment for your convenience." },
+              { title: "Patient Portal", category: "Records", img: "/patient_portal.png", desc: "Access your medical records and communicate directly with your care team." },
+              { title: "Patient Forms", category: "Paperwork", img: "/patient_forms.png", desc: "Complete your required forms online before your visit to save time." }
+            ].map((resource, idx) => (
               <motion.div
                 key={idx}
                 variants={itemVariants}
                 className="group cursor-pointer"
-                onClick={() => window.location.href = '#/services'}
+                onClick={() => window.location.href = '#/patient-resources'}
               >
                 <div className="overflow-hidden rounded-xl mb-4">
-                  <img src={service.img} alt={service.title} className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <img src={resource.img} alt={resource.title} className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500" />
                 </div>
-                <div className="text-xs font-bold text-medical-600 uppercase mb-2">{service.category}</div>
-                <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-medical-700 transition-colors">{service.title}</h3>
-                <p className="text-slate-500 text-sm">{service.desc}</p>
+                <div className="text-xs font-bold text-medical-600 uppercase mb-2">{resource.category}</div>
+                <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-medical-700 transition-colors">{resource.title}</h3>
+                <p className="text-slate-500 text-sm">{resource.desc}</p>
               </motion.div>
             ))}
           </motion.div>
