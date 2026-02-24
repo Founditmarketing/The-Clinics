@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Facebook, Twitter, Instagram, Mail, Phone, MapPin } from 'lucide-react';
+import { Facebook, Mail, Phone, MapPin } from 'lucide-react';
 
 const Footer: React.FC = () => {
   return (
@@ -11,20 +11,20 @@ const Footer: React.FC = () => {
           {/* Brand */}
           <div>
             <Link to="/" className="inline-block mb-6">
-              <img src="/logo.png" alt="theCLINICS" className="h-12 w-auto bg-white rounded-lg p-1" />
+              <img src="/logo.png" alt="theCLINICS" className="h-12 w-auto brightness-0 invert" />
             </Link>
             <p className="text-sm text-slate-400 leading-relaxed mb-6">
               Providing world-class healthcare with a personal touch. Our multi-specialty clinics are dedicated to your well-being.
             </p>
             <div className="flex gap-4">
-              <a href="#" className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center hover:bg-medical-600 transition-colors">
+              <a
+                href="https://www.facebook.com/cenlafamilymedicineassociates"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center hover:bg-medical-600 transition-colors"
+                aria-label="Follow us on Facebook"
+              >
                 <Facebook size={16} />
-              </a>
-              <a href="#" className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center hover:bg-medical-600 transition-colors">
-                <Twitter size={16} />
-              </a>
-              <a href="#" className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center hover:bg-medical-600 transition-colors">
-                <Instagram size={16} />
               </a>
             </div>
           </div>
