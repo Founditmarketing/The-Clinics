@@ -235,26 +235,19 @@ const Home: React.FC = () => {
             viewport={{ once: true, margin: "-100px" }}
           >
             {[
-              { title: "Pay Your Bill", category: "Payments", img: "/pay_bill.png", desc: "Safe and secure online bill payment for your convenience." },
-              {
-                title: "Patient Portal",
-                category: "Records",
-                img: "/patient_portal_v2.png",
-                desc: "Access your medical records and communicate directly with your care team.",
-                link: "https://mycw11.eclinicalweb.com/portal351/jsp/100mp/login_otp.jsp",
-                isExternal: true
-              },
-              { title: "Patient Forms", category: "Paperwork", img: "/patient_forms.png", desc: "Complete your required forms online before your visit to save time." }
+              { title: "Pay Your Bill", category: "Payments", img: "/pay_bill.png", desc: "Safe and secure online bill payment for your convenience.", link: "#/patient-resources" },
+              { title: "Patient Portal", category: "Records", img: "/patient_portal_v2.png", desc: "Access your medical records and communicate directly with your care team.", link: "https://mycw11.eclinicalweb.com/portal351/jsp/100mp/login_otp.jsp", external: true },
+              { title: "Patient Forms", category: "Paperwork", img: "/patient_forms.png", desc: "Complete your required forms online before your visit to save time.", link: "#/patient-resources" }
             ].map((resource, idx) => (
               <motion.div
                 key={idx}
                 variants={itemVariants}
                 className="group cursor-pointer"
                 onClick={() => {
-                  if (resource.isExternal && resource.link) {
+                  if (resource.external) {
                     window.open(resource.link, '_blank', 'noopener,noreferrer');
                   } else {
-                    window.location.href = '#/patient-resources';
+                    window.location.href = resource.link;
                   }
                 }}
               >

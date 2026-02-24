@@ -102,12 +102,14 @@ const Header: React.FC = () => {
               )}
             </div>
           ) : (
-            <button
-              onClick={openLoginModal}
+            <a
+              href="https://mycw11.eclinicalweb.com/portal351/jsp/100mp/login_otp.jsp"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-slate-700 font-medium text-sm hover:text-medical-700"
             >
               Patient Login
-            </button>
+            </a>
           )}
 
           <a
@@ -158,12 +160,15 @@ const Header: React.FC = () => {
               <LayoutDashboard size={18} /> My Dashboard
             </Link>
           ) : (
-            <button
-              onClick={() => { setIsMobileMenuOpen(false); openLoginModal(); }}
+            <a
+              href="https://mycw11.eclinicalweb.com/portal351/jsp/100mp/login_otp.jsp"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setIsMobileMenuOpen(false)}
               className="text-base font-medium py-2 text-slate-600 text-left"
             >
               Patient Login
-            </button>
+            </a>
           )}
           <a
             href="tel:3184459823"
