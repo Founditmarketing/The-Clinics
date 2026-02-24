@@ -36,12 +36,12 @@ const Home: React.FC = () => {
       <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
-            src="/the-clinics-pic-1.png"
+            src="/newherobackgroundpic.jpg"
             alt="The Clinics Mobile"
             className="w-full h-full object-cover object-top opacity-90 md:hidden"
           />
           <img
-            src="/theclinicslocation.jpeg"
+            src="/newherobackgroundpic.jpg"
             alt="The Clinics Desktop"
             className="w-full h-full object-cover object-top opacity-90 hidden md:block"
           />
