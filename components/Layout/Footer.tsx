@@ -38,7 +38,7 @@ const Footer: React.FC = () => {
               <li><Link to="/services" className="text-sm hover:text-white transition-colors">Medical Services</Link></li>
               <li><Link to="/patient-resources" className="text-sm hover:text-white transition-colors">Patient Portal</Link></li>
               <li><Link to="/contact" className="text-sm hover:text-white transition-colors">Careers</Link></li>
-              <li><a href="https://www.google.com/maps/place//data=!4m3!3m2!1s0x86254b45d31c8a13:0x6670722edf39a203!12e1?source=g.page.m.dd._&laa=lu-desktop-reviews-dialog-review-solicitation" target="_blank" rel="noopener noreferrer" className="text-sm text-medical-400 hover:text-white transition-colors font-medium">Leave a Review</a></li>
+              <li><a href="https://www.google.com/maps/place/The+Clinics/@31.314633,-92.4693039,17z/data=!3m1!4b1!4m6!3m5!1s0x86254b45d31c8a13:0x6670722edf39a203!8m2!3d31.314633!4d-92.4693039!16s%2Fg%2F1tdnfmbj?entry=ttu&g_ep=EgoyMDI2MDIxOC4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" className="text-sm text-medical-400 hover:text-white transition-colors font-medium">Leave a Review</a></li>
             </ul>
           </div>
 
