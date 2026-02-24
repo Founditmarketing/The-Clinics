@@ -44,12 +44,12 @@ const Home: React.FC = () => {
         <div className="absolute inset-0 z-0">
           <motion.div style={{ y: backgroundY }} className="absolute inset-0">
             <img
-              src="/newherobackgroundpic.jpg"
+              src="/largeclinicshospitalpic.jpeg"
               alt="The Clinics Mobile"
               className="w-full h-full object-cover object-top opacity-90 md:hidden"
             />
             <img
-              src="/newherobackgroundpic.jpg"
+              src="/largeclinicshospitalpic.jpeg"
               alt="The Clinics Desktop"
               className="w-full h-full object-cover object-top opacity-90 hidden md:block"
             />
