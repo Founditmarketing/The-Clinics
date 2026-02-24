@@ -236,14 +236,27 @@ const Home: React.FC = () => {
           >
             {[
               { title: "Pay Your Bill", category: "Payments", img: "/pay_bill.png", desc: "Safe and secure online bill payment for your convenience." },
-              { title: "Patient Portal", category: "Records", img: "/patient_portal_v2.png", desc: "Access your medical records and communicate directly with your care team." },
+              {
+                title: "Patient Portal",
+                category: "Records",
+                img: "/patient_portal_v2.png",
+                desc: "Access your medical records and communicate directly with your care team.",
+                link: "https://mycw11.eclinicalweb.com/portal351/jsp/100mp/login_otp.jsp",
+                isExternal: true
+              },
               { title: "Patient Forms", category: "Paperwork", img: "/patient_forms.png", desc: "Complete your required forms online before your visit to save time." }
             ].map((resource, idx) => (
               <motion.div
                 key={idx}
                 variants={itemVariants}
                 className="group cursor-pointer"
-                onClick={() => window.location.href = '#/patient-resources'}
+                onClick={() => {
+                  if (resource.isExternal && resource.link) {
+                    window.open(resource.link, '_blank', 'noopener,noreferrer');
+                  } else {
+                    window.location.href = '#/patient-resources';
+                  }
+                }}
               >
                 <div className="overflow-hidden rounded-xl mb-4">
                   <img src={resource.img} alt={resource.title} className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500" />
