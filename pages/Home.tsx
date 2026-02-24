@@ -227,7 +227,7 @@ const Home: React.FC = () => {
           >
             {[
               { title: "Pay Your Bill", category: "Payments", img: "/pay_bill.png", desc: "Safe and secure online bill payment for your convenience." },
-              { title: "Patient Portal", category: "Records", img: "/patient_portal.png", desc: "Access your medical records and communicate directly with your care team." },
+              { title: "Patient Portal", category: "Records", img: "/patient_portal_v2.png", desc: "Access your medical records and communicate directly with your care team." },
               { title: "Patient Forms", category: "Paperwork", img: "/patient_forms.png", desc: "Complete your required forms online before your visit to save time." }
             ].map((resource, idx) => (
               <motion.div
