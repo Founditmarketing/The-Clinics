@@ -1,11 +1,18 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Star, Shield, Clock, Award, Stethoscope, Heart, Activity, Baby, ChevronRight, Phone } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { useUI } from '../context/UIContext';
 
 const Home: React.FC = () => {
   // const { openBookingModal } = useUI();
+  const heroRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"]
+  });
+
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -33,18 +40,20 @@ const Home: React.FC = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden">
+      <section ref={heroRef} className="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <img
-            src="/newherobackgroundpic.jpg"
-            alt="The Clinics Mobile"
-            className="w-full h-full object-cover object-top opacity-90 md:hidden"
-          />
-          <img
-            src="/newherobackgroundpic.jpg"
-            alt="The Clinics Desktop"
-            className="w-full h-full object-cover object-top opacity-90 hidden md:block"
-          />
+          <motion.div style={{ y: backgroundY }} className="absolute inset-0">
+            <img
+              src="/newherobackgroundpic.jpg"
+              alt="The Clinics Mobile"
+              className="w-full h-full object-cover object-top opacity-90 md:hidden"
+            />
+            <img
+              src="/newherobackgroundpic.jpg"
+              alt="The Clinics Desktop"
+              className="w-full h-full object-cover object-top opacity-90 hidden md:block"
+            />
+          </motion.div>
           <div className="absolute inset-0 bg-white/80 md:bg-transparent md:bg-gradient-to-r md:from-white md:to-transparent"></div>
         </div>
 
