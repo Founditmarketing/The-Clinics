@@ -169,10 +169,10 @@ const Home: React.FC = () => {
             viewport={{ once: true, margin: "-100px" }}
           >
             {[
-              { title: 'Primary Care', icon: <Stethoscope size={32} />, desc: 'Comprehensive health management for individuals and families.' },
-              { title: 'Gastroenterology', icon: <Activity size={32} />, desc: 'Specialized care for digestive health and disease management.' },
-              { title: 'Podiatry', icon: <Shield size={32} />, desc: 'Expert diagnosis and surgical treatment for foot and ankle disorders.' },
-              { title: 'Access2Day Health', icon: <Clock size={32} />, desc: 'Convenient access to healthcare services when you need them.' },
+              { id: 's1', title: 'Primary Care', icon: <Stethoscope size={32} />, desc: 'Comprehensive health management for individuals and families.' },
+              { id: 's2', title: 'Gastroenterology', icon: <Activity size={32} />, desc: 'Specialized care for digestive health and disease management.' },
+              { id: 's3', title: 'Podiatry', icon: <Shield size={32} />, desc: 'Expert diagnosis and surgical treatment for foot and ankle disorders.' },
+              { id: 's4', title: 'Access2Day Health', icon: <Clock size={32} />, desc: 'Convenient access to healthcare services when you need them.' },
             ].map((service, idx) => (
               <motion.div
                 key={idx}
@@ -187,8 +187,11 @@ const Home: React.FC = () => {
                 <p className="text-slate-500 text-sm leading-relaxed mb-6">
                   {service.desc}
                 </p>
-                <Link to="/services" className="text-medical-600 font-medium text-sm flex items-center gap-1 hover:gap-2 transition-all">
-                  Learn More <ArrowRight size={14} />
+                <Link
+                  to={`/service/${service.id}`}
+                  className="mt-auto inline-flex items-center justify-center w-full py-3 px-4 bg-medical-50 text-medical-700 rounded-xl font-bold hover:bg-medical-600 hover:text-white transition-all duration-300 gap-2 border border-medical-100 group-hover:border-medical-600"
+                >
+                  View Details <ArrowRight size={16} />
                 </Link>
               </motion.div>
             ))}

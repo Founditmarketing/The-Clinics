@@ -30,10 +30,10 @@ const DoctorProfile: React.FC = () => {
     }
 
     return (
-        <div className="pt-24 min-h-screen bg-slate-50">
-            {/* Breadcrumb */}
-            <div className="bg-white border-b border-slate-100 py-4">
-                <div className="container mx-auto px-4 md:px-6">
+        <div className="min-h-screen bg-slate-50">
+            {/* Header Clearance & Breadcrumb */}
+            <div className="bg-white border-b border-slate-100 pt-24">
+                <div className="container mx-auto px-4 md:px-6 pt-[30px] pb-4">
                     <Link to="/about" className="text-slate-500 text-sm hover:text-medical-600 flex items-center gap-1 inline-flex">
                         <ArrowLeft size={14} /> Back to Team
                     </Link>

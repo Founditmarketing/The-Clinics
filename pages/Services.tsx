@@ -1,5 +1,5 @@
 import React from 'react';
-import { Stethoscope, Heart, Baby, Brain, Eye, Activity, Bone, Smile, Calendar, Clock, Phone, Beaker, Wind, Zap, Scan, Monitor, FlaskConical } from 'lucide-react';
+import { Stethoscope, Heart, Baby, Brain, Eye, Activity, Bone, Smile, Calendar, Clock, Phone, Beaker, Wind, Zap, Scan, Monitor, FlaskConical, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { SERVICES } from '../data/clinicData';
 import { useUI } from '../context/UIContext';
@@ -41,7 +41,10 @@ const Services: React.FC = () => {
           {SERVICES.map((service) => {
             const Icon = IconMap[service.iconName] || Stethoscope;
             return (
-              <div key={service.id} className="bg-white rounded-xl shadow-sm border border-slate-100 p-8 hover:shadow-lg transition-all hover:-translate-y-1 group flex flex-col h-full">
+              <div
+                key={service.id}
+                className="bg-white rounded-xl shadow-sm border border-slate-100 p-8 hover:shadow-lg transition-all hover:-translate-y-1 group flex flex-col h-full"
+              >
                 <div className="w-16 h-16 rounded-xl bg-medical-50 text-medical-600 flex items-center justify-center mb-6 group-hover:bg-medical-600 group-hover:text-white transition-colors">
                   <Icon size={32} />
                 </div>
@@ -49,12 +52,18 @@ const Services: React.FC = () => {
                 <p className="text-slate-500 text-base leading-relaxed mb-6 flex-grow">
                   {service.description}
                 </p>
-                <div className="mt-auto pt-4 border-t border-slate-50">
+                <div className="mt-auto pt-6 border-t border-slate-50 flex flex-col gap-3">
+                  <Link
+                    to={`/service/${service.id}`}
+                    className="w-full py-3 rounded-lg bg-medical-600 text-white font-semibold hover:bg-medical-700 transition-all flex items-center justify-center gap-2 shadow-md shadow-medical-600/10"
+                  >
+                    View Service Details <ChevronRight size={18} />
+                  </Link>
                   <a
                     href="tel:3184459823"
-                    className="w-full py-3 rounded-lg border-2 border-medical-100 text-medical-700 font-semibold hover:border-medical-600 hover:bg-medical-600 hover:text-white transition-all flex items-center justify-center gap-2"
+                    className="w-full py-3 rounded-lg border border-slate-200 text-slate-600 font-medium hover:bg-slate-50 transition-all flex items-center justify-center gap-2"
                   >
-                    <Phone size={18} /> Call to Schedule
+                    <Phone size={16} /> Call to Schedule
                   </a>
                 </div>
               </div>

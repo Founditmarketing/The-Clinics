@@ -46,5 +46,6 @@ export enum PageRoute {
   CONTACT = '/contact',
   DASHBOARD = '/dashboard',
   DOCTOR_PROFILE = '/doctor/:id',
+  SERVICE_DETAIL = '/service/:id',
   PATIENT_RESOURCES = '/patient-resources'
 }
