@@ -30,7 +30,7 @@ const App: React.FC = () => {
   return (
     <UIProvider>
       <Router>
-        <div className="font-sans text-slate-900 antialiased flex flex-col min-h-screen">
+        <div className="font-sans antialiased flex flex-col min-h-screen" style={{ color: 'var(--ink)' }}>
           <ScrollToTop />
           <Header />
           <main className="flex-grow">

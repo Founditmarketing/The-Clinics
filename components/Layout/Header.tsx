@@ -1,186 +1,305 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, Phone, Calendar, User as UserIcon, LogOut, LayoutDashboard } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { LayoutDashboard, LogOut, Menu, X } from 'lucide-react';
 import { PageRoute } from '../../types';
 import { useUI } from '../../context/UIContext';
+import { CLINIC } from '../../data/clinicData';
+import { useClinicStatus } from '../Harmony/useClinicStatus';
+
+const NAV = [
+  { name: 'Home', path: PageRoute.HOME },
+  { name: 'Services', path: PageRoute.SERVICES },
+  { name: 'About', path: PageRoute.ABOUT },
+  { name: 'Patient Resources', path: PageRoute.PATIENT_RESOURCES },
+  { name: 'Contact', path: PageRoute.CONTACT },
+];
 
 const Header: React.FC = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [lang, setLang] = useState<'en' | 'es'>('en');
+
   const location = useLocation();
   const navigate = useNavigate();
-
-  const { openLoginModal, user, logout } = useUI();
+  const { user, logout, openBookingModal } = useUI();
+  const { isOpenNow, closeLabel } = useClinicStatus();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const navLinks = [
-    { name: 'Home', path: PageRoute.HOME },
-    { name: 'Services', path: PageRoute.SERVICES },
-    { name: 'About Us', path: PageRoute.ABOUT },
-    { name: 'Contact', path: PageRoute.CONTACT },
-  ];
+  // Close menu on route change
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [location.pathname]);
 
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <motion.header
-      initial={{ y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.7, ease: "linear" }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-[background-color,padding,box-shadow] duration-300 ${isScrolled ? 'bg-white shadow-md py-3' : 'bg-white shadow-sm py-5'
-        }`}
-    >
-      <div className="container mx-auto px-4 md:px-6 flex justify-between items-center">
-        {/* Logo */}
-        <Link to="/" className="group py-2">
-          <img src="/logo.png" alt="theCLINICS" className="h-14 w-auto object-contain" />
-        </Link>
-
-        {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <Link
-              key={link.path}
-              to={link.path}
-              className={`text-sm font-medium transition-colors hover:text-medical-600 ${isActive(link.path) ? 'text-medical-800 font-semibold' : 'text-slate-600'
-                }`}
-            >
-              {link.name}
-            </Link>
-          ))}
-        </nav>
-
-        {/* Desktop CTA */}
-        <div className="hidden md:flex items-center gap-4">
-          <a href="tel:3184459823" className="flex items-center gap-2 text-slate-600 hover:text-medical-800 transition-colors">
-            <Phone size={18} />
-            <span className="font-medium text-sm">(318) 445-9823</span>
-          </a>
-
-          <Link to={PageRoute.PATIENT_RESOURCES} className="hidden lg:flex items-center gap-2 text-slate-600 hover:text-medical-800 transition-colors">
-            <span className="font-medium text-sm">Patient Resources</span>
-          </Link>
-
-          {user ? (
-            <div className="relative">
-              <button
-                onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                className="flex items-center gap-2 pl-2 pr-4 py-1.5 rounded-full border border-slate-200 hover:bg-slate-50 transition-colors"
-              >
-                <img src={user.avatar} alt={user.name} className="w-8 h-8 rounded-full" />
-                <span className="font-medium text-sm text-slate-700">{user.name.split(' ')[0]}</span>
-              </button>
-
-              {isUserMenuOpen && (
-                <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-slate-100 py-2 animate-in fade-in slide-in-from-top-2">
-                  <div className="px-4 py-2 border-b border-slate-50 mb-2">
-                    <p className="text-xs text-slate-500">Signed in as</p>
-                    <p className="font-bold text-slate-900 truncate">{user.email}</p>
-                  </div>
-                  <button
-                    onClick={() => { navigate(PageRoute.DASHBOARD); setIsUserMenuOpen(false); }}
-                    className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-medical-700 flex items-center gap-2"
-                  >
-                    <LayoutDashboard size={16} /> Dashboard
-                  </button>
-                  <button
-                    onClick={() => { logout(); setIsUserMenuOpen(false); navigate('/'); }}
-                    className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"
-                  >
-                    <LogOut size={16} /> Sign Out
-                  </button>
-                </div>
-              )}
-            </div>
-          ) : (
+    <>
+      {/* TOP BAR — desktop only */}
+      <div
+        className="hidden lg:block py-2 text-xs"
+        style={{
+          background: 'var(--forest-deep)',
+          color: 'var(--sage-light)',
+          borderBottom: '1px solid rgba(255,255,255,0.06)',
+        }}
+      >
+        <div className="max-w-7xl mx-auto px-6 lg:px-10 flex items-center justify-between">
+          <div className="flex items-center gap-6">
+            <span className="flex items-center gap-2">
+              <span
+                className="w-1.5 h-1.5 rounded-full pulse-dot"
+                style={{ background: isOpenNow ? '#34d399' : '#fbbf24' }}
+              />
+              {isOpenNow ? `Open · Closing in ${closeLabel}` : `Currently closed · Opens ${closeLabel}`}
+            </span>
+            <span style={{ color: 'var(--sage)' }}>·</span>
+            <span>Established patients welcome same-day</span>
+            <span style={{ color: 'var(--sage)' }}>·</span>
             <a
-              href="https://mycw11.eclinicalweb.com/portal351/jsp/100mp/login_otp.jsp"
+              href={CLINIC.patientPortalUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-slate-700 font-medium text-sm hover:text-medical-700"
+              className="underline-grow"
             >
-              Patient Login
+              Patient Portal ↗
             </a>
-          )}
-
-          <a
-            href="tel:3184459823"
-            className="bg-accent-500 hover:bg-accent-600 text-white px-5 py-2.5 rounded-full font-medium text-sm transition-all shadow-sm hover:shadow-md flex items-center gap-2"
-          >
-            <Phone size={16} />
-            Call to Book
-          </a>
+          </div>
+          <div className="flex items-center gap-4">
+            <div
+              className="flex items-center gap-1 px-2 py-0.5 rounded-full"
+              style={{ background: 'rgba(255,255,255,0.06)' }}
+            >
+              <button
+                onClick={() => setLang('en')}
+                className="px-2 py-0.5 rounded-full text-[10px] font-medium tracking-wider transition"
+                style={{
+                  background: lang === 'en' ? 'var(--ivory)' : 'transparent',
+                  color: lang === 'en' ? 'var(--forest)' : 'var(--sage-light)',
+                }}
+              >
+                EN
+              </button>
+              <button
+                onClick={() => setLang('es')}
+                className="px-2 py-0.5 rounded-full text-[10px] font-medium tracking-wider transition"
+                style={{
+                  background: lang === 'es' ? 'var(--ivory)' : 'transparent',
+                  color: lang === 'es' ? 'var(--forest)' : 'var(--sage-light)',
+                }}
+              >
+                ES
+              </button>
+            </div>
+            <a href={`tel:${CLINIC.tel}`} className="font-mono">
+              {CLINIC.phone}
+            </a>
+          </div>
         </div>
-
-        {/* Mobile Toggle */}
-        <button
-          className="md:hidden text-slate-700 p-2"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        >
-          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
       </div>
 
-      {/* Mobile Menu */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-white border-t border-slate-100 shadow-lg py-4 px-4 flex flex-col gap-4">
-          {navLinks.map((link) => (
-            <Link
-              key={link.path}
-              to={link.path}
-              onClick={() => setIsMobileMenuOpen(false)}
-              className={`text-base font-medium py-2 border-b border-slate-50 last:border-0 ${isActive(link.path) ? 'text-medical-800' : 'text-slate-600'
-                }`}
-            >
-              {link.name}
-            </Link>
-          ))}
-          <Link
-            to={PageRoute.PATIENT_RESOURCES}
-            onClick={() => setIsMobileMenuOpen(false)}
-            className="text-base font-medium py-2 border-b border-slate-50 text-slate-600"
-          >
-            Patient Resources
+      {/* MAIN NAV — sticky w/ backdrop blur */}
+      <nav
+        className="sticky top-0 z-50 transition-all duration-300"
+        style={{
+          background: scrolled ? 'rgba(250, 247, 242, 0.92)' : 'rgba(250, 247, 242, 0.5)',
+          backdropFilter: 'blur(16px)',
+          borderBottom: scrolled ? '1px solid var(--line)' : '1px solid transparent',
+        }}
+      >
+        <div className="max-w-7xl mx-auto px-6 lg:px-10 py-4 flex items-center justify-between">
+          <Link to={PageRoute.HOME} className="flex items-center gap-3">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+              <circle cx="20" cy="20" r="19" stroke="var(--forest)" strokeWidth="1.5" />
+              <path
+                d="M13 14v12M27 14v12M13 20h14"
+                stroke="var(--forest)"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+              <circle cx="20" cy="20" r="2.8" fill="var(--terracotta)" />
+            </svg>
+            <div className="leading-none">
+              <div className="font-display text-xl tracking-tight" style={{ color: 'var(--forest)' }}>
+                theCLINICS
+              </div>
+              <div
+                className="text-[10px] uppercase tracking-[0.22em] mt-0.5"
+                style={{ color: 'var(--ink-soft)' }}
+              >
+                Cenla · Modern healthcare
+              </div>
+            </div>
           </Link>
-          {user ? (
-            <Link
-              to={PageRoute.DASHBOARD}
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="text-base font-medium py-2 text-medical-800 flex items-center gap-2"
-            >
-              <LayoutDashboard size={18} /> My Dashboard
-            </Link>
-          ) : (
+
+          <div className="hidden lg:flex items-center gap-8 text-sm">
+            {NAV.map((link) => (
+              <Link
+                key={link.path}
+                to={link.path}
+                className="underline-grow"
+                style={{
+                  color: 'var(--ink)',
+                  fontWeight: isActive(link.path) ? 600 : 400,
+                }}
+              >
+                {link.name}
+              </Link>
+            ))}
+          </div>
+
+          <div className="flex items-center gap-2">
+            {user ? (
+              <div className="relative hidden sm:block">
+                <button
+                  onClick={() => setUserMenuOpen(!userMenuOpen)}
+                  className="flex items-center gap-2 pl-2 pr-4 py-1.5 rounded-full border"
+                  style={{ borderColor: 'var(--line)' }}
+                >
+                  {user.avatar && (
+                    <img src={user.avatar} alt={user.name} className="w-7 h-7 rounded-full" />
+                  )}
+                  <span className="font-medium text-xs" style={{ color: 'var(--forest)' }}>
+                    {user.name.split(' ')[0]}
+                  </span>
+                </button>
+                {userMenuOpen && (
+                  <div
+                    className="absolute top-full right-0 mt-2 w-48 rounded-2xl py-2 fade-in"
+                    style={{
+                      background: 'var(--ivory)',
+                      border: '1px solid var(--line)',
+                      boxShadow: '0 24px 48px -20px rgba(31, 58, 46, 0.28)',
+                    }}
+                  >
+                    <div className="px-4 py-2 border-b mb-2" style={{ borderColor: 'var(--line)' }}>
+                      <div className="small-whisper" style={{ color: 'var(--ink-mute)' }}>
+                        Signed in as
+                      </div>
+                      <div
+                        className="font-medium text-sm truncate"
+                        style={{ color: 'var(--forest)' }}
+                      >
+                        {user.email}
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => {
+                        navigate(PageRoute.DASHBOARD);
+                        setUserMenuOpen(false);
+                      }}
+                      className="w-full text-left px-4 py-2 text-sm flex items-center gap-2"
+                      style={{ color: 'var(--forest)' }}
+                    >
+                      <LayoutDashboard size={16} /> Dashboard
+                    </button>
+                    <button
+                      onClick={() => {
+                        logout();
+                        setUserMenuOpen(false);
+                        navigate(PageRoute.HOME);
+                      }}
+                      className="w-full text-left px-4 py-2 text-sm flex items-center gap-2"
+                      style={{ color: 'var(--terracotta-deep)' }}
+                    >
+                      <LogOut size={16} /> Sign out
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : null}
+
             <a
-              href="https://mycw11.eclinicalweb.com/portal351/jsp/100mp/login_otp.jsp"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="text-base font-medium py-2 text-slate-600 text-left"
+              href={`tel:${CLINIC.tel}`}
+              className="hidden sm:inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-full btn-call"
             >
-              Patient Login
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path
+                  d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <span className="hidden md:inline">Call</span>
             </a>
-          )}
-          <a
-            href="tel:3184459823"
-            onClick={() => setIsMobileMenuOpen(false)}
-            className="bg-medical-800 text-white w-full py-3 rounded-lg text-center font-medium mt-2 flex items-center justify-center gap-2"
-          >
-            <Phone size={18} />
-            Call to Book Now
-          </a>
+            <button
+              onClick={openBookingModal}
+              className="hidden md:inline-block px-5 py-2.5 text-sm font-medium rounded-full btn-primary"
+            >
+              Book a Visit
+            </button>
+            <button
+              className="lg:hidden p-2"
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label="Toggle menu"
+            >
+              {menuOpen ? (
+                <X size={22} color="var(--forest)" />
+              ) : (
+                <Menu size={22} color="var(--forest)" />
+              )}
+            </button>
+          </div>
         </div>
-      )}
-    </motion.header>
+
+        {menuOpen && (
+          <div
+            className="lg:hidden border-t"
+            style={{ borderColor: 'var(--line)', background: 'var(--ivory)' }}
+          >
+            <div className="px-6 py-6 space-y-4 text-base">
+              {NAV.map((link) => (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  onClick={() => setMenuOpen(false)}
+                  className="block"
+                  style={{
+                    color: isActive(link.path) ? 'var(--terracotta)' : 'var(--forest)',
+                    fontWeight: isActive(link.path) ? 600 : 400,
+                  }}
+                >
+                  {link.name}
+                </Link>
+              ))}
+              <a
+                href={CLINIC.patientPortalUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block"
+                style={{ color: 'var(--forest)' }}
+              >
+                Patient Portal ↗
+              </a>
+              {user ? (
+                <Link
+                  to={PageRoute.DASHBOARD}
+                  onClick={() => setMenuOpen(false)}
+                  className="flex items-center gap-2"
+                  style={{ color: 'var(--terracotta)' }}
+                >
+                  <LayoutDashboard size={18} /> My Dashboard
+                </Link>
+              ) : null}
+              <button
+                onClick={() => {
+                  setMenuOpen(false);
+                  openBookingModal();
+                }}
+                className="w-full mt-2 px-5 py-3 text-center font-medium rounded-full btn-primary"
+              >
+                Book a Visit
+              </button>
+            </div>
+          </div>
+        )}
+      </nav>
+    </>
   );
 };
 
