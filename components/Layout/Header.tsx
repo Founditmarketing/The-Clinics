@@ -282,7 +282,7 @@ const Header: React.FC = () => {
         }
         .hh-brand { display: inline-flex; align-items: center; gap: 0.8rem; flex-shrink: 0; }
         .hh-brand-logo {
-          height: 48px;
+          height: 56px;
           width: auto;
           object-fit: contain;
           display: block;
@@ -290,7 +290,7 @@ const Header: React.FC = () => {
         }
         .hh-brand:hover .hh-brand-logo { transform: scale(1.04); }
         @media (max-width: 600px) {
-          .hh-brand-logo { height: 40px; }
+          .hh-brand-logo { height: 44px; }
         }
 
         .hh-links {

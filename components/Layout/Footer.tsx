@@ -256,15 +256,15 @@ const Footer: React.FC = () => {
           .hh-footer-grid { grid-template-columns: 1fr; gap: 2.4rem; }
         }
 
-        .hh-footer-logo { display: inline-flex; align-items: center; gap: 1rem; margin-bottom: 1.2rem; }
+        .hh-footer-logo { display: inline-flex; align-items: center; gap: 1.1rem; margin-bottom: 1.2rem; flex-wrap: wrap; }
         .hh-footer-logo-img {
-          height: 54px;
+          height: 64px;
           width: auto;
           object-fit: contain;
           background: var(--bone);
-          padding: 0.4rem 0.55rem;
+          padding: 0.55rem 0.85rem;
           border-radius: var(--radius-sm);
-          box-shadow: 0 8px 20px -10px rgba(0,0,0,0.45);
+          box-shadow: 0 10px 24px -10px rgba(0,0,0,0.55);
         }
         .hh-footer-name { font-size: 1.35rem; line-height: 1.05; color: var(--bone); margin-top: 0.25rem; letter-spacing: -0.01em; }
         .hh-footer-blurb { color: var(--sage-light); font-size: 0.95rem; line-height: 1.65; max-width: 38ch; margin: 0 0 1.2rem; }
