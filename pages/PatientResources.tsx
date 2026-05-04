@@ -223,7 +223,7 @@ const PatientResources: React.FC = () => {
         .hh-resource-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-strong); }
         .hh-resource-icon { width: 56px; height: 56px; border-radius: 16px; display: inline-flex; align-items: center; justify-content: center; }
         .hh-resource-icon-pay { background: rgba(34,197,94,0.18); color: #166534; }
-        .hh-resource-icon-portal { background: rgba(56,189,248,0.18); color: var(--forest-deep); }
+        .hh-resource-icon-portal { background: rgba(31,58,91,0.14); color: var(--forest-deep); }
         .hh-resource-icon-call { background: rgba(2,132,199,0.18); color: var(--forest-deep); }
         .hh-resource-title { font-size: 1.2rem; color: var(--forest-deep); margin: 0.3rem 0 0.4rem; line-height: 1.1; display: inline-flex; align-items: center; gap: 0.5rem; }
         .hh-resource-ext { color: var(--ink-mute); }
@@ -234,7 +234,7 @@ const PatientResources: React.FC = () => {
         .hh-resources-forms-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin-top: 1.4rem; }
         @media (max-width: 880px) { .hh-resources-forms-grid { grid-template-columns: 1fr; } }
         .hh-resources-form-card { padding: 1.4rem 1.6rem; border-radius: 22px; display: grid; gap: 0.6rem; align-content: start; }
-        .hh-resources-form-icon { width: 38px; height: 38px; border-radius: 12px; background: rgba(56,189,248,0.16); color: var(--forest-deep); display: inline-flex; align-items: center; justify-content: center; }
+        .hh-resources-form-icon { width: 38px; height: 38px; border-radius: 12px; background: rgba(193,53,42,0.10); color: var(--terracotta-deep); display: inline-flex; align-items: center; justify-content: center; }
         .hh-resources-form-title { font-size: 1.15rem; color: var(--forest-deep); margin: 0.4rem 0 0.4rem; }
         .hh-resources-form-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.4rem; }
         .hh-resources-form-link { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--forest-deep); font-weight: 500; padding: 0.4rem 0; }

@@ -376,7 +376,7 @@ const BookingModal: React.FC = () => {
         .booking-step.done { background: var(--sand); color: var(--forest); border-color: var(--sand); }
         .booking-step-num { display: inline-flex; width: 22px; height: 22px; align-items: center; justify-content: center; border-radius: 999px; background: rgba(255,255,255,0.18); font-weight: 700; font-size: 0.74rem; }
         .booking-step.done .booking-step-num,
-        .booking-step:not(.active) .booking-step-num { background: rgba(21,101,184,0.14); }
+        .booking-step:not(.active) .booking-step-num { background: rgba(116,120,127,0.18); }
         .booking-step-body h3 { font-size: 1.4rem; margin: 0 0 1rem; color: var(--forest-deep); }
         .booking-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.55rem; }
         .booking-option { padding: 0.95rem 1rem; text-align: left; border-radius: 14px; border: 1px solid var(--line); background: var(--ivory-deep); cursor: pointer; transition: 220ms ease; min-height: 56px; font: inherit; color: inherit; }

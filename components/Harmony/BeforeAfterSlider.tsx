@@ -33,25 +33,25 @@ const BeforeAfterSlider: React.FC = () => {
       {/* AFTER — clean digital read */}
       <div
         className="absolute inset-0 flex items-center justify-center"
-        style={{ background: 'linear-gradient(135deg, #ecf4fb 0%, #cfe8fb 100%)' }}
+        style={{ background: 'linear-gradient(135deg, #f7f3ec 0%, #ede1c8 100%)' }}
       >
         <svg viewBox="0 0 200 125" className="w-full h-full">
           <defs>
             <linearGradient id="ba-clean-grid" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.20" />
-              <stop offset="100%" stopColor="#38bdf8" stopOpacity="0" />
+              <stop offset="0%" stopColor="#c1352a" stopOpacity="0.18" />
+              <stop offset="100%" stopColor="#c1352a" stopOpacity="0" />
             </linearGradient>
           </defs>
           <rect width="200" height="125" fill="url(#ba-clean-grid)" />
           {[20, 40, 60, 80, 100].map((y) => (
-            <line key={`h-${y}`} x1="10" x2="190" y1={y} y2={y} stroke="#38bdf8" strokeWidth="0.2" opacity="0.45" />
+            <line key={`h-${y}`} x1="10" x2="190" y1={y} y2={y} stroke="#c1352a" strokeWidth="0.2" opacity="0.45" />
           ))}
           {[20, 50, 80, 110, 140, 170].map((x) => (
-            <line key={`v-${x}`} x1={x} x2={x} y1="20" y2="100" stroke="#38bdf8" strokeWidth="0.2" opacity="0.45" />
+            <line key={`v-${x}`} x1={x} x2={x} y1="20" y2="100" stroke="#c1352a" strokeWidth="0.2" opacity="0.45" />
           ))}
           <path
             d="M 10 60 L 30 60 L 35 60 L 38 55 L 42 65 L 46 30 L 50 90 L 54 45 L 58 60 L 80 60 L 95 60 L 100 50 L 110 70 L 115 60 L 140 60 L 145 55 L 150 65 L 155 30 L 159 90 L 163 45 L 167 60 L 190 60"
-            stroke="#07172d"
+            stroke="#0c1c2e"
             strokeWidth="1.4"
             fill="none"
             strokeLinecap="round"
@@ -63,7 +63,7 @@ const BeforeAfterSlider: React.FC = () => {
             textAnchor="middle"
             fontSize="6"
             fontFamily="'JetBrains Mono', monospace"
-            fill="#0284c7"
+            fill="#971f15"
             letterSpacing="1"
           >
             DIGITAL EKG · READ IN-VISIT
@@ -133,7 +133,7 @@ const BeforeAfterSlider: React.FC = () => {
       </div>
       <div
         className="absolute top-4 right-4 px-3 py-1.5 rounded-full text-[10px] uppercase tracking-wider font-semibold pointer-events-none"
-        style={{ background: 'rgba(2, 132, 199, 0.95)', color: 'white' }}
+        style={{ background: 'rgba(151, 31, 21, 0.95)', color: 'white' }}
       >
         After · same visit
       </div>

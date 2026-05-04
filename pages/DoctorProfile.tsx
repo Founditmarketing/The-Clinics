@@ -276,7 +276,7 @@ const DoctorProfile: React.FC = () => {
         .hh-doc-list li { display: grid; grid-template-columns: 36px 1fr; gap: 0.5rem; align-items: baseline; }
         .hh-doc-list .editorial-num { color: var(--sage-light); font-size: 1rem; }
         .hh-doc-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-        .hh-doc-chip { padding: 0.35rem 0.8rem; border-radius: 999px; background: rgba(56,189,248,0.16); color: var(--forest-deep); font-size: 0.85rem; }
+        .hh-doc-chip { padding: 0.35rem 0.8rem; border-radius: 999px; background: rgba(193,53,42,0.10); color: var(--terracotta-deep); font-size: 0.85rem; }
         .hh-doc-lives { color: var(--ink-soft); margin: 0; }
 
         .hh-doc-creds { display: grid; gap: 0.7rem; }

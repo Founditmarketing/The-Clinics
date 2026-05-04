@@ -37,57 +37,71 @@
   --type-small:           0.85rem;
   --type-mono:            0.72rem;
 
-  /* Cool neutrals — icy clinic backdrop */
-  --ivory: #ecf4fb;
-  --ivory-deep: #dfeaf7;
-  --ivory-warm: #d4e3f3;
-  --sand: #c9daee;
-  --sand-soft: #d8e8f6;
-  --bone: #f8fbfe;
+  /* === Cardinal Cenla palette ===
+     Warm ivory paper + deep navy authority + cardinal red signal.
+     Token names preserved for backward compatibility — `--terracotta`
+     now resolves to the cardinal red and is the load-bearing signal
+     accent across CTAs, live dots, eyebrows, and emphasis. */
 
-  /* Brand blues (elevated clinic navy + brighter accents) */
-  --forest: #1565c9;
-  --forest-deep: #07172d;
-  --forest-soft: #3d8fd9;
+  /* Warm neutrals */
+  --ivory: #f7f3ec;
+  --ivory-deep: #ede6d6;
+  --ivory-warm: #f0e2cd;
+  --sand: #e0d3bb;
+  --sand-soft: #ede4cf;
+  --bone: #fbf8f1;
 
-  --sage: #5c92c4;
-  --sage-light: #a8cff0;
-  --sage-pale: #cfe8fb;
+  /* Deep navy — authority surfaces (footer, mission, CTA) */
+  --forest: #1f3a5b;
+  --forest-deep: #0c1c2e;
+  --forest-soft: #3a5e85;
 
-  /* Accent — sky / cyan highlights */
-  --terracotta: #38bdf8;
-  --terracotta-deep: #0284c7;
-  --terracotta-pale: #bae6fd;
-  --terracotta-bright: #7dd3fc;
+  /* Warm sage / slate — paired with cardinal */
+  --sage: #6b7a8a;
+  --sage-light: #b6c2cf;
+  --sage-pale: #dde3eb;
 
-  --gold: #38bdf8;
-  --gold-deep: #0369a1;
-  --gold-pale: #e0f2fe;
+  /* Cardinal red — primary signal accent */
+  --terracotta: #c1352a;
+  --terracotta-deep: #971f15;
+  --terracotta-pale: #f4d4d0;
+  --terracotta-bright: #de574a;
 
-  --ink: #071524;
-  --ink-soft: #1e3a55;
-  --ink-mute: #5a6e82;
+  /* Warm gold — secondary accent for badges and seals */
+  --gold: #c19451;
+  --gold-deep: #8b6633;
+  --gold-pale: #ede1c8;
 
-  --line: rgba(21, 101, 201, 0.11);
-  --line-strong: rgba(21, 101, 201, 0.2);
+  /* Ink — warm-tinted near-black */
+  --ink: #1a1d24;
+  --ink-soft: #3d424c;
+  --ink-mute: #74787f;
 
-  --shadow-card: 0 22px 48px -28px rgba(8, 45, 82, 0.38);
-  --shadow-strong: 0 50px 110px -50px rgba(4, 28, 52, 0.52);
-  --shadow-soft: 0 10px 30px -16px rgba(8, 45, 82, 0.22);
+  --line: rgba(26, 29, 36, 0.10);
+  --line-strong: rgba(26, 29, 36, 0.18);
 
-  --focus: 0 0 0 3px rgba(56, 189, 248, 0.42);
+  /* RGB triplets for opacity-aware compositing */
+  --cardinal-rgb: 193, 53, 42;
+  --navy-rgb: 31, 58, 91;
+  --ivory-rgb: 247, 243, 236;
+
+  --shadow-card: 0 22px 48px -28px rgba(28, 24, 22, 0.32);
+  --shadow-strong: 0 50px 110px -50px rgba(28, 24, 22, 0.42);
+  --shadow-soft: 0 10px 30px -16px rgba(28, 24, 22, 0.18);
+
+  --focus: 0 0 0 3px rgba(193, 53, 42, 0.38);
 
   /* Glass tokens */
-  --glass-bg: rgba(255, 255, 255, 0.44);
-  --glass-bg-strong: rgba(255, 255, 255, 0.62);
-  --glass-border: rgba(255, 255, 255, 0.58);
-  --glass-border-blue: rgba(56, 189, 248, 0.22);
-  --glass-blur: blur(22px) saturate(165%);
-  --glass-inner: inset 0 1px 0 rgba(255, 255, 255, 0.68);
-  --glass-shadow: 0 14px 46px rgba(7, 46, 88, 0.13);
+  --glass-bg: rgba(255, 255, 255, 0.50);
+  --glass-bg-strong: rgba(255, 255, 255, 0.70);
+  --glass-border: rgba(255, 255, 255, 0.65);
+  --glass-border-blue: rgba(193, 53, 42, 0.20);
+  --glass-blur: blur(22px) saturate(160%);
+  --glass-inner: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+  --glass-shadow: 0 14px 46px rgba(28, 24, 22, 0.10);
 
-  --glass-dark-bg: rgba(7, 28, 52, 0.52);
-  --glass-dark-border: rgba(125, 211, 252, 0.14);
+  --glass-dark-bg: rgba(12, 28, 46, 0.55);
+  --glass-dark-border: rgba(244, 212, 208, 0.14);
 }
 
 * {
@@ -104,8 +118,9 @@ body,
   padding: 0;
   min-height: 100%;
   background:
-    radial-gradient(120% 80% at 10% -10%, rgba(186, 230, 253, 0.55) 0%, transparent 45%),
-    linear-gradient(165deg, var(--ivory) 0%, var(--ivory-deep) 55%, #cbdcee 100%);
+    radial-gradient(120% 80% at 10% -10%, rgba(244, 212, 208, 0.55) 0%, transparent 45%),
+    radial-gradient(80% 50% at 90% 100%, rgba(237, 225, 200, 0.45) 0%, transparent 55%),
+    linear-gradient(165deg, var(--ivory) 0%, var(--ivory-deep) 55%, #d8c9b0 100%);
   background-attachment: fixed;
   color: var(--ink);
   font-family: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -215,14 +230,15 @@ select:focus-visible {
 
 .btn-terracotta {
   background: linear-gradient(135deg, var(--terracotta-deep), var(--terracotta));
-  color: #042032;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  font-weight: 700;
+  color: var(--bone);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  font-weight: 600;
+  box-shadow: 0 12px 28px -14px rgba(193, 53, 42, 0.55);
 }
 .btn-terracotta:hover {
-  filter: brightness(1.06);
+  background: linear-gradient(135deg, var(--terracotta), var(--terracotta-bright));
   transform: translateY(-2px);
-  box-shadow: var(--shadow-card);
+  box-shadow: 0 18px 36px -14px rgba(193, 53, 42, 0.65);
 }
 
 .btn-ghost {
@@ -278,8 +294,8 @@ select:focus-visible {
   display: inline-flex;
   gap: 0.55rem;
   align-items: center;
-  background: rgba(56, 189, 248, 0.14);
-  color: var(--forest-deep);
+  background: rgba(193, 53, 42, 0.10);
+  color: var(--terracotta-deep);
   border-radius: 999px;
   padding: 0.5rem 1rem;
   font-size: 0.74rem;
@@ -290,14 +306,14 @@ select:focus-visible {
 }
 .eyebrow-light { background: rgba(255, 255, 255, 0.12); color: var(--bone); }
 .eyebrow-gold {
-  background: rgba(56, 189, 248, 0.16);
+  background: rgba(193, 148, 81, 0.16);
   color: var(--gold-deep);
-  border: 1px solid rgba(56, 189, 248, 0.2);
+  border: 1px solid rgba(193, 148, 81, 0.22);
 }
 .eyebrow-clay {
-  background: rgba(14, 165, 233, 0.14);
-  color: var(--forest-deep);
-  border: 1px solid rgba(14, 165, 233, 0.18);
+  background: rgba(193, 53, 42, 0.10);
+  color: var(--terracotta-deep);
+  border: 1px solid rgba(193, 53, 42, 0.20);
 }
 .eyebrow-bare { background: transparent; padding: 0; color: var(--ink-mute); }
 
@@ -324,42 +340,42 @@ select:focus-visible {
   font-family: "Inter", sans-serif;
 }
 .tag-accepting {
-  background: rgba(56, 189, 248, 0.16);
-  color: var(--forest-deep);
-  border: 1px solid rgba(56, 189, 248, 0.22);
+  background: rgba(193, 53, 42, 0.10);
+  color: var(--terracotta-deep);
+  border: 1px solid rgba(193, 53, 42, 0.22);
 }
 .tag-live {
-  background: rgba(14, 165, 233, 0.14);
-  color: #075985;
-  border: 1px solid rgba(14, 165, 233, 0.25);
+  background: rgba(193, 53, 42, 0.10);
+  color: var(--terracotta-deep);
+  border: 1px solid rgba(193, 53, 42, 0.25);
 }
 .tag-live::before {
   content: "";
   width: 7px;
   height: 7px;
   border-radius: 999px;
-  background: #0284c7;
-  box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.55);
+  background: var(--terracotta);
+  box-shadow: 0 0 0 0 rgba(193, 53, 42, 0.55);
   animation: live-pulse 1.6s ease-in-out infinite;
 }
 .tag-closed {
-  background: rgba(148, 163, 184, 0.22);
+  background: rgba(116, 120, 127, 0.18);
   color: var(--ink-soft);
-  border: 1px solid rgba(148, 163, 184, 0.25);
+  border: 1px solid rgba(116, 120, 127, 0.25);
 }
 .tag-on-dark {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.10);
   color: var(--bone);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.20);
 }
 
 @keyframes live-pulse {
   0%, 100% {
-    box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.55);
+    box-shadow: 0 0 0 0 rgba(193, 53, 42, 0.55);
     transform: scale(1);
   }
   50% {
-    box-shadow: 0 0 0 6px rgba(14, 165, 233, 0);
+    box-shadow: 0 0 0 6px rgba(193, 53, 42, 0);
     transform: scale(1.15);
   }
 }
@@ -468,7 +484,7 @@ select:focus-visible {
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(56, 189, 248, 0.18),
+    rgba(193, 53, 42, 0.18),
     transparent
   );
   background-size: 200% 100%;
@@ -585,7 +601,7 @@ select:focus-visible {
 .cursor-dot.is-link {
   width: 44px;
   height: 44px;
-  background: rgba(56, 189, 248, 0.28);
+  background: rgba(193, 53, 42, 0.26);
 }
 @media (hover: hover) and (pointer: fine) {
   .cursor-dot { display: block; }
@@ -691,4 +707,19 @@ select:focus-visible {
   font-size: 0.62rem;
   background: rgba(255, 255, 255, 0.7) !important;
   backdrop-filter: blur(8px);
+}
+
+/* Maplibre custom pin — recolor to cardinal */
+.map-pin-dot {
+  background: var(--terracotta) !important;
+  box-shadow:
+    0 0 0 4px rgba(193, 53, 42, 0.18),
+    0 8px 18px -6px rgba(193, 53, 42, 0.45) !important;
+}
+.map-pin.is-active .map-pin-dot {
+  background: var(--terracotta-deep) !important;
+  box-shadow:
+    0 0 0 6px rgba(193, 53, 42, 0.24),
+    0 0 0 12px rgba(193, 53, 42, 0.10),
+    0 10px 24px -6px rgba(193, 53, 42, 0.45) !important;
 }
