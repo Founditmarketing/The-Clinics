@@ -1,119 +1,85 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, LogOut, Menu, X } from 'lucide-react';
+import { LayoutDashboard, LogOut, Menu, Phone, X } from 'lucide-react';
 import { PageRoute } from '../../types';
 import { useUI } from '../../context/UIContext';
 import { CLINIC } from '../../data/clinicData';
 import { useClinicStatus } from '../Harmony/useClinicStatus';
-
-const NAV = [
-  { name: 'Home', path: PageRoute.HOME },
-  { name: 'Services', path: PageRoute.SERVICES },
-  { name: 'About', path: PageRoute.ABOUT },
-  { name: 'Patient Resources', path: PageRoute.PATIENT_RESOURCES },
-  { name: 'Contact', path: PageRoute.CONTACT },
-];
+import { useLocale, Locale } from '../Harmony/i18n';
 
 const Header: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
-  const [lang, setLang] = useState<'en' | 'es'>('en');
 
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout, openBookingModal } = useUI();
   const { isOpenNow, closeLabel } = useClinicStatus();
+  const { locale, setLocale, t } = useLocale();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    const onScroll = () => setScrolled(window.scrollY > 32);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Close menu on route change
   useEffect(() => {
     setMenuOpen(false);
   }, [location.pathname]);
+
+  const NAV = [
+    { key: 'services', name: t.nav.services, path: PageRoute.SERVICES },
+    { key: 'team', name: t.nav.team, path: PageRoute.ABOUT },
+    { key: 'locations', name: t.nav.locations, path: PageRoute.CONTACT },
+    { key: 'resources', name: t.nav.portal, path: PageRoute.PATIENT_RESOURCES },
+  ];
 
   const isActive = (path: string) => location.pathname === path;
 
   return (
     <>
-      {/* TOP BAR — desktop only */}
-      <div
-        className="hidden lg:block py-2 text-xs"
-        style={{
-          background: 'var(--forest-deep)',
-          color: 'var(--sage-light)',
-          borderBottom: '1px solid rgba(255,255,255,0.06)',
-        }}
-      >
-        <div className="max-w-7xl mx-auto px-6 lg:px-10 flex items-center justify-between">
-          <div className="flex items-center gap-6">
-            <span className="flex items-center gap-2">
-              <span
-                className="w-1.5 h-1.5 rounded-full pulse-dot"
-                style={{ background: isOpenNow ? '#34d399' : '#fbbf24' }}
-              />
-              {isOpenNow ? `Open · Closing in ${closeLabel}` : `Currently closed · Opens ${closeLabel}`}
+      {/* Top bar — desktop only, dark glass */}
+      <div className="hh-top-bar">
+        <div className="hh-top-inner">
+          <div className="hh-top-left">
+            <span className={`tag ${isOpenNow ? 'tag-live' : 'tag-closed'} tag-on-dark`} style={{ background: 'rgba(255,255,255,0.08)', borderColor: 'rgba(255,255,255,0.18)', color: 'var(--bone)' }}>
+              {isOpenNow ? `${t.locations.open_now} · closing in ${closeLabel}` : `${t.locations.closed_now} · opens ${closeLabel}`}
             </span>
-            <span style={{ color: 'var(--sage)' }}>·</span>
-            <span>Established patients welcome same-day</span>
-            <span style={{ color: 'var(--sage)' }}>·</span>
+            <span className="hh-top-divider" aria-hidden>·</span>
             <a
               href={CLINIC.patientPortalUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="underline-grow"
             >
-              Patient Portal ↗
+              {t.nav.portal} ↗
             </a>
           </div>
-          <div className="flex items-center gap-4">
-            <div
-              className="flex items-center gap-1 px-2 py-0.5 rounded-full"
-              style={{ background: 'rgba(255,255,255,0.06)' }}
-            >
-              <button
-                onClick={() => setLang('en')}
-                className="px-2 py-0.5 rounded-full text-[10px] font-medium tracking-wider transition"
-                style={{
-                  background: lang === 'en' ? 'var(--ivory)' : 'transparent',
-                  color: lang === 'en' ? 'var(--forest)' : 'var(--sage-light)',
-                }}
-              >
-                EN
-              </button>
-              <button
-                onClick={() => setLang('es')}
-                className="px-2 py-0.5 rounded-full text-[10px] font-medium tracking-wider transition"
-                style={{
-                  background: lang === 'es' ? 'var(--ivory)' : 'transparent',
-                  color: lang === 'es' ? 'var(--forest)' : 'var(--sage-light)',
-                }}
-              >
-                ES
-              </button>
+          <div className="hh-top-right">
+            <div className="hh-lang">
+              {(['en', 'es'] as Locale[]).map((l) => (
+                <button
+                  key={l}
+                  onClick={() => setLocale(l)}
+                  className={`hh-lang-btn ${locale === l ? 'is-active' : ''}`}
+                  aria-pressed={locale === l}
+                  aria-label={t.sr.lang_toggle}
+                >
+                  {l.toUpperCase()}
+                </button>
+              ))}
             </div>
-            <a href={`tel:${CLINIC.tel}`} className="font-mono">
+            <a href={`tel:${CLINIC.tel}`} className="font-mono hh-top-phone">
               {CLINIC.phone}
             </a>
           </div>
         </div>
       </div>
 
-      {/* MAIN NAV — sticky w/ backdrop blur */}
-      <nav
-        className="sticky top-0 z-50 transition-all duration-300"
-        style={{
-          background: scrolled ? 'rgba(250, 247, 242, 0.92)' : 'rgba(250, 247, 242, 0.5)',
-          backdropFilter: 'blur(16px)',
-          borderBottom: scrolled ? '1px solid var(--line)' : '1px solid transparent',
-        }}
-      >
-        <div className="max-w-7xl mx-auto px-6 lg:px-10 py-4 flex items-center justify-between">
-          <Link to={PageRoute.HOME} className="flex items-center gap-3">
+      <header className={`hh-nav ${scrolled ? 'is-scrolled' : ''}`}>
+        <div className="hh-nav-inner">
+          <Link to={PageRoute.HOME} className="hh-brand">
             <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
               <circle cx="20" cy="20" r="19" stroke="var(--forest)" strokeWidth="1.5" />
               <path
@@ -122,81 +88,54 @@ const Header: React.FC = () => {
                 strokeWidth="2"
                 strokeLinecap="round"
               />
-              <circle cx="20" cy="20" r="2.8" fill="var(--terracotta)" />
+              <circle cx="20" cy="20" r="2.8" fill="var(--terracotta-deep)" />
             </svg>
-            <div className="leading-none">
-              <div className="font-display text-xl tracking-tight" style={{ color: 'var(--forest)' }}>
-                theCLINICS
-              </div>
-              <div
-                className="text-[10px] uppercase tracking-[0.22em] mt-0.5"
-                style={{ color: 'var(--ink-soft)' }}
-              >
-                Cenla · Modern healthcare
-              </div>
+            <div className="hh-brand-text">
+              <div className="font-display hh-brand-name">theCLINICS</div>
+              <div className="small-label hh-brand-tag">Cenla · Modern healthcare</div>
             </div>
           </Link>
 
-          <div className="hidden lg:flex items-center gap-8 text-sm">
+          <nav className="hh-links" aria-label="Primary">
             {NAV.map((link) => (
               <Link
-                key={link.path}
+                key={link.key}
                 to={link.path}
-                className="underline-grow"
-                style={{
-                  color: 'var(--ink)',
-                  fontWeight: isActive(link.path) ? 600 : 400,
-                }}
+                className="underline-grow hh-link"
+                style={{ fontWeight: isActive(link.path) ? 600 : 400 }}
               >
                 {link.name}
               </Link>
             ))}
-          </div>
+          </nav>
 
-          <div className="flex items-center gap-2">
-            {user ? (
-              <div className="relative hidden sm:block">
+          <div className="hh-actions">
+            {user && (
+              <div className="hh-user">
                 <button
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
-                  className="flex items-center gap-2 pl-2 pr-4 py-1.5 rounded-full border"
-                  style={{ borderColor: 'var(--line)' }}
+                  className="hh-user-btn"
+                  aria-haspopup="menu"
+                  aria-expanded={userMenuOpen}
                 >
-                  {user.avatar && (
-                    <img src={user.avatar} alt={user.name} className="w-7 h-7 rounded-full" />
-                  )}
-                  <span className="font-medium text-xs" style={{ color: 'var(--forest)' }}>
-                    {user.name.split(' ')[0]}
-                  </span>
+                  {user.avatar && <img src={user.avatar} alt="" className="hh-avatar" />}
+                  <span>{user.name.split(' ')[0]}</span>
                 </button>
                 {userMenuOpen && (
-                  <div
-                    className="absolute top-full right-0 mt-2 w-48 rounded-2xl py-2 fade-in"
-                    style={{
-                      background: 'var(--ivory)',
-                      border: '1px solid var(--line)',
-                      boxShadow: '0 24px 48px -20px rgba(31, 58, 46, 0.28)',
-                    }}
-                  >
-                    <div className="px-4 py-2 border-b mb-2" style={{ borderColor: 'var(--line)' }}>
-                      <div className="small-whisper" style={{ color: 'var(--ink-mute)' }}>
-                        Signed in as
-                      </div>
-                      <div
-                        className="font-medium text-sm truncate"
-                        style={{ color: 'var(--forest)' }}
-                      >
-                        {user.email}
-                      </div>
+                  <div className="hh-user-menu fade-in" role="menu">
+                    <div className="hh-user-meta">
+                      <div className="small-label">Signed in as</div>
+                      <div className="hh-user-email">{user.email}</div>
                     </div>
                     <button
                       onClick={() => {
                         navigate(PageRoute.DASHBOARD);
                         setUserMenuOpen(false);
                       }}
-                      className="w-full text-left px-4 py-2 text-sm flex items-center gap-2"
-                      style={{ color: 'var(--forest)' }}
+                      className="hh-user-item"
                     >
-                      <LayoutDashboard size={16} /> Dashboard
+                      <LayoutDashboard size={16} />
+                      <span>Dashboard</span>
                     </button>
                     <button
                       onClick={() => {
@@ -204,63 +143,45 @@ const Header: React.FC = () => {
                         setUserMenuOpen(false);
                         navigate(PageRoute.HOME);
                       }}
-                      className="w-full text-left px-4 py-2 text-sm flex items-center gap-2"
-                      style={{ color: 'var(--terracotta-deep)' }}
+                      className="hh-user-item is-danger"
                     >
-                      <LogOut size={16} /> Sign out
+                      <LogOut size={16} />
+                      <span>Sign out</span>
                     </button>
                   </div>
                 )}
               </div>
-            ) : null}
+            )}
 
-            <a
-              href={`tel:${CLINIC.tel}`}
-              className="hidden sm:inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-full btn-call"
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path
-                  d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+            <a href={`tel:${CLINIC.tel}`} className="btn btn-ghost hh-call-btn">
+              <Phone size={16} strokeWidth={1.8} />
               <span className="hidden md:inline">Call</span>
             </a>
-            <button
-              onClick={openBookingModal}
-              className="hidden md:inline-block px-5 py-2.5 text-sm font-medium rounded-full btn-primary"
-            >
-              Book a Visit
+            <button onClick={openBookingModal} className="btn btn-terracotta hh-book-btn">
+              {t.nav.book}
             </button>
             <button
-              className="lg:hidden p-2"
+              className="hh-menu-toggle"
               onClick={() => setMenuOpen(!menuOpen)}
-              aria-label="Toggle menu"
+              aria-label={t.sr.open_menu}
+              aria-expanded={menuOpen}
             >
-              {menuOpen ? (
-                <X size={22} color="var(--forest)" />
-              ) : (
-                <Menu size={22} color="var(--forest)" />
-              )}
+              {menuOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
           </div>
         </div>
 
         {menuOpen && (
-          <div
-            className="lg:hidden border-t"
-            style={{ borderColor: 'var(--line)', background: 'var(--ivory)' }}
-          >
-            <div className="px-6 py-6 space-y-4 text-base">
+          <div className="hh-mobile-menu">
+            <div className="hh-mobile-inner">
               {NAV.map((link) => (
                 <Link
-                  key={link.path}
+                  key={link.key}
                   to={link.path}
                   onClick={() => setMenuOpen(false)}
-                  className="block"
+                  className="hh-mobile-link"
                   style={{
-                    color: isActive(link.path) ? 'var(--terracotta)' : 'var(--forest)',
+                    color: isActive(link.path) ? 'var(--terracotta-deep)' : 'var(--forest-deep)',
                     fontWeight: isActive(link.path) ? 600 : 400,
                   }}
                 >
@@ -271,34 +192,222 @@ const Header: React.FC = () => {
                 href={CLINIC.patientPortalUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block"
-                style={{ color: 'var(--forest)' }}
+                className="hh-mobile-link"
               >
-                Patient Portal ↗
+                {t.nav.portal} ↗
               </a>
-              {user ? (
-                <Link
-                  to={PageRoute.DASHBOARD}
-                  onClick={() => setMenuOpen(false)}
-                  className="flex items-center gap-2"
-                  style={{ color: 'var(--terracotta)' }}
-                >
-                  <LayoutDashboard size={18} /> My Dashboard
-                </Link>
-              ) : null}
+              <div className="hh-mobile-lang">
+                {(['en', 'es'] as Locale[]).map((l) => (
+                  <button
+                    key={l}
+                    onClick={() => setLocale(l)}
+                    className={`hh-lang-btn ${locale === l ? 'is-active' : ''}`}
+                  >
+                    {l.toUpperCase()}
+                  </button>
+                ))}
+              </div>
               <button
                 onClick={() => {
                   setMenuOpen(false);
                   openBookingModal();
                 }}
-                className="w-full mt-2 px-5 py-3 text-center font-medium rounded-full btn-primary"
+                className="btn btn-terracotta"
+                style={{ width: '100%' }}
               >
-                Book a Visit
+                {t.nav.book}
               </button>
+              <a
+                href={`tel:${CLINIC.tel}`}
+                className="btn btn-ghost"
+                style={{ width: '100%' }}
+              >
+                <Phone size={16} strokeWidth={1.8} /> {CLINIC.phone}
+              </a>
             </div>
           </div>
         )}
-      </nav>
+      </header>
+
+      <style>{`
+        .hh-top-bar {
+          display: none;
+          background: var(--forest-deep);
+          color: var(--bone);
+          font-size: 0.78rem;
+          border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        @media (min-width: 1024px) {
+          .hh-top-bar { display: block; }
+        }
+        .hh-top-inner {
+          max-width: 1280px;
+          margin: 0 auto;
+          padding: 0.55rem 1.2rem;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 1rem;
+        }
+        .hh-top-left, .hh-top-right { display: flex; align-items: center; gap: 1rem; }
+        .hh-top-divider { color: rgba(255,255,255,0.3); }
+        .hh-top-phone { color: var(--bone); opacity: 0.92; }
+
+        .hh-lang { display: inline-flex; gap: 0.15rem; padding: 0.15rem; border-radius: 999px; background: rgba(255,255,255,0.08); }
+        .hh-lang-btn {
+          padding: 0.2rem 0.6rem;
+          border-radius: 999px;
+          border: none;
+          background: transparent;
+          color: rgba(255,255,255,0.7);
+          font-size: 0.7rem;
+          font-weight: 700;
+          letter-spacing: 0.16em;
+          cursor: pointer;
+          transition: 200ms ease;
+        }
+        .hh-lang-btn.is-active { background: var(--bone); color: var(--forest-deep); }
+
+        .hh-nav {
+          position: sticky;
+          top: 0;
+          z-index: 50;
+          background: rgba(248,251,254,0.5);
+          backdrop-filter: blur(20px) saturate(160%);
+          -webkit-backdrop-filter: blur(20px) saturate(160%);
+          border-bottom: 1px solid transparent;
+          transition: 280ms ease;
+        }
+        .hh-nav.is-scrolled {
+          background: rgba(248,251,254,0.85);
+          border-bottom: 1px solid var(--line);
+          box-shadow: 0 6px 24px -16px rgba(7,46,88,0.18);
+        }
+        .hh-nav-inner {
+          max-width: 1280px;
+          margin: 0 auto;
+          padding: 0.9rem 1.2rem;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 1rem;
+        }
+        .hh-brand { display: inline-flex; align-items: center; gap: 0.7rem; }
+        .hh-brand-text { line-height: 1; }
+        .hh-brand-name { font-size: 1.18rem; color: var(--forest-deep); }
+        .hh-brand-tag { margin-top: 0.35rem; opacity: 0.72; }
+
+        .hh-links {
+          display: none;
+          gap: 1.6rem;
+          align-items: center;
+          font-size: 0.9rem;
+          color: var(--ink-soft);
+        }
+        @media (min-width: 1024px) { .hh-links { display: flex; } }
+        .hh-link { color: var(--ink-soft); }
+
+        .hh-actions { display: flex; align-items: center; gap: 0.5rem; }
+        .hh-call-btn { padding: 0.7rem 1rem; min-height: 44px; }
+        .hh-book-btn { padding: 0.7rem 1.2rem; min-height: 44px; }
+        @media (max-width: 1023px) { .hh-book-btn { display: none; } }
+
+        .hh-menu-toggle {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 44px;
+          height: 44px;
+          border-radius: 999px;
+          background: rgba(255,255,255,0.6);
+          border: 1px solid var(--line);
+          cursor: pointer;
+          color: var(--forest-deep);
+          backdrop-filter: blur(8px);
+        }
+        @media (min-width: 1024px) { .hh-menu-toggle { display: none; } }
+
+        .hh-user { position: relative; }
+        .hh-user-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.4rem 0.85rem 0.4rem 0.4rem;
+          border-radius: 999px;
+          border: 1px solid var(--line);
+          background: rgba(255,255,255,0.6);
+          backdrop-filter: blur(10px);
+          font-size: 0.85rem;
+          color: var(--forest-deep);
+          cursor: pointer;
+        }
+        .hh-avatar { width: 28px; height: 28px; border-radius: 999px; object-fit: cover; }
+        .hh-user-menu {
+          position: absolute;
+          top: calc(100% + 0.4rem);
+          right: 0;
+          width: 220px;
+          background: rgba(255,255,255,0.85);
+          backdrop-filter: blur(18px);
+          border: 1px solid var(--line);
+          border-radius: 16px;
+          padding: 0.55rem;
+          box-shadow: var(--shadow-card);
+          z-index: 60;
+        }
+        .hh-user-meta { padding: 0.5rem 0.7rem 0.6rem; border-bottom: 1px solid var(--line); }
+        .hh-user-email { font-size: 0.85rem; font-weight: 600; color: var(--forest-deep); margin-top: 0.2rem; word-break: break-all; }
+        .hh-user-item {
+          display: flex;
+          align-items: center;
+          gap: 0.55rem;
+          width: 100%;
+          padding: 0.55rem 0.7rem;
+          border: none;
+          background: none;
+          text-align: left;
+          font: inherit;
+          color: var(--forest-deep);
+          border-radius: 10px;
+          cursor: pointer;
+        }
+        .hh-user-item:hover { background: rgba(56,189,248,0.12); }
+        .hh-user-item.is-danger { color: #b91c1c; }
+
+        .hh-mobile-menu {
+          background: rgba(248,251,254,0.96);
+          backdrop-filter: blur(20px);
+          border-top: 1px solid var(--line);
+        }
+        .hh-mobile-inner {
+          max-width: 1280px;
+          margin: 0 auto;
+          padding: 1rem 1.2rem 1.4rem;
+          display: grid;
+          gap: 0.6rem;
+        }
+        .hh-mobile-link {
+          display: block;
+          padding: 0.5rem 0;
+          font-size: 1rem;
+          color: var(--forest-deep);
+        }
+        .hh-mobile-lang {
+          padding-top: 0.6rem;
+          border-top: 1px solid var(--line);
+          display: flex;
+          gap: 0.4rem;
+        }
+        .hh-mobile-lang .hh-lang-btn {
+          background: rgba(56,189,248,0.16);
+          color: var(--forest-deep);
+          padding: 0.4rem 1rem;
+        }
+        .hh-mobile-lang .hh-lang-btn.is-active {
+          background: var(--forest);
+          color: var(--bone);
+        }
+      `}</style>
     </>
   );
 };

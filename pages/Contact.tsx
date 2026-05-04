@@ -1,194 +1,340 @@
 import React, { useState } from 'react';
-import { Phone, Mail, MapPin, Clock } from 'lucide-react';
+import { Mail, MapPin, Phone, Clock, ArrowRight } from 'lucide-react';
+import { CLINIC } from '../data/clinicData';
+import LocationsMap from '../components/Harmony/LocationsMap';
+import { Reveal, useLocale } from '../components/Harmony/i18n';
+import { useClinicStatus } from '../components/Harmony/useClinicStatus';
+import MobileBottomBar from '../components/Harmony/MobileBottomBar';
+import { useUI } from '../context/UIContext';
 
 const Contact: React.FC = () => {
-  const [formData, setFormData] = useState({
+  const { t } = useLocale();
+  const { isOpenNow, closeLabel } = useClinicStatus();
+  const { openBookingModal } = useUI();
+
+  const [form, setForm] = useState({
     name: '',
     email: '',
     phone: '',
     department: 'Primary Care',
-    message: ''
+    message: '',
   });
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
-    // Logic to send form data would go here
-    setTimeout(() => setSubmitted(false), 5000);
+    window.setTimeout(() => setSubmitted(false), 8000);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+  ) => setForm({ ...form, [e.target.name]: e.target.value });
 
   return (
-    <div className="pt-24 min-h-screen bg-slate-50">
-      <div className="container mx-auto px-4 md:px-6 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-
-          {/* Contact Info */}
-          <div>
-            <h1 className="text-4xl font-serif-heading font-bold text-slate-900 mb-6">Get in Touch</h1>
-            <p className="text-slate-600 mb-10 text-lg">
-              Need to schedule an appointment? Please give us a call directly. For general questions, feel free to use the form below.
+    <>
+      <section className="hh-page-hero grain">
+        <div className="container">
+          <Reveal as="div" className="hh-section-header">
+            <span className="eyebrow">{t.locations.eyebrow}</span>
+            <h1 className="font-display hh-page-title">
+              One roof in <span className="hh-em">Cenla.</span>
+            </h1>
+            <p className="lead lead-lg">
+              1587 N Bolton Avenue. Ample parking. Wheelchair accessible. Open status updated live.
             </p>
+          </Reveal>
+        </div>
+      </section>
 
-            <div className="space-y-8">
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-medical-100 rounded-full flex items-center justify-center text-medical-600 flex-shrink-0">
-                  <MapPin size={24} />
-                </div>
-                <div>
-                  <h3 className="font-bold text-slate-900 text-lg">Visit Us</h3>
-                  <p className="text-slate-600">1587 N Bolton Ave</p>
-                  <p className="text-slate-600">Alexandria, LA 71303</p>
-                </div>
+      <section className="hh-contact">
+        <div className="container hh-contact-grid">
+          <Reveal as="div" className="hh-contact-info">
+            <div className="hh-glass-surface hh-contact-card">
+              <div className="hh-contact-card-row">
+                <span className={`tag ${isOpenNow ? 'tag-live' : 'tag-closed'}`}>
+                  {isOpenNow ? `${t.locations.open_now}, closing in ${closeLabel}` : `${t.locations.closed_now}, opens ${closeLabel}`}
+                </span>
+                <span className="small-label">~14 min wait</span>
               </div>
 
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-medical-100 rounded-full flex items-center justify-center text-medical-600 flex-shrink-0">
-                  <Phone size={24} />
+              <div className="hh-contact-list">
+                <div className="hh-contact-item">
+                  <MapPin size={20} strokeWidth={1.6} />
+                  <div>
+                    <div className="small-label">Address</div>
+                    <div>{CLINIC.address}</div>
+                    <a
+                      href={CLINIC.mapsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline-grow hh-contact-link"
+                    >
+                      Get directions ↗
+                    </a>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="font-bold text-slate-900 text-lg">Call Us</h3>
-                  <p className="text-slate-600">Main: (555) 123-4567</p>
-                  <p className="text-slate-600">Fax: (555) 123-4568</p>
+                <div className="hh-contact-item">
+                  <Phone size={20} strokeWidth={1.6} />
+                  <div>
+                    <div className="small-label">Phone</div>
+                    <a href={`tel:${CLINIC.tel}`} className="font-mono">
+                      {CLINIC.phone}
+                    </a>
+                  </div>
                 </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-medical-100 rounded-full flex items-center justify-center text-medical-600 flex-shrink-0">
-                  <Clock size={24} />
+                <div className="hh-contact-item">
+                  <Mail size={20} strokeWidth={1.6} />
+                  <div>
+                    <div className="small-label">Email</div>
+                    <a href={`mailto:${CLINIC.email}`} className="underline-grow">
+                      {CLINIC.email}
+                    </a>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="font-bold text-slate-900 text-lg">Hours</h3>
-                  <div className="grid grid-cols-2 gap-x-8 gap-y-1 text-slate-600">
-                    <span>Mon - Fri:</span>
-                    <span>8:00 AM - 6:00 PM</span>
-                    <span>Saturday:</span>
-                    <span>9:00 AM - 1:00 PM</span>
-                    <span>Sunday:</span>
-                    <span>Closed</span>
+                <div className="hh-contact-item">
+                  <Clock size={20} strokeWidth={1.6} />
+                  <div>
+                    <div className="small-label">Hours</div>
+                    <ul className="hh-contact-hours">
+                      <li><span>Mon – Thu</span><span className="font-mono">7:45a – 5:00p</span></li>
+                      <li><span>Friday</span><span className="font-mono">7:45a – 12:00p</span></li>
+                      <li><span>Sat – Sun</span><span className="font-mono">Closed</span></li>
+                    </ul>
                   </div>
                 </div>
               </div>
-            </div>
 
-            {/* Google Maps Integration */}
-            <div className="mt-10 h-64 overflow-hidden rounded-2xl w-full border border-slate-200 shadow-inner">
-              <iframe
-                width="100%"
-                height="100%"
-                frameBorder="0"
-                scrolling="no"
-                marginHeight={0}
-                marginWidth={0}
-                src="https://maps.google.com/maps?q=1587+N+Bolton+Ave,+Alexandria,+LA+71303&t=&z=13&ie=UTF8&iwloc=&output=embed"
-                title="Clinic Location"
-              ></iframe>
-            </div>
-          </div>
-
-          {/* Form */}
-          <div className="bg-white p-8 md:p-10 rounded-2xl shadow-lg border border-slate-100">
-            {submitted ? (
-              <div className="h-full flex flex-col items-center justify-center text-center">
-                <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center text-green-600 mb-6">
-                  <Mail size={40} />
-                </div>
-                <h3 className="text-2xl font-bold text-slate-900 mb-2">Message Sent!</h3>
-                <p className="text-slate-600">Thank you for contacting us. We will get back to you shortly.</p>
-                <button
-                  onClick={() => setSubmitted(false)}
-                  className="mt-8 text-medical-600 font-medium hover:underline"
-                >
-                  Send another message
+              <div className="hh-contact-actions">
+                <a href={`tel:${CLINIC.tel}`} className="btn btn-primary">
+                  <Phone size={16} strokeWidth={1.8} /> Call clinic
+                </a>
+                <button onClick={openBookingModal} className="btn btn-terracotta">
+                  Book a visit <ArrowRight size={14} />
                 </button>
               </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <h3 className="text-2xl font-bold text-slate-900 mb-2">Send a Message</h3>
+            </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">Full Name</label>
+            <div className="hh-contact-drive">
+              <div className="small-label">Drive times to {CLINIC.city}</div>
+              <ul className="hh-contact-drive-list">
+                <li><span>Pineville</span><span className="font-mono">8 min</span></li>
+                <li><span>Ball</span><span className="font-mono">14 min</span></li>
+                <li><span>Tioga</span><span className="font-mono">12 min</span></li>
+                <li><span>Boyce</span><span className="font-mono">22 min</span></li>
+              </ul>
+            </div>
+          </Reveal>
+
+          <Reveal as="div" delay={150} className="hh-contact-map">
+            <LocationsMap
+              locations={[
+                { key: 'alexandria', name: CLINIC.city, coords: CLINIC.coords },
+              ]}
+              activeKey="alexandria"
+              center={[CLINIC.coords.lng, CLINIC.coords.lat]}
+              zoom={13}
+            />
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="hh-contact-form-section">
+        <div className="container hh-contact-form-grid">
+          <Reveal as="div" className="hh-section-header">
+            <span className="eyebrow">Reach the team</span>
+            <h2 className="font-display hh-section-title">
+              For non-urgent questions. <br />
+              <span className="hh-em">For care, please call.</span>
+            </h2>
+            <p className="lead">
+              Front desk replies within one business day. For same-day visits, walk in or call.
+            </p>
+          </Reveal>
+
+          <div className="hh-contact-form-card hh-glass-surface">
+            {submitted ? (
+              <div className="hh-contact-success">
+                <div className="hh-contact-success-mark" aria-hidden="true">
+                  <svg viewBox="0 0 60 60" width="60" height="60" fill="none">
+                    <circle cx="30" cy="30" r="28" stroke="var(--sage)" strokeWidth="2" />
+                    <path
+                      d="M18 31 L26 39 L42 22"
+                      stroke="var(--forest)"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </div>
+                <h3 className="font-display">Message sent.</h3>
+                <p className="lead">Thank you. The team will reply within one business day.</p>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="hh-contact-form">
+                <div className="hh-contact-form-row">
+                  <label>
+                    <span>Full name</span>
                     <input
                       type="text"
                       name="name"
-                      required
-                      className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-medical-500 focus:ring-2 focus:ring-medical-200 outline-none transition-all"
-                      placeholder="John Doe"
+                      value={form.name}
                       onChange={handleChange}
+                      autoComplete="name"
+                      required
                     />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">Email Address</label>
+                  </label>
+                  <label>
+                    <span>Email</span>
                     <input
                       type="email"
                       name="email"
-                      required
-                      className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-medical-500 focus:ring-2 focus:ring-medical-200 outline-none transition-all"
-                      placeholder="john@example.com"
+                      value={form.email}
                       onChange={handleChange}
+                      autoComplete="email"
+                      required
                     />
-                  </div>
+                  </label>
                 </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">Phone Number</label>
+                <div className="hh-contact-form-row">
+                  <label>
+                    <span>Phone</span>
                     <input
                       type="tel"
                       name="phone"
+                      value={form.phone}
+                      onChange={handleChange}
+                      autoComplete="tel"
                       required
-                      className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-medical-500 focus:ring-2 focus:ring-medical-200 outline-none transition-all"
-                      placeholder="(555) 123-4567"
-                      onChange={handleChange}
                     />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">Department</label>
-                    <select
-                      name="department"
-                      className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-medical-500 focus:ring-2 focus:ring-medical-200 outline-none transition-all bg-white"
-                      onChange={handleChange}
-                    >
+                  </label>
+                  <label>
+                    <span>Department</span>
+                    <select name="department" value={form.department} onChange={handleChange}>
                       <option>Primary Care</option>
-                      <option>Pediatrics</option>
-                      <option>Cardiology</option>
-                      <option>Dental</option>
+                      <option>Cardiac Diagnostics</option>
+                      <option>Gastroenterology</option>
+                      <option>Podiatry</option>
+                      <option>Lab &amp; Imaging</option>
+                      <option>Billing</option>
                       <option>Other</option>
                     </select>
-                  </div>
+                  </label>
                 </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Message / Reason for Visit</label>
+                <label>
+                  <span>How can we help?</span>
                   <textarea
                     name="message"
                     rows={4}
-                    className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-medical-500 focus:ring-2 focus:ring-medical-200 outline-none transition-all resize-none"
-                    placeholder="Briefly describe your symptoms or reason for appointment..."
+                    value={form.message}
                     onChange={handleChange}
-                  ></textarea>
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full bg-medical-600 hover:bg-medical-700 text-white font-bold py-4 rounded-lg transition-colors shadow-md hover:shadow-lg"
-                >
-                  Send Message
+                    placeholder="A brief note. Do not include sensitive medical details."
+                  />
+                </label>
+                <button type="submit" className="btn btn-terracotta hh-contact-form-submit">
+                  Send message <ArrowRight size={14} />
                 </button>
-                <p className="text-xs text-slate-400 text-center mt-4">
-                  By submitting this form, you agree to our privacy policy. This form is for non-emergency scheduling only.
+                <p className="small-label hh-contact-form-note">
+                  This form is for non-emergency questions. For urgent care, call us. For
+                  emergencies, call 911.
                 </p>
               </form>
             )}
           </div>
         </div>
-      </div>
-    </div>
+      </section>
+
+      <MobileBottomBar onBook={openBookingModal} />
+
+      <style>{`
+        .hh-page-hero { padding: clamp(3rem, 6vw, 5rem) 0; }
+        .hh-page-title { font-size: clamp(2.4rem, 6vw, 4.4rem); line-height: 1.02; letter-spacing: -0.022em; color: var(--forest-deep); margin: 0; font-weight: 400; }
+        .hh-em { color: var(--terracotta-deep); font-style: italic; }
+        .hh-section-header { display: grid; gap: 0.8rem; max-width: 60ch; }
+        .hh-section-title { font-size: clamp(2rem, 4.5vw, 3.2rem); line-height: 1.05; letter-spacing: -0.02em; color: var(--forest-deep); margin: 0; font-weight: 400; }
+
+        .hh-contact { padding: clamp(2rem, 4vw, 3rem) 0 clamp(3rem, 5vw, 5rem); }
+        .hh-contact-grid {
+          display: grid;
+          grid-template-columns: 0.9fr 1.3fr;
+          gap: 1.4rem;
+        }
+        @media (max-width: 980px) { .hh-contact-grid { grid-template-columns: 1fr; } }
+
+        .hh-contact-card {
+          border-radius: 28px;
+          padding: 1.6rem 1.6rem 1.4rem;
+          display: grid;
+          gap: 1.2rem;
+          align-content: start;
+        }
+        .hh-contact-card-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
+
+        .hh-contact-list { display: grid; gap: 1.1rem; }
+        .hh-contact-item { display: grid; grid-template-columns: 28px 1fr; gap: 0.8rem; align-items: start; color: var(--ink-soft); font-size: 0.95rem; }
+        .hh-contact-item .small-label { display: block; color: var(--ink-mute); margin-bottom: 0.15rem; }
+        .hh-contact-item a { color: var(--forest-deep); }
+        .hh-contact-link { display: inline-block; margin-top: 0.4rem; color: var(--terracotta-deep); font-size: 0.85rem; }
+        .hh-contact-hours { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.25rem; }
+        .hh-contact-hours li { display: flex; justify-content: space-between; gap: 1rem; }
+
+        .hh-contact-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .hh-contact-actions .btn { flex: 1; min-width: 140px; }
+
+        .hh-contact-drive {
+          margin-top: 1.2rem;
+          padding: 1rem 1.3rem;
+          background: rgba(255,255,255,0.5);
+          backdrop-filter: blur(12px);
+          border: 1px solid rgba(255,255,255,0.55);
+          border-radius: 20px;
+        }
+        .hh-contact-drive .small-label { color: var(--terracotta-deep); margin-bottom: 0.6rem; }
+        .hh-contact-drive-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.4rem 1.6rem; color: var(--ink-soft); }
+        .hh-contact-drive-list li { display: flex; justify-content: space-between; gap: 1rem; }
+
+        .hh-contact-map { position: sticky; top: 100px; }
+        @media (max-width: 980px) { .hh-contact-map { position: static; } }
+
+        .hh-contact-form-section {
+          padding: clamp(3rem, 6vw, 5rem) 0;
+          background: linear-gradient(165deg, rgba(224,242,254,0.65), var(--sand-soft));
+        }
+        .hh-contact-form-grid {
+          display: grid;
+          grid-template-columns: 0.9fr 1.1fr;
+          gap: clamp(2rem, 4vw, 4rem);
+          align-items: start;
+        }
+        @media (max-width: 980px) { .hh-contact-form-grid { grid-template-columns: 1fr; } }
+
+        .hh-contact-form-card { border-radius: 28px; padding: 2rem; }
+        .hh-contact-form { display: grid; gap: 0.9rem; }
+        .hh-contact-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
+        @media (max-width: 600px) { .hh-contact-form-row { grid-template-columns: 1fr; } }
+        .hh-contact-form label { display: grid; gap: 0.3rem; }
+        .hh-contact-form span { font-size: 0.85rem; color: var(--ink-mute); font-weight: 600; }
+        .hh-contact-form input,
+        .hh-contact-form textarea,
+        .hh-contact-form select {
+          padding: 0.85rem 0.95rem;
+          border-radius: 14px;
+          border: 1px solid var(--line-strong);
+          font: inherit;
+          background: rgba(255,255,255,0.78);
+          color: var(--ink);
+        }
+        .hh-contact-form textarea { resize: vertical; min-height: 110px; }
+        .hh-contact-form input:focus,
+        .hh-contact-form textarea:focus,
+        .hh-contact-form select:focus { outline: none; border-color: var(--forest); box-shadow: var(--focus); }
+        .hh-contact-form-submit { width: 100%; }
+        .hh-contact-form-note { color: var(--ink-mute); margin-top: 0.4rem; }
+
+        .hh-contact-success { text-align: center; padding: 1rem; }
+        .hh-contact-success h3 { font-size: 1.6rem; color: var(--forest-deep); margin: 1rem 0 0.4rem; }
+      `}</style>
+    </>
   );
 };
 

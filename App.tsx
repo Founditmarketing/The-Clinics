@@ -15,14 +15,13 @@ import { PageRoute } from './types';
 import DoctorProfile from './pages/DoctorProfile';
 import ServiceDetail from './pages/ServiceDetail';
 import PatientResources from './pages/PatientResources';
+import CursorDot from './components/Harmony/CursorDot';
 
-const ScrollToTop = () => {
+const ScrollToTop: React.FC = () => {
   const { pathname } = useLocation();
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
-
   return null;
 };
 
@@ -30,10 +29,12 @@ const App: React.FC = () => {
   return (
     <UIProvider>
       <Router>
+        <a href="#main" className="skip-link">Skip to main content</a>
+        <CursorDot />
         <div className="font-sans antialiased flex flex-col min-h-screen" style={{ color: 'var(--ink)' }}>
           <ScrollToTop />
           <Header />
-          <main className="flex-grow">
+          <main id="main" className="flex-grow">
             <Routes>
               <Route path={PageRoute.HOME} element={<Home />} />
               <Route path={PageRoute.SERVICES} element={<Services />} />

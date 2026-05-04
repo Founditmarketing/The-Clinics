@@ -2,150 +2,95 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { CLINIC, AFFILIATIONS, DOCTORS } from '../../data/clinicData';
 import { PageRoute } from '../../types';
+import { useLocale } from '../Harmony/i18n';
 
 const Footer: React.FC = () => {
+  const { t } = useLocale();
+
   return (
-    <footer
-      className="pt-20 pb-10 relative overflow-hidden"
-      style={{ background: 'var(--forest-deep)', color: 'var(--ivory)' }}
-    >
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-10">
-        {/* Big numbers */}
-        <div
-          className="grid grid-cols-2 lg:grid-cols-4 gap-8 pb-16 mb-16 border-b"
-          style={{ borderColor: 'rgba(184, 146, 74, 0.3)' }}
-        >
+    <footer className="hh-footer" aria-labelledby="footer-title">
+      <div className="hh-footer-glow" aria-hidden="true" />
+      <div className="container hh-footer-inner">
+        <div className="hh-footer-stats">
           <div>
-            <div
-              className="font-display text-5xl lg:text-7xl leading-none"
-              style={{ color: 'var(--gold-pale)' }}
-            >
-              01
-            </div>
-            <div className="small-whisper mt-3" style={{ color: 'var(--sage-light)' }}>
-              Location · Cenla
-            </div>
+            <div className="hh-footer-stat-num font-display">01</div>
+            <div className="small-label">Location · Cenla</div>
           </div>
           <div>
-            <div
-              className="font-display text-5xl lg:text-7xl leading-none"
-              style={{ color: 'var(--gold-pale)' }}
-            >
+            <div className="hh-footer-stat-num font-display">
               {String(DOCTORS.length).padStart(2, '0')}
             </div>
-            <div className="small-whisper mt-3" style={{ color: 'var(--sage-light)' }}>
-              Providers
-            </div>
+            <div className="small-label">Providers</div>
           </div>
           <div>
-            <div
-              className="font-display text-5xl lg:text-7xl leading-none"
-              style={{ color: 'var(--gold-pale)' }}
-            >
-              {CLINIC.annualVisits}
-            </div>
-            <div className="small-whisper mt-3" style={{ color: 'var(--sage-light)' }}>
-              Annual visits
-            </div>
+            <div className="hh-footer-stat-num font-display">{CLINIC.annualVisits}</div>
+            <div className="small-label">Annual visits</div>
           </div>
           <div>
-            <div
-              className="font-display text-5xl lg:text-7xl leading-none"
-              style={{ color: 'var(--gold-pale)' }}
-            >
-              {CLINIC.rating}★
-            </div>
-            <div className="small-whisper mt-3" style={{ color: 'var(--sage-light)' }}>
-              Patient rating
-            </div>
+            <div className="hh-footer-stat-num font-display">{CLINIC.rating}★</div>
+            <div className="small-label">Patient rating</div>
           </div>
         </div>
 
-        {/* Affiliations */}
-        <div
-          className="pb-12 mb-12 border-b"
-          style={{ borderColor: 'rgba(255,255,255,0.1)' }}
-        >
-          <div className="small-whisper mb-6" style={{ color: 'var(--gold-pale)' }}>
-            Affiliated with
-          </div>
-          <div className="grid grid-cols-3 lg:grid-cols-6 gap-x-6 gap-y-6 items-center">
-            {AFFILIATIONS.map((p) => (
-              <div key={p.name} className="text-center">
-                <div className="font-display text-lg tracking-tight" style={{ color: 'var(--ivory)' }}>
-                  {p.name}
-                </div>
-                <div
-                  className="text-[9px] uppercase tracking-wider mt-1"
-                  style={{ color: 'var(--sage-light)' }}
-                >
-                  {p.sub}
-                </div>
+        <div className="hh-footer-affiliations">
+          <div className="small-label">Affiliated with</div>
+          <div className="hh-affiliations-grid">
+            {AFFILIATIONS.map((a) => (
+              <div key={a.name} className="hh-affiliation">
+                <div className="font-display hh-affiliation-name">{a.name}</div>
+                <div className="small-label">{a.sub}</div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Brand + contact + nav */}
-        <div
-          className="grid lg:grid-cols-12 gap-12 pb-12 border-b"
-          style={{ borderColor: 'rgba(255,255,255,0.1)' }}
-        >
-          <div className="lg:col-span-4">
-            <div className="flex items-center gap-3 mb-6">
+        <div className="hh-footer-grid">
+          <div className="hh-footer-brand">
+            <div className="hh-footer-logo">
               <svg width="44" height="44" viewBox="0 0 40 40" fill="none">
-                <circle cx="20" cy="20" r="19" stroke="var(--ivory)" strokeWidth="1.5" />
+                <circle cx="20" cy="20" r="19" stroke="var(--bone)" strokeWidth="1.5" />
                 <path
                   d="M13 14v12M27 14v12M13 20h14"
-                  stroke="var(--ivory)"
+                  stroke="var(--bone)"
                   strokeWidth="2"
                   strokeLinecap="round"
                 />
                 <circle cx="20" cy="20" r="2.8" fill="var(--terracotta)" />
               </svg>
               <div>
-                <div className="font-display text-2xl">theCLINICS</div>
-                <div className="small-whisper mt-0.5" style={{ color: 'var(--sage-light)' }}>
-                  Cenla · Modern healthcare
+                <div id="footer-title" className="font-display hh-footer-name">
+                  theCLINICS
                 </div>
+                <div className="small-label">Cenla · Modern healthcare</div>
               </div>
             </div>
-            <p className="text-sm leading-relaxed mb-6" style={{ color: 'var(--sage-light)' }}>
-              Modern primary care, on-site cardiac diagnostics, gastro, podiatry, and labs in Central
-              Louisiana. Built for Cenla. Welcoming all.
+            <p className="hh-footer-blurb">
+              Modern primary care, on-site cardiac diagnostics, gastro, podiatry, and labs in
+              Central Louisiana. Built for Cenla. Welcoming all.
             </p>
-            <div
-              className="p-5 rounded-2xl"
-              style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}
+            <form
+              onSubmit={(e) => e.preventDefault()}
+              className="hh-newsletter"
+              aria-label="Quarterly clinic notes"
             >
-              <div className="small-whisper mb-2" style={{ color: 'var(--gold-pale)' }}>
-                Quarterly
-              </div>
-              <div className="font-display text-lg mb-3">Health notes from your clinic</div>
-              <form
-                onSubmit={(e) => e.preventDefault()}
-                className="flex gap-2"
-              >
+              <div className="small-label">Quarterly notes</div>
+              <div className="hh-newsletter-row">
                 <input
                   type="email"
                   placeholder="your@email.com"
-                  className="flex-1 px-3 py-2 rounded-full text-sm bg-transparent border focus:outline-none focus:border-white transition"
-                  style={{ borderColor: 'rgba(255,255,255,0.2)', color: 'var(--ivory)' }}
+                  aria-label="Email"
+                  className="hh-newsletter-input"
                 />
-                <button
-                  type="submit"
-                  className="px-4 py-2 rounded-full text-xs font-medium"
-                  style={{ background: 'var(--terracotta)', color: 'var(--ivory)' }}
-                >
+                <button type="submit" className="btn btn-terracotta hh-newsletter-btn">
                   Subscribe
                 </button>
-              </form>
-            </div>
+              </div>
+            </form>
           </div>
 
-          <div className="lg:col-span-5">
-            <div className="font-display text-base mb-4">Visit us</div>
-            <div className="text-sm leading-relaxed" style={{ color: 'var(--sage-light)' }}>
+          <div className="hh-footer-col">
+            <div className="hh-footer-col-title font-display">Visit us</div>
+            <div className="hh-footer-text">
               {CLINIC.address}
               <br />
               <a href={`tel:${CLINIC.tel}`} className="font-mono underline-grow">
@@ -156,29 +101,21 @@ const Footer: React.FC = () => {
                 {CLINIC.email}
               </a>
             </div>
-            <div className="mt-6 grid grid-cols-2 gap-x-6 gap-y-3 text-xs" style={{ color: 'var(--sage-light)' }}>
+            <div className="hh-footer-hours">
               <div>
-                <div className="small-whisper mb-1" style={{ color: 'var(--gold-pale)' }}>
-                  Mon – Thu
-                </div>
+                <div className="small-label">Mon – Thu</div>
                 <div className="font-mono">7:45a – 5:00p</div>
               </div>
               <div>
-                <div className="small-whisper mb-1" style={{ color: 'var(--gold-pale)' }}>
-                  Friday
-                </div>
+                <div className="small-label">Friday</div>
                 <div className="font-mono">7:45a – 12:00p</div>
               </div>
               <div>
-                <div className="small-whisper mb-1" style={{ color: 'var(--gold-pale)' }}>
-                  Sat – Sun
-                </div>
+                <div className="small-label">Sat – Sun</div>
                 <div className="font-mono">Closed</div>
               </div>
               <div>
-                <div className="small-whisper mb-1" style={{ color: 'var(--gold-pale)' }}>
-                  Walk-ins
-                </div>
+                <div className="small-label">Walk-ins</div>
                 <div className="font-mono">Same-day for established</div>
               </div>
             </div>
@@ -186,24 +123,23 @@ const Footer: React.FC = () => {
               href={CLINIC.mapsUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block mt-6 text-xs underline-grow"
-              style={{ color: 'var(--gold-pale)' }}
+              className="underline-grow hh-footer-link"
             >
               Get directions ↗
             </a>
           </div>
 
-          <div className="lg:col-span-3">
-            <div className="font-display text-base mb-4">Quick links</div>
-            <ul className="space-y-2 text-sm" style={{ color: 'var(--sage-light)' }}>
+          <div className="hh-footer-col">
+            <div className="hh-footer-col-title font-display">{t.footer.patients}</div>
+            <ul className="hh-footer-list">
               <li>
                 <Link to={PageRoute.SERVICES} className="underline-grow">
-                  Services
+                  {t.nav.services}
                 </Link>
               </li>
               <li>
                 <Link to={PageRoute.ABOUT} className="underline-grow">
-                  About / Care team
+                  {t.nav.team}
                 </Link>
               </li>
               <li>
@@ -213,7 +149,7 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <Link to={PageRoute.CONTACT} className="underline-grow">
-                  Contact
+                  Contact / Visit
                 </Link>
               </li>
               <li>
@@ -223,7 +159,7 @@ const Footer: React.FC = () => {
                   rel="noopener noreferrer"
                   className="underline-grow"
                 >
-                  Patient Portal ↗
+                  {t.nav.portal} ↗
                 </a>
               </li>
               <li>
@@ -250,31 +186,142 @@ const Footer: React.FC = () => {
           </div>
         </div>
 
-        <div
-          className="pt-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-xs"
-          style={{ color: 'var(--sage-light)' }}
-        >
-          <div className="flex items-center gap-3">
-            <span>© {new Date().getFullYear()} theCLINICS.</span>
-            <span style={{ color: 'var(--gold)' }}>·</span>
+        <div className="hh-footer-legal">
+          <div className="hh-footer-legal-left">
+            <span>© {new Date().getFullYear()} {t.footer.copy}.</span>
+            <span className="hh-footer-dot">·</span>
             <span>Built with care for Cenla.</span>
           </div>
-          <div className="flex gap-6 flex-wrap">
-            <a href="#" className="underline-grow">
-              Privacy Policy
-            </a>
-            <a href="#" className="underline-grow">
-              Accessibility
-            </a>
-            <a href="#" className="underline-grow">
-              HIPAA Notice
-            </a>
-            <a href="#" className="underline-grow">
-              Good Faith Estimate
-            </a>
+          <div className="hh-footer-legal-right">
+            <a href="#" className="underline-grow">{t.footer.privacy}</a>
+            <a href="#" className="underline-grow">{t.footer.access}</a>
+            <a href="#" className="underline-grow">{t.footer.hipaa}</a>
+            <a href="#" className="underline-grow">Good Faith Estimate</a>
           </div>
         </div>
       </div>
+
+      <style>{`
+        .hh-footer {
+          position: relative;
+          padding: 5rem 0 2.4rem;
+          background: linear-gradient(170deg, #07172d 0%, #0b2747 60%, #134075 100%);
+          color: var(--bone);
+          overflow: hidden;
+        }
+        .hh-footer-glow {
+          position: absolute;
+          inset: -10% -10% auto -10%;
+          height: 50%;
+          background: radial-gradient(60% 100% at 30% 0%, rgba(56,189,248,0.18), transparent 70%);
+          pointer-events: none;
+        }
+        .hh-footer-inner { position: relative; z-index: 1; }
+
+        .hh-footer-stats {
+          display: grid;
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          gap: 2rem;
+          padding-bottom: 3rem;
+          margin-bottom: 3rem;
+          border-bottom: 1px solid rgba(184,146,74,0.3);
+        }
+        @media (max-width: 720px) {
+          .hh-footer-stats { grid-template-columns: repeat(2, 1fr); gap: 1.4rem; }
+        }
+        .hh-footer-stat-num {
+          font-size: clamp(2.6rem, 5vw, 4.2rem);
+          line-height: 1;
+          color: var(--terracotta-pale);
+        }
+        .hh-footer-stat-num + .small-label { margin-top: 0.6rem; color: var(--sage-light); }
+
+        .hh-footer-affiliations {
+          padding-bottom: 2.6rem;
+          margin-bottom: 2.6rem;
+          border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .hh-footer-affiliations .small-label { color: var(--terracotta-pale); margin-bottom: 1.2rem; }
+        .hh-affiliations-grid {
+          display: grid;
+          grid-template-columns: repeat(6, minmax(0, 1fr));
+          gap: 1.4rem;
+        }
+        @media (max-width: 880px) { .hh-affiliations-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 480px) { .hh-affiliations-grid { grid-template-columns: repeat(2, 1fr); } }
+        .hh-affiliation { text-align: center; }
+        .hh-affiliation-name { font-size: 1.05rem; line-height: 1.1; color: var(--bone); }
+        .hh-affiliation .small-label { color: var(--sage-light); margin-top: 0.3rem; }
+
+        .hh-footer-grid {
+          display: grid;
+          grid-template-columns: 1.2fr 1.1fr 0.9fr;
+          gap: 3rem;
+          padding-bottom: 2.4rem;
+          border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        @media (max-width: 880px) {
+          .hh-footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+        }
+
+        .hh-footer-logo { display: inline-flex; align-items: center; gap: 0.8rem; margin-bottom: 1rem; }
+        .hh-footer-name { font-size: 1.4rem; }
+        .hh-footer-blurb { color: var(--sage-light); font-size: 0.95rem; line-height: 1.65; max-width: 38ch; margin: 0 0 1.2rem; }
+
+        .hh-newsletter {
+          background: rgba(255,255,255,0.04);
+          border: 1px solid rgba(255,255,255,0.08);
+          border-radius: 18px;
+          padding: 1rem 1.1rem;
+        }
+        .hh-newsletter .small-label { color: var(--terracotta-pale); margin-bottom: 0.6rem; }
+        .hh-newsletter-row { display: flex; gap: 0.5rem; }
+        .hh-newsletter-input {
+          flex: 1;
+          padding: 0.6rem 0.8rem;
+          border-radius: 999px;
+          background: transparent;
+          border: 1px solid rgba(255,255,255,0.2);
+          color: var(--bone);
+          font: inherit;
+        }
+        .hh-newsletter-input:focus {
+          outline: none;
+          border-color: var(--terracotta);
+          box-shadow: 0 0 0 3px rgba(56,189,248,0.32);
+        }
+        .hh-newsletter-btn { padding: 0.55rem 1.1rem; min-height: 0; }
+
+        .hh-footer-col-title { font-size: 1.05rem; margin-bottom: 0.9rem; color: var(--bone); }
+        .hh-footer-text { color: var(--sage-light); font-size: 0.92rem; line-height: 1.7; }
+        .hh-footer-text a { color: var(--bone); }
+
+        .hh-footer-hours {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 0.6rem 1.4rem;
+          margin-top: 1rem;
+          color: var(--sage-light);
+          font-size: 0.85rem;
+        }
+        .hh-footer-hours .small-label { color: var(--terracotta-pale); margin-bottom: 0.15rem; }
+        .hh-footer-link { display: inline-block; margin-top: 1rem; color: var(--terracotta-pale); font-size: 0.85rem; }
+
+        .hh-footer-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.45rem; color: var(--sage-light); font-size: 0.92rem; }
+
+        .hh-footer-legal {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 1rem;
+          margin-top: 1.6rem;
+          color: var(--sage-light);
+          font-size: 0.78rem;
+          flex-wrap: wrap;
+        }
+        .hh-footer-legal-right { display: flex; gap: 1.4rem; flex-wrap: wrap; }
+        .hh-footer-dot { color: var(--terracotta); }
+      `}</style>
     </footer>
   );
 };

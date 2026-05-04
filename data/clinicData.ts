@@ -255,6 +255,7 @@ export const CLINIC = {
   phone: '(318) 445-9823',
   tel: '3184459823',
   email: 'info@theclinics.us',
+  coords: { lat: 31.3146, lng: -92.4693 },
   hoursLabel: 'Mon–Thu · 7:45a–5p · Friday · 7:45a–12p',
   hours: {
     mon: { open: 7.75, close: 17 },
@@ -278,21 +279,45 @@ export const CLINIC = {
 } as const;
 
 /* ------------------------------------------------------------------
-   Insurance carriers (ticker)
+   Insurance carriers — ticker (string list) + InsuranceChecker (typed)
    ------------------------------------------------------------------ */
 
-export const INSURANCE_CARRIERS = [
-  'Blue Cross Blue Shield',
-  'Aetna',
-  'UnitedHealthcare',
-  'Cigna',
-  'Humana',
-  'Tricare',
-  'Medicare',
-  'Medicaid',
-  'Ambetter',
-  'Vantage',
+export interface InsurancePlan {
+  name: string;
+  /** true = in-network, null = "we can verify", false = not currently. */
+  accepted: true | false | null;
+  note?: string;
+}
+
+export const INSURANCE_PLANS: InsurancePlan[] = [
+  { name: 'Blue Cross Blue Shield Louisiana', accepted: true },
+  { name: 'Aetna', accepted: true },
+  { name: 'UnitedHealthcare', accepted: true },
+  { name: 'Cigna', accepted: true },
+  { name: 'Humana', accepted: true },
+  { name: 'Medicare', accepted: true },
+  { name: 'Medicaid (Louisiana)', accepted: true },
+  { name: 'TRICARE', accepted: true },
+  { name: 'Vantage Health Plan', accepted: true },
+  { name: 'Peoples Health (Medicare Advantage)', accepted: true },
+  { name: 'Ambetter', accepted: true },
+  { name: 'Healthy Blue Louisiana', accepted: true },
+  {
+    name: 'Self-pay (cash)',
+    accepted: true,
+    note: 'Transparent self-pay pricing available — call for an estimate.',
+  },
+  {
+    name: 'Other plan',
+    accepted: null,
+    note: 'Call (318) 445-9823 and we will verify your plan in minutes.',
+  },
 ];
+
+/** Legacy export kept for the home-page ticker. */
+export const INSURANCE_CARRIERS = INSURANCE_PLANS.filter(
+  (p) => p.accepted === true && !p.name.startsWith('Self-pay'),
+).map((p) => p.name);
 
 /* ------------------------------------------------------------------
    FAQ

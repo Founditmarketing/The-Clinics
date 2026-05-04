@@ -1,191 +1,315 @@
 import React from 'react';
-import { useUI } from '../context/UIContext';
-import { Calendar, Clock, User, Activity, FileText, MessageSquare, ChevronRight, Pill, Bell } from 'lucide-react';
 import { Link, Navigate } from 'react-router-dom';
+import {
+  Activity,
+  ArrowRight,
+  Bell,
+  Calendar,
+  ChevronRight,
+  Clock,
+  FileText,
+  MessageSquare,
+  Phone,
+  Pill,
+  User,
+} from 'lucide-react';
+import { useUI } from '../context/UIContext';
+import { CLINIC } from '../data/clinicData';
 import { PageRoute } from '../types';
+import { Reveal } from '../components/Harmony/i18n';
+import MobileBottomBar from '../components/Harmony/MobileBottomBar';
 
 const Dashboard: React.FC = () => {
-  const { user, appointments } = useUI();
+  const { user, appointments, openBookingModal } = useUI();
 
-  if (!user) {
-    return <Navigate to={PageRoute.HOME} />;
-  }
+  if (!user) return <Navigate to={PageRoute.HOME} />;
 
-  // Get next upcoming appointment
-  const upcomingAppointments = appointments.filter(a => a.status !== 'Completed');
-  const nextAppt = upcomingAppointments.length > 0 ? upcomingAppointments[0] : null;
+  const upcoming = appointments.filter((a) => a.status !== 'Completed');
+  const next = upcoming.length > 0 ? upcoming[0] : null;
 
   return (
-    <div className="pt-24 min-h-screen bg-slate-50">
-      <div className="bg-medical-900 text-white pb-24 pt-12">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <div className="flex items-center gap-4">
-              <img src={user.avatar} alt={user.name} className="w-16 h-16 rounded-full border-2 border-white/20 shadow-lg" />
+    <>
+      <section className="hh-dash-hero grain">
+        <div className="container hh-dash-hero-inner">
+          <Reveal as="div" className="hh-dash-hero-row">
+            <div className="hh-dash-greet">
+              {user.avatar && (
+                <img src={user.avatar} alt="" className="hh-dash-avatar" />
+              )}
               <div>
-                <h1 className="text-2xl md:text-3xl font-serif-heading font-bold">Welcome, {user.name}</h1>
-                <p className="text-medical-200">Patient ID: #8829-TC</p>
+                <span className="small-label">Patient · ID 8829-TC</span>
+                <h1 className="font-display hh-dash-title">Welcome, {user.name.split(' ')[0]}.</h1>
               </div>
             </div>
-            <div className="flex gap-3">
-              <button className="p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors relative">
-                <Bell size={20} />
-                <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border border-medical-900"></span>
+            <div className="hh-dash-hero-actions">
+              <button className="hh-dash-bell" aria-label="Notifications">
+                <Bell size={18} strokeWidth={1.6} />
+                <span className="hh-dash-bell-dot" />
               </button>
-              <a
-                href="tel:3184459823"
-                className="bg-accent-500 hover:bg-accent-600 text-white px-4 py-2 rounded-lg font-medium text-sm transition-colors shadow-lg flex items-center gap-2"
-              >
-                <Pill size={16} /> Call to Book
-              </a>
+              <button onClick={openBookingModal} className="btn btn-terracotta">
+                Book a visit <ArrowRight size={14} />
+              </button>
             </div>
-          </div>
+          </Reveal>
         </div>
-      </div>
+      </section>
 
-      <div className="container mx-auto px-4 md:px-6 -mt-16 pb-16">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-
-          {/* Main Column */}
-          <div className="lg:col-span-2 space-y-8">
-
-            {/* Next Appointment Card */}
-            {nextAppt ? (
-              <div className="bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden">
-                <div className="bg-gradient-to-r from-medical-600 to-medical-800 p-6 text-white flex justify-between items-center">
+      <section className="hh-dash-content">
+        <div className="container hh-dash-grid">
+          <div className="hh-dash-main">
+            {next ? (
+              <Reveal as="div" className="hh-dash-next hh-glass-surface">
+                <div className="hh-dash-next-row">
                   <div>
-                    <div className="text-xs font-bold uppercase tracking-wider opacity-80 mb-1">Up Next</div>
-                    <h2 className="text-xl font-bold">{nextAppt.serviceName} Consultation</h2>
+                    <span className="small-label" style={{ color: 'var(--terracotta-deep)' }}>
+                      Up next
+                    </span>
+                    <h2 className="font-display hh-dash-next-title">
+                      {next.serviceName}
+                    </h2>
                   </div>
-                  <div className="bg-white/20 p-3 rounded-xl backdrop-blur-md">
-                    <Calendar size={24} />
-                  </div>
-                </div>
-                <div className="p-6">
-                  <div className="flex flex-col md:flex-row gap-6 items-start md:items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 bg-medical-50 text-medical-600 rounded-full flex items-center justify-center">
-                        <User size={24} />
-                      </div>
-                      <div>
-                        <div className="text-sm text-slate-500">Doctor</div>
-                        <div className="font-bold text-slate-900">{nextAppt.doctorName}</div>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 bg-medical-50 text-medical-600 rounded-full flex items-center justify-center">
-                        <Clock size={24} />
-                      </div>
-                      <div>
-                        <div className="text-sm text-slate-500">Date & Time</div>
-                        <div className="font-bold text-slate-900">{nextAppt.date} • {nextAppt.time}</div>
-                      </div>
-                    </div>
-                    <button className="w-full md:w-auto px-4 py-2 border border-slate-200 rounded-lg text-slate-600 font-medium hover:bg-slate-50 transition-colors">
-                      Reschedule
-                    </button>
+                  <div className="hh-dash-next-icon">
+                    <Calendar size={22} strokeWidth={1.6} />
                   </div>
                 </div>
-              </div>
+                <div className="hh-dash-next-meta">
+                  <div className="hh-dash-next-meta-item">
+                    <User size={20} strokeWidth={1.6} />
+                    <div>
+                      <div className="small-label">Provider</div>
+                      <div>{next.doctorName}</div>
+                    </div>
+                  </div>
+                  <div className="hh-dash-next-meta-item">
+                    <Clock size={20} strokeWidth={1.6} />
+                    <div>
+                      <div className="small-label">When</div>
+                      <div className="font-mono">{next.date} · {next.time}</div>
+                    </div>
+                  </div>
+                  <div className="hh-dash-next-actions">
+                    <button className="btn btn-ghost">Reschedule</button>
+                    <a href={`tel:${CLINIC.tel}`} className="btn btn-primary">
+                      <Phone size={16} strokeWidth={1.8} /> Call clinic
+                    </a>
+                  </div>
+                </div>
+              </Reveal>
             ) : (
-              <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-8 text-center">
-                <div className="w-16 h-16 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Calendar size={32} />
-                </div>
-                <h3 className="text-lg font-bold text-slate-900">No Upcoming Appointments</h3>
-                <p className="text-slate-500 mb-6">You are all caught up!</p>
-                <Link to="/services" className="text-medical-600 font-medium hover:underline">Browse Services</Link>
-              </div>
+              <Reveal as="div" className="hh-dash-empty hh-glass-surface">
+                <Calendar size={32} strokeWidth={1.5} />
+                <h3 className="font-display">No upcoming appointments.</h3>
+                <p>Book your next visit when you are ready.</p>
+                <button onClick={openBookingModal} className="btn btn-terracotta">
+                  Book a visit <ArrowRight size={14} />
+                </button>
+              </Reveal>
             )}
 
-            {/* Health Vitals */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="bg-white p-5 rounded-xl shadow-sm border border-slate-100">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="p-2 bg-red-50 text-red-500 rounded-lg"><Activity size={18} /></div>
-                  <span className="text-sm font-bold text-slate-500">Heart Rate</span>
+            <Reveal as="div" delay={100} className="hh-dash-vitals">
+              {[
+                { label: 'Heart rate', value: '72', unit: 'bpm', tone: 'rose' },
+                { label: 'Blood pressure', value: '120/80', unit: '', tone: 'sky' },
+                { label: 'Weight', value: '165', unit: 'lbs', tone: 'amber' },
+              ].map((v) => (
+                <div key={v.label} className={`hh-dash-vital hh-dash-vital-${v.tone}`}>
+                  <div className="hh-dash-vital-icon">
+                    <Activity size={18} strokeWidth={1.8} />
+                  </div>
+                  <div className="small-label">{v.label}</div>
+                  <div className="hh-dash-vital-num font-display">
+                    {v.value}{' '}
+                    {v.unit && <span className="hh-dash-vital-unit">{v.unit}</span>}
+                  </div>
                 </div>
-                <div className="text-2xl font-bold text-slate-900">72 <span className="text-sm font-normal text-slate-400">bpm</span></div>
-                <div className="mt-2 h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
-                  <div className="h-full bg-red-500 w-[70%]"></div>
-                </div>
-              </div>
-              <div className="bg-white p-5 rounded-xl shadow-sm border border-slate-100">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="p-2 bg-blue-50 text-blue-500 rounded-lg"><Activity size={18} /></div>
-                  <span className="text-sm font-bold text-slate-500">Blood Pressure</span>
-                </div>
-                <div className="text-2xl font-bold text-slate-900">120/80</div>
-                <div className="mt-2 text-xs text-green-600 font-medium">Normal</div>
-              </div>
-              <div className="bg-white p-5 rounded-xl shadow-sm border border-slate-100">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="p-2 bg-yellow-50 text-yellow-600 rounded-lg"><Activity size={18} /></div>
-                  <span className="text-sm font-bold text-slate-500">Weight</span>
-                </div>
-                <div className="text-2xl font-bold text-slate-900">165 <span className="text-sm font-normal text-slate-400">lbs</span></div>
-                <div className="mt-2 text-xs text-slate-400">-2 lbs since last visit</div>
-              </div>
-            </div>
+              ))}
+            </Reveal>
 
-            {/* Appointment History */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-6">
-              <h3 className="font-bold text-slate-900 text-lg mb-6">Recent Activity</h3>
-              <div className="space-y-6">
-                {appointments.map((appt) => (
-                  <div key={appt.id} className="flex items-center justify-between border-b border-slate-50 pb-6 last:border-0 last:pb-0">
-                    <div className="flex items-center gap-4">
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm
-                         ${appt.status === 'Completed' ? 'bg-slate-100 text-slate-500' : 'bg-medical-100 text-medical-700'}
-                       `}>
-                        {appt.date.split(' ')[1]}
-                      </div>
-                      <div>
-                        <div className="font-bold text-slate-900">{appt.serviceName}</div>
-                        <div className="text-xs text-slate-500">{appt.doctorName} • {appt.status}</div>
+            <Reveal as="div" delay={140} className="hh-dash-history hh-glass-surface">
+              <div className="hh-dash-section-row">
+                <h3 className="font-display hh-dash-section-title">Recent activity</h3>
+                <Link to="/services" className="underline-grow" style={{ color: 'var(--forest-deep)' }}>
+                  Book again →
+                </Link>
+              </div>
+              <ul className="hh-dash-history-list">
+                {appointments.map((a) => (
+                  <li key={a.id} className={`hh-dash-history-row ${a.status === 'Completed' ? 'is-done' : ''}`}>
+                    <div className="hh-dash-history-date">
+                      {a.date.split(' ').slice(-1)[0]}
+                    </div>
+                    <div className="hh-dash-history-meta">
+                      <div className="hh-dash-history-name">{a.serviceName}</div>
+                      <div className="small-label">
+                        {a.doctorName} · {a.status}
                       </div>
                     </div>
-                    <button className="p-2 text-slate-400 hover:text-medical-600 transition-colors">
-                      <ChevronRight size={20} />
-                    </button>
-                  </div>
+                    <ChevronRight size={18} strokeWidth={1.8} />
+                  </li>
                 ))}
-              </div>
-            </div>
+              </ul>
+            </Reveal>
           </div>
 
-          {/* Sidebar */}
-          <div className="space-y-6">
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-              <h3 className="font-bold text-slate-900 mb-4">Quick Actions</h3>
-              <div className="space-y-3">
-                <button className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 text-slate-700 transition-colors text-left group">
-                  <div className="bg-blue-50 text-blue-600 p-2 rounded-lg group-hover:bg-blue-100"><MessageSquare size={18} /></div>
-                  <span className="font-medium text-sm">Message Doctor</span>
-                </button>
-                <button className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 text-slate-700 transition-colors text-left group">
-                  <div className="bg-green-50 text-green-600 p-2 rounded-lg group-hover:bg-green-100"><Pill size={18} /></div>
-                  <span className="font-medium text-sm">Refill Prescriptions</span>
-                </button>
-                <button className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 text-slate-700 transition-colors text-left group">
-                  <div className="bg-purple-50 text-purple-600 p-2 rounded-lg group-hover:bg-purple-100"><FileText size={18} /></div>
-                  <span className="font-medium text-sm">Lab Results</span>
-                </button>
-              </div>
-            </div>
+          <aside className="hh-dash-side">
+            <Reveal as="div" delay={120} className="hh-dash-side-card hh-glass-surface">
+              <h3 className="font-display hh-dash-section-title">Quick actions</h3>
+              <ul className="hh-dash-quick">
+                <li>
+                  <a href={CLINIC.patientPortalUrl} target="_blank" rel="noopener noreferrer">
+                    <span className="hh-dash-quick-icon hh-dash-quick-icon-blue">
+                      <MessageSquare size={16} strokeWidth={1.8} />
+                    </span>
+                    <span>Message provider</span>
+                    <ChevronRight size={14} strokeWidth={1.8} />
+                  </a>
+                </li>
+                <li>
+                  <a href={CLINIC.patientPortalUrl} target="_blank" rel="noopener noreferrer">
+                    <span className="hh-dash-quick-icon hh-dash-quick-icon-green">
+                      <Pill size={16} strokeWidth={1.8} />
+                    </span>
+                    <span>Refill prescriptions</span>
+                    <ChevronRight size={14} strokeWidth={1.8} />
+                  </a>
+                </li>
+                <li>
+                  <a href={CLINIC.patientPortalUrl} target="_blank" rel="noopener noreferrer">
+                    <span className="hh-dash-quick-icon hh-dash-quick-icon-purple">
+                      <FileText size={16} strokeWidth={1.8} />
+                    </span>
+                    <span>Lab results</span>
+                    <ChevronRight size={14} strokeWidth={1.8} />
+                  </a>
+                </li>
+              </ul>
+            </Reveal>
 
-            <div className="bg-gradient-to-br from-medical-800 to-medical-900 p-6 rounded-xl shadow-lg text-white">
-              <h3 className="font-bold text-lg mb-2">Need Help?</h3>
-              <p className="text-medical-100 text-sm mb-4">Our AI assistant Clara is available 24/7 to answer your health questions.</p>
-              <button className="w-full py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-lg text-sm font-medium transition-colors">
-                Start Chat
-              </button>
-            </div>
-          </div>
-
+            <Reveal as="div" delay={180} className="hh-dash-help">
+              <h3 className="font-display hh-dash-help-title">Need help right now?</h3>
+              <p>Front desk is open during business hours.</p>
+              <a href={`tel:${CLINIC.tel}`} className="btn btn-light" style={{ width: '100%' }}>
+                <Phone size={16} strokeWidth={1.8} /> {CLINIC.phone}
+              </a>
+            </Reveal>
+          </aside>
         </div>
-      </div>
-    </div>
+      </section>
+
+      <MobileBottomBar onBook={openBookingModal} />
+
+      <style>{`
+        .hh-dash-hero { padding: clamp(2rem, 4vw, 3rem) 0 clamp(1rem, 2vw, 2rem); }
+        .hh-dash-hero-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+        .hh-dash-greet { display: flex; align-items: center; gap: 1rem; }
+        .hh-dash-avatar { width: 64px; height: 64px; border-radius: 999px; object-fit: cover; border: 2px solid rgba(255,255,255,0.7); box-shadow: var(--shadow-card); }
+        .hh-dash-title { font-size: clamp(1.8rem, 3.6vw, 2.4rem); color: var(--forest-deep); margin: 0.25rem 0 0; line-height: 1; }
+        .hh-dash-hero-actions { display: flex; align-items: center; gap: 0.5rem; }
+        .hh-dash-bell { width: 44px; height: 44px; border-radius: 999px; background: rgba(255,255,255,0.7); border: 1px solid var(--line); position: relative; cursor: pointer; color: var(--forest-deep); display: inline-flex; align-items: center; justify-content: center; }
+        .hh-dash-bell-dot { position: absolute; top: 10px; right: 10px; width: 8px; height: 8px; border-radius: 999px; background: #ef4444; border: 2px solid #fff; }
+
+        .hh-dash-content { padding: 0 0 clamp(3rem, 5vw, 5rem); }
+        .hh-dash-grid {
+          display: grid;
+          grid-template-columns: 1.6fr 0.8fr;
+          gap: 1.4rem;
+        }
+        @media (max-width: 980px) { .hh-dash-grid { grid-template-columns: 1fr; } }
+
+        .hh-dash-main { display: grid; gap: 1rem; }
+        .hh-dash-next { padding: 1.6rem; border-radius: 28px; }
+        .hh-dash-next-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+        .hh-dash-next-title { font-size: 1.5rem; color: var(--forest-deep); margin: 0.3rem 0 0; }
+        .hh-dash-next-icon { width: 44px; height: 44px; border-radius: 14px; background: rgba(56,189,248,0.18); color: var(--forest-deep); display: inline-flex; align-items: center; justify-content: center; }
+        .hh-dash-next-meta { display: grid; grid-template-columns: 1fr 1fr auto; gap: 1rem; align-items: center; margin-top: 1.2rem; padding-top: 1.2rem; border-top: 1px solid var(--line); }
+        @media (max-width: 720px) { .hh-dash-next-meta { grid-template-columns: 1fr; } }
+        .hh-dash-next-meta-item { display: grid; grid-template-columns: 26px 1fr; gap: 0.6rem; align-items: center; color: var(--ink-soft); }
+        .hh-dash-next-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+        .hh-dash-empty { padding: 2.4rem 1.6rem; border-radius: 24px; text-align: center; display: grid; gap: 0.5rem; justify-items: center; }
+        .hh-dash-empty h3 { font-size: 1.4rem; color: var(--forest-deep); margin: 0; }
+        .hh-dash-empty p { color: var(--ink-soft); margin: 0; }
+
+        .hh-dash-vitals { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; }
+        @media (max-width: 720px) { .hh-dash-vitals { grid-template-columns: 1fr; } }
+        .hh-dash-vital {
+          padding: 1rem 1.1rem;
+          border-radius: 18px;
+          background: rgba(255,255,255,0.7);
+          backdrop-filter: blur(12px);
+          border: 1px solid rgba(255,255,255,0.55);
+          display: grid;
+          gap: 0.4rem;
+          align-content: start;
+        }
+        .hh-dash-vital-icon { width: 32px; height: 32px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; }
+        .hh-dash-vital-rose .hh-dash-vital-icon { background: #fee2e2; color: #b91c1c; }
+        .hh-dash-vital-sky .hh-dash-vital-icon { background: #dbeafe; color: #1d4ed8; }
+        .hh-dash-vital-amber .hh-dash-vital-icon { background: #fef3c7; color: #b45309; }
+        .hh-dash-vital-num { font-size: 1.5rem; line-height: 1; color: var(--forest-deep); }
+        .hh-dash-vital-unit { font-family: 'Inter', sans-serif; font-size: 0.85rem; color: var(--ink-mute); }
+
+        .hh-dash-history { padding: 1.4rem; border-radius: 24px; }
+        .hh-dash-section-row { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+        .hh-dash-section-title { font-size: 1.2rem; color: var(--forest-deep); margin: 0; }
+        .hh-dash-history-list { list-style: none; padding: 0; margin: 1rem 0 0; display: grid; gap: 0.8rem; }
+        .hh-dash-history-row {
+          display: grid;
+          grid-template-columns: 44px 1fr 24px;
+          gap: 0.7rem;
+          align-items: center;
+          padding: 0.7rem 0;
+          border-bottom: 1px solid var(--line);
+        }
+        .hh-dash-history-row:last-child { border-bottom: none; }
+        .hh-dash-history-date {
+          width: 44px; height: 44px;
+          border-radius: 12px;
+          background: var(--ivory-deep);
+          color: var(--forest-deep);
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 700;
+        }
+        .hh-dash-history-row.is-done .hh-dash-history-date { background: rgba(148,163,184,0.18); color: var(--ink-mute); }
+        .hh-dash-history-name { font-weight: 600; color: var(--forest-deep); }
+        .hh-dash-history-row svg { color: var(--ink-mute); }
+
+        .hh-dash-side { display: grid; gap: 1rem; align-content: start; }
+        .hh-dash-side-card { padding: 1.4rem; border-radius: 24px; }
+        .hh-dash-quick { list-style: none; padding: 0; margin: 0.6rem 0 0; display: grid; gap: 0.4rem; }
+        .hh-dash-quick a {
+          display: grid;
+          grid-template-columns: 32px 1fr 16px;
+          gap: 0.6rem;
+          align-items: center;
+          padding: 0.7rem 0.8rem;
+          background: rgba(255,255,255,0.5);
+          border: 1px solid var(--line);
+          border-radius: 14px;
+          color: var(--forest-deep);
+          font: inherit;
+          font-weight: 500;
+        }
+        .hh-dash-quick a:hover { background: rgba(255,255,255,0.85); }
+        .hh-dash-quick-icon { width: 28px; height: 28px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; }
+        .hh-dash-quick-icon-blue { background: #dbeafe; color: #1d4ed8; }
+        .hh-dash-quick-icon-green { background: #dcfce7; color: #166534; }
+        .hh-dash-quick-icon-purple { background: #ede9fe; color: #6d28d9; }
+
+        .hh-dash-help {
+          padding: 1.6rem;
+          border-radius: 24px;
+          background: linear-gradient(165deg, #07172d 0%, #0b2747 60%, #134075 100%);
+          color: var(--bone);
+          display: grid;
+          gap: 0.6rem;
+        }
+        .hh-dash-help-title { font-size: 1.2rem; color: var(--bone); margin: 0; }
+        .hh-dash-help p { color: var(--sage-light); margin: 0; font-size: 0.95rem; }
+      `}</style>
+    </>
   );
 };
 

@@ -1,21 +1,27 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
-  Stethoscope,
   Activity,
-  Clock,
-  Heart,
+  ArrowRight,
+  Baby,
   Bone,
+  Brain,
+  ChevronDown,
+  Clock,
+  Eye,
+  FlaskConical,
+  Heart,
+  MapPin,
+  Monitor,
+  Phone,
+  Scan,
+  Shield,
+  Stethoscope,
+  Syringe,
   Wind,
   Zap,
-  Scan,
-  Monitor,
-  FlaskConical,
-  Baby,
-  Brain,
-  Eye,
-  Syringe,
-  ArrowRight,
 } from 'lucide-react';
+
 import { useUI } from '../context/UIContext';
 import {
   CLINIC,
@@ -24,66 +30,38 @@ import {
   FAQS,
   TESTIMONIALS,
   PROVIDER_FILTER_TABS,
+  INSURANCE_PLANS,
 } from '../data/clinicData';
 import { Doctor, ServiceItem } from '../types';
 
 import StatCounter from '../components/Harmony/StatCounter';
-import Preloader from '../components/Harmony/Preloader';
-import InsuranceTicker from '../components/Harmony/InsuranceTicker';
-import LiveStatusPanel from '../components/Harmony/LiveStatusPanel';
 import BeforeAfterSlider from '../components/Harmony/BeforeAfterSlider';
 import SymptomChecker from '../components/Harmony/SymptomChecker';
 import DoctorModal from '../components/Harmony/DoctorModal';
-import SectionDotNav from '../components/Harmony/SectionDotNav';
 import MobileBottomBar from '../components/Harmony/MobileBottomBar';
+import LocationsMap from '../components/Harmony/LocationsMap';
+import InsuranceChecker from '../components/Harmony/InsuranceChecker';
 import { useClinicStatus } from '../components/Harmony/useClinicStatus';
-
-const SECTIONS = [
-  { id: 'top', label: 'Home' },
-  { id: 'symptom', label: 'Symptom checker' },
-  { id: 'about', label: 'About' },
-  { id: 'services', label: 'Services' },
-  { id: 'team', label: 'Team' },
-  { id: 'location', label: 'Location' },
-  { id: 'faq', label: 'FAQ' },
-  { id: 'book', label: 'Book' },
-];
-
-const PROVIDER_HEIGHTS = ['3/4', '4/5', '3/4', '5/6', '3/4', '4/5', '5/6', '3/4'];
+import { useLocale, Reveal } from '../components/Harmony/i18n';
 
 const renderServiceIcon = (name: ServiceItem['iconName'], size = 22) => {
-  const props = { size } as { size?: number };
+  const props = { size, strokeWidth: 1.5 } as const;
   switch (name) {
-    case 'Stethoscope':
-      return <Stethoscope {...props} strokeWidth={1.6} />;
-    case 'Heart':
-      return <Heart {...props} strokeWidth={1.6} />;
-    case 'Activity':
-      return <Activity {...props} strokeWidth={1.6} />;
-    case 'Clock':
-      return <Clock {...props} strokeWidth={1.6} />;
-    case 'Bone':
-      return <Bone {...props} strokeWidth={1.6} />;
-    case 'Wind':
-      return <Wind {...props} strokeWidth={1.6} />;
-    case 'Zap':
-      return <Zap {...props} strokeWidth={1.6} />;
-    case 'Scan':
-      return <Scan {...props} strokeWidth={1.6} />;
-    case 'Monitor':
-      return <Monitor {...props} strokeWidth={1.6} />;
-    case 'Lab':
-      return <FlaskConical {...props} strokeWidth={1.6} />;
-    case 'Baby':
-      return <Baby {...props} strokeWidth={1.6} />;
-    case 'Brain':
-      return <Brain {...props} strokeWidth={1.6} />;
-    case 'Eye':
-      return <Eye {...props} strokeWidth={1.6} />;
-    case 'Syringe':
-      return <Syringe {...props} strokeWidth={1.6} />;
-    default:
-      return <ArrowRight {...props} />;
+    case 'Stethoscope': return <Stethoscope {...props} />;
+    case 'Heart':       return <Heart {...props} />;
+    case 'Activity':    return <Activity {...props} />;
+    case 'Clock':       return <Clock {...props} />;
+    case 'Bone':        return <Bone {...props} />;
+    case 'Wind':        return <Wind {...props} />;
+    case 'Zap':         return <Zap {...props} />;
+    case 'Scan':        return <Scan {...props} />;
+    case 'Monitor':     return <Monitor {...props} />;
+    case 'Lab':         return <FlaskConical {...props} />;
+    case 'Baby':        return <Baby {...props} />;
+    case 'Brain':       return <Brain {...props} />;
+    case 'Eye':         return <Eye {...props} />;
+    case 'Syringe':     return <Syringe {...props} />;
+    default:            return <ArrowRight {...props} />;
   }
 };
 
@@ -97,387 +75,352 @@ const initialsFor = (name: string) =>
 
 const Home: React.FC = () => {
   const { openBookingModal, openBookingWithDoctor } = useUI();
+  const { t } = useLocale();
+  const { now, isOpenNow, greeting, closeLabel } = useClinicStatus();
 
-  // Section spy + scroll
-  const [activeSection, setActiveSection] = useState('top');
-  const [scrolled, setScrolled] = useState(false);
-
-  // Hero
   const heroRef = useRef<HTMLElement | null>(null);
-  const [heroVisible, setHeroVisible] = useState(false);
-  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
-  const [cursorInHero, setCursorInHero] = useState(false);
-
-  // Mission stats reveal
   const missionRef = useRef<HTMLDivElement | null>(null);
-  const [missionVisible, setMissionVisible] = useState(false);
 
-  // Provider grid
   const [providerFilter, setProviderFilter] = useState('all');
   const [openProvider, setOpenProvider] = useState<Doctor | null>(null);
-
-  // FAQ
-  const [openFaq, setOpenFaq] = useState(0);
-
-  // Preloader / emergency flash
-  const [loading, setLoading] = useState(true);
+  const [openFaq, setOpenFaq] = useState<number>(0);
+  const [missionVisible, setMissionVisible] = useState(false);
+  const [activeTestimonial, setActiveTestimonial] = useState(0);
   const [emergencyFlash, setEmergencyFlash] = useState(false);
+  const [heroVisible, setHeroVisible] = useState(false);
 
-  const { now, isOpenNow, greeting, closeLabel, fluSeason } = useClinicStatus();
-
-  // Preloader timer
-  useEffect(() => {
-    const t = setTimeout(() => setLoading(false), 1400);
-    return () => clearTimeout(t);
-  }, []);
-
-  // Hero reveal slightly delayed for theatrics
-  useEffect(() => {
-    const t = setTimeout(() => setHeroVisible(true), 1600);
-    return () => clearTimeout(t);
-  }, []);
-
-  // Scroll spy
-  useEffect(() => {
-    const onScroll = () => {
-      setScrolled(window.scrollY > 40);
-      for (const s of SECTIONS) {
-        const el = document.getElementById(s.id);
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          if (rect.top <= 200 && rect.bottom > 200) {
-            setActiveSection(s.id);
-            break;
-          }
-        }
-      }
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
-  // Mission stats intersection
+  // Stats reveal on scroll
   useEffect(() => {
     if (!missionRef.current) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => entry.isIntersecting && setMissionVisible(true),
+    const obs = new IntersectionObserver(
+      ([e]) => e.isIntersecting && setMissionVisible(true),
       { threshold: 0.3 },
     );
-    observer.observe(missionRef.current);
-    return () => observer.disconnect();
+    obs.observe(missionRef.current);
+    return () => obs.disconnect();
   }, []);
 
-  // Cursor glow in hero
+  // Hero stats trigger
   useEffect(() => {
-    const onMove = (e: MouseEvent) => {
-      const el = heroRef.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      if (e.clientY >= rect.top && e.clientY <= rect.bottom) {
-        setCursorInHero(true);
-        setCursorPos({ x: e.clientX, y: e.clientY - rect.top });
-      } else {
-        setCursorInHero(false);
-      }
-    };
-    window.addEventListener('mousemove', onMove);
-    return () => window.removeEventListener('mousemove', onMove);
+    const t = window.setTimeout(() => setHeroVisible(true), 350);
+    return () => window.clearTimeout(t);
   }, []);
 
-  // Lock body when modal open or loading
+  // Testimonial auto-rotate
   useEffect(() => {
-    if (openProvider || loading) document.body.style.overflow = 'hidden';
+    const id = window.setInterval(
+      () => setActiveTestimonial((i) => (i + 1) % TESTIMONIALS.length),
+      7000,
+    );
+    return () => window.clearInterval(id);
+  }, []);
+
+  // Body lock for provider modal
+  useEffect(() => {
+    if (openProvider) document.body.style.overflow = 'hidden';
     else document.body.style.overflow = '';
     return () => {
       document.body.style.overflow = '';
     };
-  }, [openProvider, loading]);
+  }, [openProvider]);
 
-  const filteredProviders =
-    providerFilter === 'all'
-      ? DOCTORS
-      : DOCTORS.filter((d) => d.tags?.includes(providerFilter));
+  const filteredProviders = useMemo(
+    () =>
+      providerFilter === 'all'
+        ? DOCTORS
+        : DOCTORS.filter((d) => d.tags?.includes(providerFilter)),
+    [providerFilter],
+  );
 
   const heroFeatured = SERVICES.find((s) => s.feature);
   const restServices = SERVICES.filter((s) => !s.feature).slice(0, 5);
 
+  const intentCards = [
+    { key: 'sick',     copy: t.intent.sick,     icon: <Zap size={26} strokeWidth={1.5} /> },
+    { key: 'primary',  copy: t.intent.primary,  icon: <Stethoscope size={26} strokeWidth={1.5} /> },
+    { key: 'cardiac',  copy: t.intent.cardiac,  icon: <Heart size={26} strokeWidth={1.5} /> },
+  ];
+
   return (
     <>
-      {loading && <Preloader />}
       {emergencyFlash && (
         <div className="fixed inset-0 pointer-events-none z-[60] emergency-flash-active" />
       )}
 
-      <SectionDotNav active={activeSection} sections={SECTIONS} />
-
-      {/* ===================== HERO ===================== */}
-      <section
-        ref={heroRef as React.RefObject<HTMLElement>}
-        id="top"
-        className="relative pt-24 lg:pt-32 pb-20 overflow-hidden grain"
-        style={{ minHeight: '85vh' }}
-      >
-        <div
-          className="cursor-glow"
-          style={{ left: cursorPos.x, top: cursorPos.y, opacity: cursorInHero ? 1 : 0 }}
-        />
-        <div className="absolute inset-0 pointer-events-none opacity-[0.06]" aria-hidden>
-          <svg
-            className="absolute -top-40 -right-40 spin-slower"
-            width="900"
-            height="900"
-            viewBox="0 0 900 900"
-            fill="none"
-          >
-            <circle cx="450" cy="450" r="449" stroke="var(--forest)" strokeWidth="1" />
-            <circle cx="450" cy="450" r="350" stroke="var(--forest)" strokeWidth="1" strokeDasharray="2 8" />
-            <circle cx="450" cy="450" r="250" stroke="var(--forest)" strokeWidth="1" />
-            <circle cx="450" cy="450" r="150" stroke="var(--forest)" strokeWidth="1" strokeDasharray="2 8" />
-          </svg>
+      {/* ==================== HERO ==================== */}
+      <section ref={heroRef} id="top" className="hh-hero grain">
+        <div className="hh-hero-bg" aria-hidden>
+          <div className="hh-hero-orb hh-orb-a" />
+          <div className="hh-hero-orb hh-orb-b" />
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-6 lg:px-10">
-          <div className="flex items-center justify-between mb-12 flex-wrap gap-4 reveal">
-            <div className="flex items-center gap-3 flex-wrap">
-              <span
-                className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] uppercase tracking-[0.18em] font-medium"
-                style={{ background: 'var(--ivory-deep)', color: 'var(--forest)' }}
-              >
-                <span
-                  className="inline-block w-1.5 h-1.5 rounded-full pulse-dot"
-                  style={{ background: 'var(--terracotta)' }}
-                />
-                {greeting}, Cenla
+        <div className="container hh-hero-grid">
+          <div className="hh-hero-copy">
+            <Reveal as="span" className="eyebrow">
+              <span style={{ width: 6, height: 6, borderRadius: 999, background: 'var(--terracotta-deep)' }} />
+              {greeting}, Cenla
+            </Reveal>
+
+            <h1 className="font-display hh-hero-headline">
+              <span className="word-rise-stage"><span style={{ animationDelay: '0.05s' }}>Same-day</span></span>{' '}
+              <span className="word-rise-stage"><span style={{ animationDelay: '0.18s' }}>care.</span></span>
+              <br />
+              <span className="word-rise-stage"><span className="hh-hero-em" style={{ animationDelay: '0.32s' }}>Same-roof</span></span>{' '}
+              <span className="word-rise-stage"><span className="hh-hero-em" style={{ animationDelay: '0.46s' }}>answers.</span></span>
+              <br />
+              <span className="word-rise-stage"><span style={{ animationDelay: '0.62s' }}>Built for</span></span>{' '}
+              <span className="word-rise-stage hh-hero-place">
+                <span style={{ animationDelay: '0.78s' }}>Cenla.</span>
               </span>
-              <span className="inline-flex items-center gap-1.5 text-xs" style={{ color: 'var(--ink-soft)' }}>
-                <div className="flex gap-0.5">
-                  {[1, 2, 3, 4, 5].map((i) => (
-                    <svg key={i} width="11" height="11" viewBox="0 0 24 24" fill="var(--gold)">
-                      <polygon points="12,2 15,9 22,10 17,15 18,22 12,18 6,22 7,15 2,10 9,9" />
-                    </svg>
-                  ))}
-                </div>
-                <span className="font-medium" style={{ color: 'var(--forest)' }}>
-                  {CLINIC.rating}
-                </span>
-                <span>· {CLINIC.reviewCount} reviews</span>
-              </span>
-            </div>
-            <div className="small-whisper">Alexandria · Pineville · Ball · Tioga</div>
-          </div>
+            </h1>
 
-          <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-            <div className="lg:col-span-7 relative z-10">
-              <h1
-                className="font-display tracking-tight"
-                style={{
-                  color: 'var(--forest)',
-                  fontSize: 'clamp(3rem, 9vw, 8rem)',
-                  lineHeight: '0.88',
-                  letterSpacing: '-0.035em',
-                }}
-              >
-                <span className="word-rise inline-block">Same-day</span>{' '}
-                <span className="word-rise delay-1 inline-block">care.</span>
-                <br />
-                <span className="word-rise delay-2 mega-italic inline-block" style={{ color: 'var(--terracotta)' }}>
-                  Same-roof
-                </span>{' '}
-                <span className="word-rise delay-3 mega-italic inline-block">answers.</span>
-                <br />
-                <span className="word-rise delay-4 inline-block">Built for</span>{' '}
-                <span className="word-rise delay-5 mega-italic inline-block ml-1 relative">
-                  Cenla.
-                  <svg
-                    className="absolute -bottom-2 left-0 w-full scribble"
-                    height="14"
-                    viewBox="0 0 200 14"
-                    preserveAspectRatio="none"
-                  >
-                    <path
-                      d="M2 9 Q 50 2 100 7 T 198 5"
-                      stroke="var(--terracotta)"
-                      strokeWidth="3.5"
-                      fill="none"
-                      strokeLinecap="round"
-                    />
-                  </svg>
-                </span>
-              </h1>
+            <Reveal as="p" className="lead lead-lg hh-hero-lead" delay={400}>
+              {t.hero.lead}
+            </Reveal>
 
-              <div className="mt-10 max-w-md word-rise delay-6">
-                <div className="small-whisper mb-3">A different kind of healthcare</div>
-                <p
-                  className="text-base leading-relaxed text-balance"
-                  style={{ color: 'var(--ink-soft)' }}
-                >
-                  {isOpenNow
-                    ? `Primary care, on-site cardiac diagnostics, gastro, podiatry, and labs — all under one roof on N Bolton Ave. We're open right now.`
-                    : `We're currently closed. Doors open ${closeLabel}. For emergencies, call 911. For non-urgent advice, our care guide is below.`}
-                </p>
-              </div>
+            <Reveal as="div" className="hh-hero-actions" delay={550}>
+              <button onClick={openBookingModal} className="btn btn-terracotta btn-lg">
+                {t.hero.cta_primary}
+                <ArrowRight size={18} />
+              </button>
+              <a href={`tel:${CLINIC.tel}`} className="btn btn-ghost btn-lg">
+                <Phone size={16} strokeWidth={1.8} />
+                <span className="font-mono">{CLINIC.phone}</span>
+              </a>
+              <Link to="/services" className="btn btn-text">
+                {t.hero.cta_secondary} →
+              </Link>
+            </Reveal>
 
-              <div className="word-rise delay-7 mt-8 flex flex-wrap gap-3">
-                <a
-                  href={`tel:${CLINIC.tel}`}
-                  className="px-7 py-4 rounded-full font-medium btn-primary inline-flex items-center gap-2.5"
-                >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path
-                      d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                  Call now <span className="font-mono opacity-80">{CLINIC.phone}</span>
-                </a>
-                <button
-                  onClick={openBookingModal}
-                  className="px-7 py-4 rounded-full font-medium btn-terracotta inline-flex items-center gap-2"
-                >
-                  Book a visit
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M5 12h14M13 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-
-            <div className="lg:col-span-5 relative reveal delay-4">
-              <LiveStatusPanel isOpenNow={isOpenNow} closeLabel={closeLabel} now={now} />
-            </div>
-          </div>
-
-          <div
-            className="mt-20 pt-12 border-t flex justify-between items-end flex-wrap gap-8"
-            style={{ borderColor: 'var(--line)' }}
-          >
-            <div className="flex items-end gap-12 flex-wrap">
+            <Reveal as="div" className="hh-hero-stats" delay={700}>
               <div>
-                <div className="font-display text-5xl lg:text-6xl font-medium" style={{ color: 'var(--forest)' }}>
+                <div className="hh-hero-stat-num font-display">
                   <StatCounter target={DOCTORS.length} trigger={heroVisible} />
                 </div>
-                <div className="small-whisper mt-2" style={{ color: 'var(--ink-soft)' }}>
-                  Providers
-                </div>
+                <div className="small-label">{t.hero.stats_providers}</div>
               </div>
               <div>
-                <div
-                  className="font-display text-5xl lg:text-6xl font-medium flex items-baseline gap-1"
-                  style={{ color: 'var(--forest)' }}
-                >
-                  <StatCounter target={20} trigger={heroVisible} />
-                  <span style={{ fontSize: '0.5em' }}>K+</span>
+                <div className="hh-hero-stat-num font-display">
+                  <StatCounter target={20} suffix="K+" trigger={heroVisible} />
                 </div>
-                <div className="small-whisper mt-2" style={{ color: 'var(--ink-soft)' }}>
-                  Visits / year
-                </div>
+                <div className="small-label">visits / year</div>
               </div>
               <div>
-                <div
-                  className="font-display text-5xl lg:text-6xl font-medium flex items-baseline gap-1"
-                  style={{ color: 'var(--forest)' }}
-                >
+                <div className="hh-hero-stat-num font-display">
                   <StatCounter target={CLINIC.rating} decimals={1} trigger={heroVisible} />
-                  <span style={{ color: 'var(--gold)' }}>★</span>
+                  <span style={{ color: 'var(--terracotta-deep)' }}>★</span>
                 </div>
-                <div className="small-whisper mt-2" style={{ color: 'var(--ink-soft)' }}>
-                  Patient rating
+                <div className="small-label">patient rating</div>
+              </div>
+            </Reveal>
+          </div>
+
+          <Reveal as="div" className="hh-hero-frame" delay={250}>
+            <div className="hh-hero-image-wrap">
+              <img
+                src="/largeclinicshospitalpic.jpeg"
+                alt="theCLINICS exterior on N Bolton Avenue, Alexandria, LA"
+                className="hh-hero-image"
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).src =
+                    'https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=1200&q=80';
+                }}
+              />
+              <div className="hh-hero-frame-overlay">
+                <div className={`tag ${isOpenNow ? 'tag-live' : 'tag-closed'}`}>
+                  {isOpenNow ? `${t.locations.open_now}, closing in ${closeLabel}` : `${t.locations.closed_now}, opens ${closeLabel}`}
+                </div>
+                <div className="font-mono small-label">
+                  {now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })} CST
                 </div>
               </div>
             </div>
-            <div className="text-right">
-              <div className="small-whisper" style={{ color: 'var(--ink-soft)' }}>
-                Founded {CLINIC.foundedYear} · Cenla Family Medicine
+
+            <div className="hh-hero-side-card hh-glass-surface">
+              <div className="small-label">{t.hero.proof_title}</div>
+              <div className="hh-hero-side-row">
+                <div>
+                  <div className="font-display hh-hero-side-title">{t.hero.proof_loc}, LA</div>
+                  <div className="hh-hero-side-meta">{CLINIC.address.split(',')[0]}</div>
+                </div>
+                <div className="hh-hero-side-time font-mono">
+                  Today<br />3:30p
+                </div>
               </div>
-              <a
-                href="#about"
-                className="font-display italic text-base mt-1 inline-block underline-grow"
-                style={{ color: 'var(--terracotta)' }}
-              >
-                The theCLINICS story →
-              </a>
+              <button onClick={openBookingModal} className="btn btn-primary" style={{ width: '100%' }}>
+                Reserve this slot →
+              </button>
             </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ==================== INTENT GRID ==================== */}
+      <section className="hh-intent" id="intent">
+        <div className="container">
+          <Reveal as="div" className="hh-section-header">
+            <span className="eyebrow">{t.intent.eyebrow}</span>
+            <h2 className="font-display hh-section-title">{t.intent.title}</h2>
+          </Reveal>
+
+          <div className="hh-intent-grid">
+            {intentCards.map((card, i) => (
+              <Reveal as="div" key={card.key} delay={120 * i} className="hh-intent-card">
+                <div className="hh-intent-icon" aria-hidden>
+                  {card.icon}
+                </div>
+                <h3 className="font-display hh-intent-title">{card.copy.t}</h3>
+                <p className="hh-intent-desc">{card.copy.d}</p>
+                <button onClick={openBookingModal} className="hh-intent-cta">
+                  {card.copy.cta} <ArrowRight size={14} />
+                </button>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
 
-      <InsuranceTicker />
+      {/* ==================== INSURANCE CHECKER ==================== */}
+      <InsuranceChecker t={t} plans={INSURANCE_PLANS as any} callTel={CLINIC.tel} />
 
-      {/* ===================== SYMPTOM CHECKER ===================== */}
+      {/* ==================== SYMPTOM CHECKER (AI) ==================== */}
       <SymptomChecker
         onOpenProvider={(d) => setOpenProvider(d)}
         onBook={openBookingModal}
         onEmergency={() => {
           setEmergencyFlash(true);
-          setTimeout(() => setEmergencyFlash(false), 600);
+          window.setTimeout(() => setEmergencyFlash(false), 600);
         }}
       />
 
-      {/* ===================== MISSION ===================== */}
+      {/* ==================== SERVICES ==================== */}
+      <section id="services" className="hh-services">
+        <div className="container">
+          <Reveal as="div" className="hh-section-header hh-section-header-row">
+            <div>
+              <span className="eyebrow">{t.services.eyebrow}</span>
+              <h2 className="font-display hh-section-title">
+                {t.services.title_a} <span className="hh-em">{t.services.title_em}</span>
+                {t.services.title_b}
+              </h2>
+              <p className="lead hh-section-lead">{t.services.lead}</p>
+            </div>
+            <Link to="/services" className="underline-grow hh-section-link">
+              {t.services.all} →
+            </Link>
+          </Reveal>
+
+          <div className="hh-services-grid">
+            {heroFeatured && (
+              <Reveal as="div" className="hh-service-card hh-service-feature card-lift">
+                <div className="hh-service-feature-image">
+                  <img
+                    src="/clinicsdoctor.png"
+                    alt="theCLINICS primary care"
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).src =
+                        'https://images.unsplash.com/photo-1666214280165-c0bcc1c4b78f?auto=format&fit=crop&w=900&q=80';
+                    }}
+                  />
+                  <div className="hh-service-feature-tag">Featured · Most visits</div>
+                </div>
+                <div className="hh-service-feature-body">
+                  <span className="small-label" style={{ color: 'var(--terracotta-deep)' }}>
+                    {heroFeatured.tagline}
+                  </span>
+                  <h3 className="font-display hh-service-title-lg">{heroFeatured.title}</h3>
+                  <p className="hh-service-desc">{heroFeatured.description}</p>
+                  <div className="hh-service-expect">
+                    <div className="small-label">What to expect</div>
+                    <div className="hh-service-expect-text">{heroFeatured.expect}</div>
+                  </div>
+                  <button onClick={openBookingModal} className="btn btn-primary">
+                    Book a {heroFeatured.title.split(' ')[0].toLowerCase()} visit
+                    <ArrowRight size={14} />
+                  </button>
+                </div>
+              </Reveal>
+            )}
+
+            {restServices.map((s, i) => (
+              <Reveal as="div" key={s.id} delay={80 * i} className="hh-service-card card-lift">
+                <div className="hh-service-icon" aria-hidden>
+                  {renderServiceIcon(s.iconName, 22)}
+                </div>
+                <div className="editorial-num hh-service-num">0{i + 2}</div>
+                <span className="small-label hh-service-tagline">{s.tagline}</span>
+                <h3 className="font-display hh-service-title">{s.title}</h3>
+                <p className="hh-service-desc-sm">{s.description}</p>
+                <div className="hh-service-foot">
+                  <div className="small-label">{s.expect}</div>
+                  <button onClick={openBookingModal} className="hh-service-link">
+                    Book →
+                  </button>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+
+          {/* Cardiac diagnostics spotlight */}
+          <div className="hh-spotlight">
+            <Reveal as="div" className="hh-spotlight-copy">
+              <span className="eyebrow">Spotlight · Cardiac diagnostics</span>
+              <h3 className="font-display hh-spotlight-title">
+                Answers in <span className="hh-em">the same visit.</span>
+              </h3>
+              <p className="lead">
+                EKG, Holter monitor, stress test, cardiac ultrasound. Read on-site by your provider
+                before you leave. No second appointment, no mailed-in strip three days later, no
+                waiting to make a plan.
+              </p>
+              <div className="hh-spotlight-stats">
+                {[
+                  { num: 'Same-visit', label: 'EKG read by your provider' },
+                  { num: '24–48h', label: 'Holter rhythm capture' },
+                  { num: '0', label: 'Hospital trips for routine cardiac diagnostics' },
+                ].map((s) => (
+                  <div key={s.label} className="hh-spotlight-stat">
+                    <div className="font-display hh-spotlight-num">{s.num}</div>
+                    <div>{s.label}</div>
+                  </div>
+                ))}
+              </div>
+              <button onClick={openBookingModal} className="btn btn-primary">
+                Book a cardiac visit <ArrowRight size={14} />
+              </button>
+            </Reveal>
+            <Reveal as="div" delay={120}>
+              <BeforeAfterSlider />
+              <div className="small-label hh-spotlight-caption">
+                Illustrated representation. Diagnostic clarity will vary by case.
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* ==================== MISSION ==================== */}
       <section
         id="about"
         ref={missionRef}
-        className="py-24 lg:py-32 relative grain overflow-hidden"
-        style={{ background: 'var(--forest)', color: 'var(--ivory)' }}
+        className="hh-mission grain"
       >
-        <div className="absolute inset-0 pointer-events-none" aria-hidden>
-          <svg
-            className="absolute top-20 left-20 opacity-[0.06] spin-slow"
-            width="300"
-            height="300"
-            viewBox="0 0 300 300"
-            fill="none"
-          >
-            <circle cx="150" cy="150" r="149" stroke="var(--ivory)" />
-            <circle cx="150" cy="150" r="120" stroke="var(--ivory)" />
-            <circle cx="150" cy="150" r="90" stroke="var(--ivory)" />
-          </svg>
-        </div>
-        <div className="relative max-w-7xl mx-auto px-6 lg:px-10">
-          <div className="ornament-divider mb-16">
-            <div className="small-whisper" style={{ color: 'var(--gold-pale)' }}>
-              The Mission
-            </div>
-          </div>
+        <div className="container hh-mission-inner">
+          <Reveal as="div" className="hh-mission-head">
+            <span className="eyebrow eyebrow-light">{t.founder.eyebrow}</span>
+            <h2 className="font-display hh-mission-title">
+              We started this <br />
+              because <span className="hh-mission-em">Cenla</span> <br />
+              deserved better.
+            </h2>
+          </Reveal>
+          <Reveal as="div" className="hh-mission-letter" delay={120}>
+            <p className="hh-mission-letter-body">{t.founder.letter}</p>
+            <div className="small-label hh-mission-sig">— {t.founder.sig}</div>
+          </Reveal>
 
-          <div className="grid lg:grid-cols-12 gap-8 lg:gap-16 mb-20">
-            <div className="lg:col-span-7">
-              <h2
-                className="font-display tracking-tight"
-                style={{ fontSize: 'clamp(2.5rem, 6vw, 5rem)', lineHeight: '0.95' }}
-              >
-                We started this <br />
-                because <span className="italic font-light" style={{ color: 'var(--gold-pale)' }}>Cenla</span>{' '}
-                <br />
-                deserved better.
-              </h2>
-              <p
-                className="drop-cap mt-12 text-lg leading-relaxed max-w-xl"
-                style={{ color: 'var(--sage-light)' }}
-              >
-                For decades, getting good medical care in Central Louisiana meant a long drive, a longer wait,
-                and an even longer bill. Our team built theCLINICS so your neighbors get same-day primary
-                care, on-site cardiac diagnostics, gastro, podiatry, and labs — coordinated by a provider who
-                actually knows you.
-              </p>
-            </div>
-            <div className="lg:col-span-5 lg:pt-20">
-              <div
-                className="font-display italic text-2xl lg:text-3xl leading-snug"
-                style={{ color: 'var(--gold-pale)' }}
-              >
-                "By recognizing patients as individuals, we focus on the experience and respecting their
-                time."
-              </div>
-              <div className="mt-4 small-whisper" style={{ color: 'var(--sage)' }}>
-                — The theCLINICS team
-              </div>
-            </div>
-          </div>
-
-          <div className="gold-rule mb-12" />
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+          <div className="gold-rule hh-mission-rule" />
+          <div className="hh-mission-stats">
             {[
               { num: 1, label: 'Location', sub: '1587 N Bolton Ave, Alexandria, LA' },
               { num: DOCTORS.length, label: 'Providers', sub: 'MDs and nurse practitioners' },
@@ -491,10 +434,7 @@ const Home: React.FC = () => {
               },
             ].map((stat) => (
               <div key={stat.label}>
-                <div
-                  className="font-display text-6xl lg:text-7xl xl:text-8xl font-medium leading-none"
-                  style={{ color: 'var(--ivory)' }}
-                >
+                <div className="hh-mission-stat-num font-display">
                   <StatCounter
                     target={stat.num}
                     decimals={stat.decimals || 0}
@@ -502,292 +442,39 @@ const Home: React.FC = () => {
                     trigger={missionVisible}
                   />
                 </div>
-                <div className="small-whisper mt-4 mb-2" style={{ color: 'var(--gold-pale)' }}>
-                  {stat.label}
-                </div>
-                <div className="text-sm leading-relaxed" style={{ color: 'var(--sage-light)' }}>
-                  {stat.sub}
-                </div>
+                <div className="small-label hh-mission-stat-label">{stat.label}</div>
+                <div className="hh-mission-stat-sub">{stat.sub}</div>
               </div>
             ))}
           </div>
-          <div className="gold-rule mt-12" />
+          <div className="gold-rule hh-mission-rule" />
 
-          <div className="mt-20 text-center max-w-2xl mx-auto">
-            <div className="small-whisper mb-4" style={{ color: 'var(--gold-pale)' }}>
-              Founded {CLINIC.foundedYear} · Cenla Family Medicine Associates
-            </div>
-            <p className="text-base lg:text-lg leading-relaxed" style={{ color: 'var(--sage-light)' }}>
-              A care team training and partnering with{' '}
-              <span className="font-medium" style={{ color: 'var(--ivory)' }}>
+          <Reveal as="div" className="hh-mission-foot" delay={120}>
+            <span className="small-label">Founded {CLINIC.foundedYear} · Cenla Family Medicine Associates</span>
+            <p>
+              A care team partnering with{' '}
+              <span style={{ color: 'var(--bone)' }}>
                 LSU Health, Rapides Regional, and Christus St. Frances Cabrini
               </span>{' '}
               — practicing right here at home.
             </p>
-          </div>
+          </Reveal>
         </div>
       </section>
 
-      {/* ===================== SERVICES ===================== */}
-      <section id="services" className="py-24 lg:py-32">
-        <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-16">
-            <div>
-              <div className="small-whisper mb-4" style={{ color: 'var(--terracotta)' }}>
-                Services
-              </div>
-              <h2
-                className="font-display leading-[0.95] tracking-tight max-w-2xl text-balance"
-                style={{ color: 'var(--forest)', fontSize: 'clamp(2.5rem, 5vw, 4rem)' }}
-              >
-                Everything your family needs <span className="italic font-light">under one roof.</span>
-              </h2>
-            </div>
-            <a href="#/services" className="text-sm underline-grow" style={{ color: 'var(--forest)' }}>
-              View all services →
-            </a>
-          </div>
+      {/* ==================== TEAM ==================== */}
+      <section id="team" className="hh-team">
+        <div className="container">
+          <Reveal as="div" className="hh-section-header">
+            <span className="eyebrow">{t.team.eyebrow}</span>
+            <h2 className="font-display hh-section-title">
+              {t.team.title_a} <span className="hh-em">{t.team.title_em}</span>
+              {t.team.title_b}
+            </h2>
+            <p className="lead hh-section-lead">{t.team.lead}</p>
+          </Reveal>
 
-          <div
-            className="grid grid-cols-1 lg:grid-cols-4 lg:grid-rows-2 gap-5"
-            style={{ minHeight: '640px' }}
-          >
-            {/* Featured tile */}
-            {heroFeatured && (
-              <div
-                key={heroFeatured.id}
-                className="card-lift rounded-3xl border bg-white relative overflow-hidden group flex flex-col lg:col-span-2 lg:row-span-2"
-                style={{ borderColor: 'var(--line)' }}
-              >
-                <div className="relative" style={{ aspectRatio: '16/10' }}>
-                  <img
-                    src="/clinicsdoctor.png"
-                    alt="theCLINICS primary care provider"
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      (e.currentTarget as HTMLImageElement).src =
-                        'https://images.unsplash.com/photo-1666214280165-c0bcc1c4b78f?w=900&q=80&auto=format&fit=crop';
-                    }}
-                  />
-                  <div
-                    className="absolute inset-0"
-                    style={{ background: 'linear-gradient(to top, rgba(31,58,46,0.7), transparent 50%)' }}
-                  />
-                  <div
-                    className="absolute top-4 left-4 px-2.5 py-1 rounded-full text-[9px] uppercase tracking-wider font-semibold"
-                    style={{ background: 'var(--gold)', color: 'white' }}
-                  >
-                    Featured · Most visits
-                  </div>
-                </div>
-                <div className="p-8 lg:p-10 flex-1 flex flex-col">
-                  <div className="small-whisper mb-2" style={{ color: 'var(--terracotta)' }}>
-                    {heroFeatured.tagline}
-                  </div>
-                  <h3
-                    className="font-display text-3xl lg:text-4xl mb-4 leading-tight"
-                    style={{ color: 'var(--forest)' }}
-                  >
-                    {heroFeatured.title}
-                  </h3>
-                  <p className="text-base leading-relaxed mb-6" style={{ color: 'var(--ink-soft)' }}>
-                    {heroFeatured.description}
-                  </p>
-                  <div className="mt-auto pt-4 border-t" style={{ borderColor: 'var(--line)' }}>
-                    <div className="small-whisper mb-2" style={{ color: 'var(--ink-mute)' }}>
-                      What to expect
-                    </div>
-                    <div className="text-sm leading-relaxed mb-4" style={{ color: 'var(--ink-soft)' }}>
-                      {heroFeatured.expect}
-                    </div>
-                    <button
-                      onClick={openBookingModal}
-                      className="inline-flex items-center gap-2 text-sm font-medium underline-grow"
-                      style={{ color: 'var(--forest)' }}
-                    >
-                      Book a {heroFeatured.title.toLowerCase()} visit
-                      <svg
-                        width="14"
-                        height="14"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                      >
-                        <path d="M5 12h14M13 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Smaller tiles */}
-            {restServices.map((s, i) => (
-              <div
-                key={s.id}
-                className="card-lift rounded-3xl border bg-white relative overflow-hidden group flex flex-col"
-                style={{ borderColor: 'var(--line)' }}
-              >
-                <div className="p-6 flex-1 flex flex-col">
-                  <svg
-                    className="absolute top-0 right-0 opacity-50 pointer-events-none"
-                    width="60"
-                    height="60"
-                    viewBox="0 0 60 60"
-                    fill="none"
-                  >
-                    <circle cx="60" cy="0" r="40" stroke="var(--ivory-deep)" strokeWidth="1" />
-                  </svg>
-                  <div className="relative flex-1 flex flex-col">
-                    <div className="flex items-start justify-between mb-4">
-                      <div
-                        className="inline-flex items-center justify-center w-11 h-11 rounded-xl transition-colors group-hover:bg-[var(--forest)] group-hover:text-[var(--ivory)]"
-                        style={{ background: 'var(--ivory-deep)', color: 'var(--forest)' }}
-                      >
-                        {renderServiceIcon(s.iconName, 20)}
-                      </div>
-                      <div className="editorial-num text-xl" style={{ color: 'var(--sage-light)' }}>
-                        0{i + 2}
-                      </div>
-                    </div>
-                    <div
-                      className="text-[10px] uppercase tracking-[0.2em] mb-1.5"
-                      style={{ color: 'var(--terracotta)' }}
-                    >
-                      {s.tagline}
-                    </div>
-                    <h3
-                      className="font-display text-xl lg:text-2xl mb-2 leading-tight"
-                      style={{ color: 'var(--forest)' }}
-                    >
-                      {s.title}
-                    </h3>
-                    <p className="text-xs leading-relaxed mb-4" style={{ color: 'var(--ink-soft)' }}>
-                      {s.description}
-                    </p>
-                    <div className="mt-auto pt-3 border-t" style={{ borderColor: 'var(--line)' }}>
-                      <div
-                        className="text-[9px] font-mono uppercase tracking-wider mb-1"
-                        style={{ color: 'var(--ink-mute)' }}
-                      >
-                        What to expect
-                      </div>
-                      <div className="text-[11px] leading-relaxed mb-3" style={{ color: 'var(--ink-soft)' }}>
-                        {s.expect}
-                      </div>
-                      <button
-                        onClick={openBookingModal}
-                        className="inline-flex items-center gap-1 text-xs font-medium underline-grow"
-                        style={{ color: 'var(--forest)' }}
-                      >
-                        Book →
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Cardiac diagnostics spotlight */}
-          <div className="mt-20">
-            <div className="grid lg:grid-cols-12 gap-12 items-center">
-              <div className="lg:col-span-5">
-                <div className="small-whisper mb-4" style={{ color: 'var(--terracotta)' }}>
-                  Spotlight · Cardiac Diagnostics
-                </div>
-                <h3
-                  className="font-display leading-[0.95] tracking-tight"
-                  style={{ color: 'var(--forest)', fontSize: 'clamp(2rem, 4vw, 3rem)' }}
-                >
-                  Answers in <br />
-                  <span className="italic font-light">the same visit.</span>
-                </h3>
-                <p className="mt-6 text-base leading-relaxed" style={{ color: 'var(--ink-soft)' }}>
-                  EKG, Holter monitor, stress test, cardiac ultrasound — read on-site by your provider before
-                  you leave. No second appointment, no mailed-in strip three days later, no waiting for results
-                  to make a plan.
-                </p>
-                <div className="mt-8 space-y-3">
-                  {[
-                    { num: 'Same-visit', label: 'EKG read by your provider' },
-                    { num: '24–48h', label: 'Holter rhythm capture' },
-                    { num: '0', label: 'Hospital trips for routine cardiac diagnostics' },
-                  ].map((s) => (
-                    <div
-                      key={s.label}
-                      className="flex items-baseline gap-4 pb-3 border-b"
-                      style={{ borderColor: 'var(--line)' }}
-                    >
-                      <div
-                        className="font-display text-2xl lg:text-3xl"
-                        style={{ color: 'var(--terracotta)' }}
-                      >
-                        {s.num}
-                      </div>
-                      <div className="text-sm" style={{ color: 'var(--ink-soft)' }}>
-                        {s.label}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <button
-                  onClick={openBookingModal}
-                  className="mt-8 inline-flex items-center gap-2 px-6 py-3 rounded-full font-medium text-sm btn-primary"
-                >
-                  Book a cardiac visit
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M5 12h14M13 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </button>
-              </div>
-              <div className="lg:col-span-7">
-                <BeforeAfterSlider />
-                <div className="mt-3 small-whisper text-center">
-                  Illustrated representation · Diagnostic clarity will vary by case
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ===================== TEAM ===================== */}
-      <section id="team" className="py-24 lg:py-32" style={{ background: 'var(--ivory-deep)' }}>
-        <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <div className="grid lg:grid-cols-12 gap-12 mb-12">
-            <div className="lg:col-span-7">
-              <div className="small-whisper mb-4" style={{ color: 'var(--terracotta)' }}>
-                Care Team
-              </div>
-              <h2
-                className="font-display leading-[0.95] tracking-tight"
-                style={{ color: 'var(--forest)', fontSize: 'clamp(2.5rem, 5.5vw, 4.5rem)' }}
-              >
-                Trained well. <br />
-                <span className="italic font-light">Practicing at home.</span>
-              </h2>
-            </div>
-            <div className="lg:col-span-5 lg:pt-6">
-              <p className="text-base lg:text-lg leading-relaxed" style={{ color: 'var(--ink-soft)' }}>
-                Our providers came back to Central Louisiana to take care of their neighbors — your family.
-                Same-day visits, real continuity, plain-English answers.
-              </p>
-              <div className="mt-4 text-xs flex items-center gap-2" style={{ color: 'var(--ink-mute)' }}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <circle cx="12" cy="12" r="10" />
-                  <path d="M12 8v4M12 16h.01" />
-                </svg>
-                Click any provider for full bio
-              </div>
-            </div>
-          </div>
-
-          <div
-            className="flex flex-wrap gap-2 mb-10 pb-2 border-b"
-            style={{ borderColor: 'var(--line)' }}
-          >
+          <div className="hh-team-filters">
             {PROVIDER_FILTER_TABS.map((tab) => {
               const count =
                 tab.id === 'all'
@@ -798,93 +485,39 @@ const Home: React.FC = () => {
                 <button
                   key={tab.id}
                   onClick={() => setProviderFilter(tab.id)}
-                  className="px-4 py-2 rounded-full text-sm font-medium transition"
-                  style={{
-                    background: isActive ? 'var(--forest)' : 'transparent',
-                    color: isActive ? 'var(--ivory)' : 'var(--ink-soft)',
-                    border: `1px solid ${isActive ? 'var(--forest)' : 'var(--line)'}`,
-                  }}
+                  className={`hh-team-filter ${isActive ? 'is-active' : ''}`}
                 >
                   {tab.label}
-                  {isActive && <span className="ml-2 opacity-60">{count}</span>}
+                  {isActive && <span className="hh-team-filter-count">{count}</span>}
                 </button>
               );
             })}
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="hh-team-grid">
             {filteredProviders.map((p, i) => (
               <button
                 key={p.id}
                 onClick={() => setOpenProvider(p)}
-                className={`card-lift group text-left ${
-                  i % 4 === 0 ? 'lg:mt-0' : i % 4 === 1 ? 'lg:mt-12' : i % 4 === 2 ? 'lg:mt-4' : 'lg:mt-16'
-                }`}
+                className="hh-provider card-lift"
               >
-                <div
-                  className="relative arched overflow-hidden mb-4"
-                  style={{
-                    aspectRatio: PROVIDER_HEIGHTS[i % PROVIDER_HEIGHTS.length],
-                    background: 'var(--ivory-deep)',
-                  }}
-                >
+                <div className="hh-provider-portrait">
                   {p.image ? (
-                    <img
-                      src={p.image}
-                      alt={p.name}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                      loading="lazy"
-                    />
+                    <img src={p.image} alt={p.name} loading="lazy" />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <div
-                        className="font-display"
-                        style={{ color: 'var(--forest)', fontSize: 'clamp(3rem, 6vw, 5rem)' }}
-                      >
-                        {initialsFor(p.name)}
-                      </div>
-                    </div>
+                    <div className="hh-provider-initials font-display">{initialsFor(p.name)}</div>
                   )}
-                  <div
-                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                    style={{ background: 'linear-gradient(to top, rgba(31,58,46,0.85), transparent 60%)' }}
-                  />
                   {p.featured && (
-                    <div
-                      className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[9px] uppercase tracking-wider font-semibold"
-                      style={{ background: 'var(--gold)', color: 'white' }}
-                    >
-                      Featured
-                    </div>
+                    <span className="hh-provider-badge hh-provider-badge-gold">Founder</span>
                   )}
                   {p.accepting && !p.featured && (
-                    <div
-                      className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[9px] uppercase tracking-wider font-semibold"
-                      style={{ background: 'rgba(255,255,255,0.95)', color: 'var(--forest)' }}
-                    >
-                      Accepting
-                    </div>
+                    <span className="hh-provider-badge">Accepting</span>
                   )}
-                  <div className="absolute bottom-0 left-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity translate-y-2 group-hover:translate-y-0 duration-500">
-                    <div className="text-[10px] font-mono uppercase tracking-wider text-white/70 mb-1">
-                      Click for full bio
-                    </div>
-                    <div className="text-xs leading-relaxed text-white">{p.bio.slice(0, 100)}…</div>
-                  </div>
                 </div>
-                <div>
-                  <h3 className="font-display text-lg leading-tight" style={{ color: 'var(--forest)' }}>
-                    {p.name}
-                  </h3>
-                  <div
-                    className="text-[10px] uppercase tracking-[0.15em] mt-1.5 mb-2"
-                    style={{ color: 'var(--terracotta)' }}
-                  >
-                    {p.role ?? p.specialty}
-                  </div>
-                  <div className="text-xs italic font-display" style={{ color: 'var(--ink-soft)' }}>
-                    {p.specialty}
-                  </div>
+                <div className="hh-provider-meta">
+                  <h3 className="font-display hh-provider-name">{p.name}</h3>
+                  <div className="small-label hh-provider-role">{p.role || p.specialty}</div>
+                  <div className="hh-provider-specialty font-display">{p.specialty}</div>
                 </div>
               </button>
             ))}
@@ -892,334 +525,174 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* ===================== LOCATION ===================== */}
-      <section id="location" className="py-24 lg:py-32">
-        <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-16">
+      {/* ==================== LOCATION + MAP ==================== */}
+      <section id="location" className="hh-location">
+        <div className="container">
+          <Reveal as="div" className="hh-section-header hh-section-header-row">
             <div>
-              <div className="small-whisper mb-4" style={{ color: 'var(--terracotta)' }}>
-                Find us
-              </div>
-              <h2
-                className="font-display leading-[0.95] tracking-tight"
-                style={{ color: 'var(--forest)', fontSize: 'clamp(2.5rem, 5.5vw, 4.5rem)' }}
-              >
-                One roof in <br />
-                <span className="italic font-light">Cenla.</span>
+              <span className="eyebrow">{t.locations.eyebrow}</span>
+              <h2 className="font-display hh-section-title">
+                {t.locations.title_a} <span className="hh-em">{t.locations.title_em}</span>{' '}
+                {t.locations.title_b}
               </h2>
+              <p className="lead hh-section-lead">{t.locations.lead}</p>
             </div>
-            <div className="text-xs font-mono" style={{ color: 'var(--ink-mute)' }}>
-              Updated{' '}
-              {now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })} CST
+            <div className="font-mono small-label hh-section-meta">
+              Updated {now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })} CST
             </div>
-          </div>
+          </Reveal>
 
-          <div className="rounded-3xl overflow-hidden bg-white border" style={{ borderColor: 'var(--line)' }}>
-            <div className="grid md:grid-cols-2">
-              <div
-                className="relative"
-                style={{ minHeight: '360px', background: 'var(--ivory-deep)' }}
-              >
-                <img
-                  src="/largeclinicshospitalpic.jpeg"
-                  alt="theCLINICS in Alexandria, LA"
-                  className="absolute inset-0 w-full h-full object-cover"
-                  onError={(e) => {
-                    (e.currentTarget as HTMLImageElement).src =
-                      'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=800&q=80&auto=format&fit=crop';
-                  }}
-                />
-                <div
-                  className="absolute top-4 left-4 px-3 py-1.5 rounded-full text-xs font-medium"
-                  style={{ background: 'rgba(255,255,255,0.95)', color: 'var(--forest)' }}
+          <div className="hh-location-grid">
+            <div className="hh-location-card hh-glass-surface">
+              <div className="hh-location-card-row">
+                <span className={`tag ${isOpenNow ? 'tag-live' : 'tag-closed'}`}>
+                  {isOpenNow ? t.locations.open_now : t.locations.closed_now}
+                </span>
+                <span className="small-label">~14 min wait</span>
+              </div>
+              <h3 className="font-display hh-location-title">
+                {CLINIC.city}, {CLINIC.state}
+              </h3>
+              <div className="hh-location-meta">
+                <div>
+                  <div className="small-label">Address</div>
+                  <div>{CLINIC.address}</div>
+                </div>
+                <div>
+                  <div className="small-label">Phone</div>
+                  <a href={`tel:${CLINIC.tel}`} className="font-mono">
+                    {CLINIC.phone}
+                  </a>
+                </div>
+                <div>
+                  <div className="small-label">Hours</div>
+                  <div>{CLINIC.hoursLabel}</div>
+                </div>
+              </div>
+
+              <div className="hh-location-services">
+                <div className="small-label">Services on-site</div>
+                <div className="hh-location-services-list">
+                  {CLINIC.services.map((s) => (
+                    <span key={s} className="hh-location-chip">
+                      {s}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="hh-location-actions">
+                <a
+                  href={CLINIC.mapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-ghost"
                 >
-                  <span
-                    className="inline-block w-2 h-2 rounded-full mr-2 pulse-dot"
-                    style={{ background: isOpenNow ? '#22c55e' : '#fbbf24' }}
-                  />
-                  {isOpenNow ? 'Open today' : `Closed · Opens ${closeLabel}`}
-                </div>
-                <div className="absolute bottom-4 left-4 right-4 flex gap-2">
-                  <a
-                    href={CLINIC.mapsUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-1 px-4 py-2 rounded-full text-xs font-medium text-center"
-                    style={{ background: 'rgba(255,255,255,0.95)', color: 'var(--forest)' }}
-                  >
-                    Get directions ↗
-                  </a>
-                  <a
-                    href={`tel:${CLINIC.tel}`}
-                    className="flex-1 px-4 py-2 rounded-full text-xs font-medium text-center"
-                    style={{ background: 'rgba(31,58,46,0.85)', color: 'var(--ivory)' }}
-                  >
-                    Call clinic
-                  </a>
-                </div>
+                  <MapPin size={16} strokeWidth={1.8} /> {t.locations.directions}
+                </a>
+                <a href={`tel:${CLINIC.tel}`} className="btn btn-primary">
+                  <Phone size={16} strokeWidth={1.8} /> {t.locations.call}
+                </a>
               </div>
+            </div>
 
-              <div className="p-8 lg:p-10">
-                <h3 className="font-display text-3xl mb-1" style={{ color: 'var(--forest)' }}>
-                  {CLINIC.city}, {CLINIC.state}
-                </h3>
-                <div className="small-whisper mb-6" style={{ color: 'var(--terracotta)' }}>
-                  theCLINICS · Cenla
-                </div>
-                <div className="space-y-4 text-sm">
-                  <div>
-                    <div className="small-whisper mb-1" style={{ color: 'var(--ink-soft)' }}>
-                      Address
-                    </div>
-                    <div style={{ color: 'var(--forest)' }}>{CLINIC.address}</div>
-                  </div>
-                  <div>
-                    <div className="small-whisper mb-1" style={{ color: 'var(--ink-soft)' }}>
-                      Phone
-                    </div>
-                    <a
-                      href={`tel:${CLINIC.tel}`}
-                      className="font-medium font-mono"
-                      style={{ color: 'var(--forest)' }}
-                    >
-                      {CLINIC.phone}
-                    </a>
-                  </div>
-                  <div>
-                    <div className="small-whisper mb-1" style={{ color: 'var(--ink-soft)' }}>
-                      Hours
-                    </div>
-                    <div style={{ color: 'var(--forest)' }}>{CLINIC.hoursLabel} · Sat–Sun closed</div>
-                  </div>
-                  <div>
-                    <div className="small-whisper mb-1" style={{ color: 'var(--ink-soft)' }}>
-                      Services on-site
-                    </div>
-                    <div className="flex flex-wrap gap-1.5 mt-1.5">
-                      {CLINIC.services.map((s) => (
-                        <span
-                          key={s}
-                          className="text-[11px] px-2.5 py-1 rounded-full"
-                          style={{ background: 'var(--ivory-deep)', color: 'var(--forest)' }}
-                        >
-                          {s}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-                <div className="mt-8 flex gap-2">
-                  <button
-                    onClick={openBookingModal}
-                    className="flex-1 px-5 py-3 rounded-full text-sm font-medium text-center btn-primary"
-                  >
-                    Book a visit
-                  </button>
-                  <a
-                    href={`tel:${CLINIC.tel}`}
-                    className="px-5 py-3 rounded-full border text-sm font-medium"
-                    style={{ borderColor: 'var(--line)', color: 'var(--forest)' }}
-                  >
-                    Call
-                  </a>
-                </div>
-              </div>
+            <div className="hh-location-map">
+              <LocationsMap
+                locations={[
+                  { key: 'alexandria', name: CLINIC.city, coords: CLINIC.coords },
+                ]}
+                activeKey="alexandria"
+                center={[CLINIC.coords.lng, CLINIC.coords.lat]}
+                zoom={11.5}
+              />
             </div>
           </div>
         </div>
       </section>
 
-      {/* ===================== TESTIMONIALS ===================== */}
-      <section className="py-24 lg:py-32 grain" style={{ background: 'var(--ivory-deep)' }}>
-        <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-16">
+      {/* ==================== TESTIMONIALS ==================== */}
+      <section className="hh-reviews grain">
+        <div className="container">
+          <Reveal as="div" className="hh-section-header hh-section-header-row">
             <div>
-              <div className="small-whisper mb-4" style={{ color: 'var(--terracotta)' }}>
-                Patient stories
-              </div>
-              <h2
-                className="font-display leading-[0.95] tracking-tight max-w-2xl"
-                style={{ color: 'var(--forest)', fontSize: 'clamp(2.5rem, 5vw, 4rem)' }}
-              >
-                What our patients <span className="italic font-light">are saying.</span>
+              <span className="eyebrow">{t.reviews.eyebrow}</span>
+              <h2 className="font-display hh-section-title">
+                {t.reviews.title_a} <span className="hh-em">{t.reviews.title_em}</span>
+                {t.reviews.title_b}
               </h2>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="hh-reviews-summary">
               <div>
-                <div className="font-display text-5xl" style={{ color: 'var(--forest)' }}>
-                  {CLINIC.rating}
-                </div>
-                <div className="flex gap-0.5 mt-1">
-                  {[1, 2, 3, 4, 5].map((i) => (
-                    <svg key={i} width="12" height="12" viewBox="0 0 24 24" fill="var(--gold)">
-                      <polygon points="12,2 15,9 22,10 17,15 18,22 12,18 6,22 7,15 2,10 9,9" />
-                    </svg>
-                  ))}
-                </div>
+                <div className="font-display hh-reviews-num">{CLINIC.rating}</div>
+                <div className="hh-reviews-stars">{'★★★★★'}</div>
               </div>
               <div>
-                <div className="text-xs" style={{ color: 'var(--ink-soft)' }}>
-                  Average across
-                </div>
-                <div className="text-sm font-semibold" style={{ color: 'var(--forest)' }}>
+                <div className="small-label">Average across</div>
+                <div className="hh-reviews-source">
                   {CLINIC.reviewCount}+ verified Google reviews
                 </div>
                 <a
                   href={CLINIC.googleReviewsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xs underline-grow"
-                  style={{ color: 'var(--terracotta)' }}
+                  className="underline-grow"
+                  style={{ color: 'var(--terracotta-deep)' }}
                 >
-                  Read all on Google →
+                  {t.reviews.readmore} →
                 </a>
               </div>
             </div>
-          </div>
+          </Reveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            <div
-              className="md:col-span-2 lg:col-span-2 p-10 lg:p-12 rounded-3xl relative overflow-hidden"
-              style={{ background: 'var(--forest)', color: 'var(--ivory)' }}
-            >
+          <div className="hh-reviews-grid">
+            {/* Auto-rotating featured quote */}
+            <div className="hh-review-feature hh-glass-surface">
               <svg
-                className="absolute top-0 right-0 opacity-10 spin-slow"
-                width="200"
-                height="200"
-                viewBox="0 0 200 200"
-                fill="none"
+                width="48"
+                height="36"
+                viewBox="0 0 32 24"
+                fill="var(--terracotta-deep)"
+                opacity="0.5"
+                aria-hidden
               >
-                <circle cx="100" cy="100" r="99" stroke="var(--ivory)" />
+                <path d="M0 24V12C0 5.4 5.4 0 12 0v4c-4.4 0-8 3.6-8 8h8v12H0zm20 0V12c0-6.6 5.4-12 12-12v4c-4.4 0-8 3.6-8 8h8v12H20z" />
               </svg>
-              <div className="relative">
-                <svg
-                  width="48"
-                  height="36"
-                  viewBox="0 0 32 24"
-                  fill="var(--gold-pale)"
-                  opacity="0.9"
-                  className="mb-6"
-                >
-                  <path d="M0 24V12C0 5.4 5.4 0 12 0v4c-4.4 0-8 3.6-8 8h8v12H0zm20 0V12c0-6.6 5.4-12 12-12v4c-4.4 0-8 3.6-8 8h8v12H20z" />
-                </svg>
-                <p className="font-display text-2xl lg:text-4xl leading-snug mb-8 text-balance">
-                  "{TESTIMONIALS[0].q}"
-                </p>
-                <div
-                  className="flex items-center justify-between pt-6 border-t"
-                  style={{ borderColor: 'rgba(255,255,255,0.15)' }}
-                >
-                  <div>
-                    <div className="font-display text-lg">{TESTIMONIALS[0].n}</div>
-                    <div className="small-whisper mt-1" style={{ color: 'var(--gold-pale)' }}>
-                      {TESTIMONIALS[0].l} · {TESTIMONIALS[0].visit}
-                    </div>
+              <p className="font-display hh-review-feature-quote">
+                &ldquo;{TESTIMONIALS[activeTestimonial].q}&rdquo;
+              </p>
+              <div className="hh-review-feature-meta">
+                <div>
+                  <div className="font-display hh-review-feature-name">
+                    {TESTIMONIALS[activeTestimonial].n}
                   </div>
-                  <div className="flex gap-0.5">
-                    {[1, 2, 3, 4, 5].map((s) => (
-                      <svg key={s} width="14" height="14" viewBox="0 0 24 24" fill="var(--gold)">
-                        <polygon points="12,2 15,9 22,10 17,15 18,22 12,18 6,22 7,15 2,10 9,9" />
-                      </svg>
-                    ))}
+                  <div className="small-label">
+                    {TESTIMONIALS[activeTestimonial].l} · {TESTIMONIALS[activeTestimonial].visit}
                   </div>
                 </div>
+                <div className="hh-review-stars">{'★★★★★'}</div>
+              </div>
+              <div className="hh-review-feature-dots">
+                {TESTIMONIALS.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setActiveTestimonial(i)}
+                    className={`hh-review-dot ${i === activeTestimonial ? 'is-active' : ''}`}
+                    aria-label={`Show testimonial ${i + 1}`}
+                  />
+                ))}
               </div>
             </div>
 
-            <a
-              href={CLINIC.googleReviewsUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-3xl relative overflow-hidden border group card-lift block"
-              style={{
-                borderColor: 'var(--line)',
-                minHeight: '320px',
-                background: 'var(--forest)',
-                color: 'var(--ivory)',
-              }}
-            >
-              <svg
-                className="absolute -top-12 -right-12 opacity-10 spin-slow"
-                width="200"
-                height="200"
-                viewBox="0 0 200 200"
-                fill="none"
-              >
-                <circle cx="100" cy="100" r="99" stroke="var(--ivory)" />
-                <circle cx="100" cy="100" r="60" stroke="var(--ivory)" />
-              </svg>
-              <div className="relative h-full flex flex-col justify-between p-6">
-                <div>
-                  <div className="small-whisper opacity-80" style={{ color: 'var(--gold-pale)' }}>
-                    Verified reviews
-                  </div>
-                  <div className="mt-4 flex items-baseline gap-2">
-                    <div className="font-display text-6xl" style={{ color: 'var(--ivory)' }}>
-                      {CLINIC.rating}
-                    </div>
-                    <div className="flex gap-0.5">
-                      {[1, 2, 3, 4, 5].map((s) => (
-                        <svg key={s} width="14" height="14" viewBox="0 0 24 24" fill="var(--gold)">
-                          <polygon points="12,2 15,9 22,10 17,15 18,22 12,18 6,22 7,15 2,10 9,9" />
-                        </svg>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="text-xs mt-2" style={{ color: 'var(--sage-light)' }}>
-                    Average from {CLINIC.reviewCount}+ patient reviews
-                  </div>
+            {TESTIMONIALS.slice(1, 4).map((tx) => (
+              <div key={tx.n} className="hh-review-card card-lift">
+                <div className="hh-review-card-row">
+                  <div className="hh-review-stars">{'★★★★★'}</div>
+                  <div className="small-label">{tx.visit}</div>
                 </div>
-                <div className="flex items-end justify-between">
-                  <div>
-                    <div className="font-display text-lg leading-tight">Read on Google</div>
-                    <div className="text-xs opacity-80 mt-1">Every review · Unfiltered</div>
-                  </div>
-                  <div
-                    className="w-12 h-12 rounded-full flex items-center justify-center transition group-hover:scale-110"
-                    style={{ background: 'var(--terracotta)' }}
-                  >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                      <path d="M5 12h14M13 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-            </a>
-
-            {TESTIMONIALS.slice(1).map((tx, i) => (
-              <div
-                key={i}
-                className="p-7 rounded-3xl border bg-white card-lift"
-                style={{ borderColor: 'var(--line)' }}
-              >
-                <div className="flex items-center justify-between mb-5">
-                  <div className="flex gap-0.5">
-                    {[1, 2, 3, 4, 5].map((s) => (
-                      <svg key={s} width="11" height="11" viewBox="0 0 24 24" fill="var(--gold)">
-                        <polygon points="12,2 15,9 22,10 17,15 18,22 12,18 6,22 7,15 2,10 9,9" />
-                      </svg>
-                    ))}
-                  </div>
-                  <div
-                    className="text-[10px] font-mono uppercase tracking-[0.2em]"
-                    style={{ color: 'var(--ink-mute)' }}
-                  >
-                    {tx.visit}
-                  </div>
-                </div>
-                <p
-                  className="font-display text-lg leading-snug mb-5 text-balance"
-                  style={{ color: 'var(--forest)' }}
-                >
-                  "{tx.q}"
-                </p>
-                <div className="pt-4 border-t" style={{ borderColor: 'var(--line)' }}>
-                  <div className="font-medium text-sm" style={{ color: 'var(--forest)' }}>
-                    {tx.n}
-                  </div>
-                  <div className="text-xs" style={{ color: 'var(--ink-soft)' }}>
-                    {tx.l}
-                  </div>
+                <p className="font-display hh-review-quote">&ldquo;{tx.q}&rdquo;</p>
+                <div className="hh-review-meta">
+                  <div className="hh-review-name">{tx.n}</div>
+                  <div className="small-label">{tx.l}</div>
                 </div>
               </div>
             ))}
@@ -1227,271 +700,81 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* ===================== FAQ ===================== */}
-      <section id="faq" className="py-24 lg:py-32">
-        <div className="max-w-5xl mx-auto px-6 lg:px-10">
-          <div className="text-center mb-16">
-            <div className="small-whisper mb-4" style={{ color: 'var(--terracotta)' }}>
-              Frequently asked
-            </div>
-            <h2
-              className="font-display leading-[0.95] tracking-tight"
-              style={{ color: 'var(--forest)', fontSize: 'clamp(2.5rem, 5vw, 4rem)' }}
-            >
-              The questions <br />
-              <span className="italic font-light">we hear most often.</span>
+      {/* ==================== FAQ ==================== */}
+      <section id="faq" className="hh-faq">
+        <div className="container hh-faq-inner">
+          <Reveal as="div" className="hh-section-header hh-section-header-center">
+            <span className="eyebrow">{t.faq.eyebrow}</span>
+            <h2 className="font-display hh-section-title">
+              {t.faq.title_a} <span className="hh-em">{t.faq.title_em}</span>
+              {t.faq.title_b}
             </h2>
-          </div>
-          <div className="space-y-3">
+            <p className="lead hh-section-lead">{t.faq.lead}</p>
+          </Reveal>
+
+          <div className="hh-faq-list">
             {FAQS.map((faq, i) => (
-              <div
-                key={i}
-                className="rounded-2xl bg-white border overflow-hidden"
-                style={{ borderColor: openFaq === i ? 'var(--forest)' : 'var(--line)' }}
-              >
+              <div key={i} className={`hh-faq-item ${openFaq === i ? 'is-open' : ''}`}>
                 <button
                   onClick={() => setOpenFaq(openFaq === i ? -1 : i)}
-                  className="w-full text-left p-6 flex items-start justify-between gap-6"
+                  className="hh-faq-q"
+                  aria-expanded={openFaq === i}
                 >
-                  <div className="flex items-start gap-5 flex-1">
-                    <div
-                      className="editorial-num text-2xl flex-shrink-0"
-                      style={{ color: openFaq === i ? 'var(--terracotta)' : 'var(--sage-light)' }}
-                    >
-                      0{i + 1}
-                    </div>
-                    <div className="font-display text-lg lg:text-xl pt-0.5" style={{ color: 'var(--forest)' }}>
-                      {faq.q}
-                    </div>
-                  </div>
-                  <div
-                    className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 transition"
-                    style={{
-                      background: openFaq === i ? 'var(--forest)' : 'var(--ivory-deep)',
-                      color: openFaq === i ? 'var(--ivory)' : 'var(--forest)',
-                    }}
-                  >
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      className="transition-transform"
-                      style={{ transform: openFaq === i ? 'rotate(45deg)' : 'rotate(0)' }}
-                    >
-                      <path d="M12 5v14M5 12h14" strokeLinecap="round" />
-                    </svg>
-                  </div>
+                  <span className="editorial-num hh-faq-num">0{i + 1}</span>
+                  <span className="font-display hh-faq-q-text">{faq.q}</span>
+                  <span className="hh-faq-toggle" aria-hidden>
+                    <ChevronDown
+                      size={18}
+                      style={{
+                        transform: openFaq === i ? 'rotate(180deg)' : 'rotate(0deg)',
+                        transition: 'transform 240ms ease',
+                      }}
+                    />
+                  </span>
                 </button>
                 {openFaq === i && (
-                  <div className="px-6 pb-6 pl-[5.25rem] fade-in">
-                    <p
-                      className="text-base leading-relaxed text-balance"
-                      style={{ color: 'var(--ink-soft)' }}
-                    >
-                      {faq.a}
-                    </p>
-                  </div>
+                  <div className="hh-faq-a fade-in">{faq.a}</div>
                 )}
               </div>
             ))}
           </div>
-          <div className="mt-12 text-center">
-            <p className="text-sm" style={{ color: 'var(--ink-soft)' }}>
-              Still have questions?
-            </p>
-            <a
-              href={`tel:${CLINIC.tel}`}
-              className="font-display text-2xl mt-2 inline-block underline-static"
-              style={{ color: 'var(--forest)' }}
-            >
+
+          <div className="hh-faq-foot">
+            <p>Still have questions?</p>
+            <a href={`tel:${CLINIC.tel}`} className="font-display hh-faq-call underline-static">
               Call us at {CLINIC.phone}
             </a>
           </div>
         </div>
       </section>
 
-      {/* ===================== BOOK ===================== */}
-      <section
-        id="book"
-        className="py-24 lg:py-32 relative grain overflow-hidden"
-        style={{ background: 'var(--ivory-warm)' }}
-      >
-        <div className="absolute inset-0 pointer-events-none opacity-[0.04]" aria-hidden>
-          <svg
-            className="absolute bottom-0 right-0 spin-slower"
-            width="600"
-            height="600"
-            viewBox="0 0 600 600"
-            fill="none"
-          >
-            <circle cx="500" cy="500" r="450" stroke="var(--forest)" strokeWidth="0.5" />
-            <circle cx="500" cy="500" r="350" stroke="var(--forest)" strokeWidth="0.5" />
-            <circle cx="500" cy="500" r="250" stroke="var(--forest)" strokeWidth="0.5" />
-          </svg>
-        </div>
-        <div className="relative max-w-7xl mx-auto px-6 lg:px-10">
-          <div className="grid lg:grid-cols-12 gap-12 items-start">
-            <div className="lg:col-span-6">
-              <div className="small-whisper mb-4" style={{ color: 'var(--terracotta)' }}>
-                Book your visit
-              </div>
-              <h2
-                className="font-display tracking-tight"
-                style={{
-                  fontSize: 'clamp(2.5rem, 5.5vw, 4.5rem)',
-                  lineHeight: '0.95',
-                  color: 'var(--forest)',
-                }}
+      {/* ==================== FINAL CTA ==================== */}
+      <section className="hh-cta">
+        <div className="container">
+          <div className="hh-cta-card">
+            <span className="eyebrow eyebrow-light">{t.cta.eyebrow}</span>
+            <h2 className="font-display hh-cta-title">
+              {t.cta.title_a} <span className="hh-cta-em">{t.cta.title_em}</span>
+              {t.cta.title_b}
+            </h2>
+            <p className="hh-cta-lead">{t.cta.lead}</p>
+            <div className="hh-cta-actions">
+              <button onClick={openBookingModal} className="btn btn-terracotta btn-lg">
+                {t.cta.btn_a}
+                <ArrowRight size={18} />
+              </button>
+              <a
+                href={CLINIC.patientPortalUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-light btn-lg"
               >
-                Ready when <br />
-                <span className="italic font-light">you are.</span>
-              </h2>
-              <p
-                className="mt-8 text-base lg:text-lg leading-relaxed text-balance"
-                style={{ color: 'var(--ink-soft)' }}
-              >
-                Walk us through what you need and we'll handle the rest. For same-day care, give us a ring or
-                walk in.
-              </p>
-              <div className="mt-10 space-y-4">
-                <div
-                  className="flex items-start gap-4 p-5 rounded-2xl bg-white border"
-                  style={{ borderColor: 'var(--line)' }}
-                >
-                  <div
-                    className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
-                    style={{ background: 'var(--terracotta)' }}
-                  >
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                      <path
-                        d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </div>
-                  <div>
-                    <div className="small-whisper mb-1" style={{ color: 'var(--ink-soft)' }}>
-                      Need same-day care?
-                    </div>
-                    <a
-                      href={`tel:${CLINIC.tel}`}
-                      className="font-display text-2xl font-mono"
-                      style={{ color: 'var(--forest)' }}
-                    >
-                      {CLINIC.phone}
-                    </a>
-                    <div className="text-xs mt-1" style={{ color: 'var(--ink-soft)' }}>
-                      {CLINIC.hoursLabel} · Walk-ins welcome for established patients
-                    </div>
-                  </div>
-                </div>
-                <div
-                  className="flex items-start gap-4 p-5 rounded-2xl bg-white border"
-                  style={{ borderColor: 'var(--line)' }}
-                >
-                  <div
-                    className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
-                    style={{ background: 'var(--ivory-deep)' }}
-                  >
-                    <svg
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="var(--forest)"
-                      strokeWidth="2"
-                    >
-                      <rect x="3" y="6" width="18" height="14" rx="2" />
-                      <path d="M3 10l9 5 9-5" />
-                    </svg>
-                  </div>
-                  <div>
-                    <div className="small-whisper mb-1" style={{ color: 'var(--ink-soft)' }}>
-                      Existing patient?
-                    </div>
-                    <a
-                      href={CLINIC.patientPortalUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="font-display text-xl"
-                      style={{ color: 'var(--forest)' }}
-                    >
-                      Patient Portal ↗
-                    </a>
-                    <div className="text-xs mt-1" style={{ color: 'var(--ink-soft)' }}>
-                      Message providers · Refills · Records
-                    </div>
-                  </div>
-                </div>
-              </div>
+                {t.cta.btn_b} ↗
+              </a>
             </div>
-            <div className="lg:col-span-6">
-              <div
-                className="rounded-3xl p-8 lg:p-10 bg-white border"
-                style={{
-                  borderColor: 'var(--line)',
-                  boxShadow: '0 30px 60px -20px rgba(31, 58, 46, 0.1)',
-                }}
-              >
-                <div className="small-whisper mb-2" style={{ color: 'var(--terracotta)' }}>
-                  Quick start
-                </div>
-                <h3
-                  className="font-display text-3xl lg:text-4xl leading-tight"
-                  style={{ color: 'var(--forest)' }}
-                >
-                  Pick a time that works for you.
-                </h3>
-                <p className="mt-4 text-sm" style={{ color: 'var(--ink-soft)' }}>
-                  Open the booking flow and we'll walk you through service, provider, and time in under a
-                  minute.
-                </p>
-                <button
-                  onClick={openBookingModal}
-                  className="mt-8 w-full px-6 py-4 rounded-full font-medium text-base btn-terracotta inline-flex items-center justify-center gap-2"
-                >
-                  Open booking
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M5 12h14M13 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </button>
-                <div
-                  className="mt-6 pt-6 border-t grid grid-cols-3 gap-4 text-xs"
-                  style={{ borderColor: 'var(--line)', color: 'var(--ink-soft)' }}
-                >
-                  <div>
-                    <div
-                      className="font-display text-2xl"
-                      style={{ color: 'var(--forest)' }}
-                    >
-                      &lt; 1 min
-                    </div>
-                    <div className="small-whisper mt-1">To book</div>
-                  </div>
-                  <div>
-                    <div
-                      className="font-display text-2xl"
-                      style={{ color: 'var(--forest)' }}
-                    >
-                      24h
-                    </div>
-                    <div className="small-whisper mt-1">Response</div>
-                  </div>
-                  <div>
-                    <div
-                      className="font-display text-2xl"
-                      style={{ color: 'var(--forest)' }}
-                    >
-                      0
-                    </div>
-                    <div className="small-whisper mt-1">Pressure</div>
-                  </div>
-                </div>
-              </div>
+            <div className="hh-cta-trust">
+              <Shield size={14} strokeWidth={1.8} />
+              <span>HIPAA-compliant request · We call within 1 business hour</span>
             </div>
           </div>
         </div>
@@ -1505,29 +788,599 @@ const Home: React.FC = () => {
 
       <MobileBottomBar onBook={openBookingModal} />
 
-      {fluSeason && (
-        <div
-          className="hidden md:block fixed bottom-6 left-6 z-40 max-w-xs rounded-2xl p-4 fade-in"
-          style={{
-            background: 'var(--terracotta-pale)',
-            color: 'var(--terracotta-deep)',
-            border: '1px solid rgba(168, 95, 63, 0.25)',
-            boxShadow: '0 16px 32px -12px rgba(168, 95, 63, 0.35)',
-          }}
-        >
-          <div className="small-whisper mb-1">Seasonal note</div>
-          <div className="text-sm font-medium leading-snug">
-            Flu &amp; cold season is here.
-          </div>
-          <a
-            href="#symptom"
-            className="text-xs mt-2 inline-block underline-static"
-            style={{ color: 'var(--terracotta-deep)' }}
-          >
-            Check your symptoms →
-          </a>
-        </div>
-      )}
+      <style>{`
+        /* ============= HERO ============= */
+        .hh-hero {
+          position: relative;
+          padding: clamp(3rem, 6vw, 6rem) 0 clamp(4rem, 7vw, 7rem);
+          overflow: hidden;
+        }
+        .hh-hero-bg { position: absolute; inset: 0; pointer-events: none; }
+        .hh-hero-orb {
+          position: absolute;
+          border-radius: 999px;
+          filter: blur(80px);
+          opacity: 0.55;
+          mix-blend-mode: screen;
+        }
+        .hh-orb-a { top: -120px; right: -80px; width: 480px; height: 480px; background: radial-gradient(circle, rgba(56,189,248,0.6), transparent 70%); }
+        .hh-orb-b { bottom: -160px; left: -100px; width: 520px; height: 520px; background: radial-gradient(circle, rgba(125,211,252,0.55), transparent 70%); animation: drift 14s ease-in-out infinite; }
+
+        .hh-hero-grid {
+          position: relative;
+          display: grid;
+          grid-template-columns: 1.1fr 0.9fr;
+          gap: clamp(2rem, 4vw, 4rem);
+          align-items: center;
+        }
+        @media (max-width: 980px) {
+          .hh-hero-grid { grid-template-columns: 1fr; }
+        }
+
+        .hh-hero-copy { display: grid; gap: 1.5rem; max-width: 640px; }
+        .hh-hero-headline {
+          font-size: clamp(2.6rem, 7vw, 5.2rem);
+          line-height: 0.95;
+          letter-spacing: -0.022em;
+          color: var(--forest-deep);
+          margin: 0;
+          font-weight: 400;
+        }
+        .hh-hero-em { color: var(--forest); }
+        .hh-hero-place { color: var(--terracotta-deep); }
+
+        .hh-hero-lead { color: var(--ink-soft); max-width: 56ch; }
+
+        .hh-hero-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
+
+        .hh-hero-stats {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: clamp(1rem, 2vw, 2rem);
+          padding-top: 1.6rem;
+          border-top: 1px solid var(--line);
+          margin-top: 0.5rem;
+        }
+        .hh-hero-stat-num {
+          font-size: clamp(2.2rem, 4vw, 3rem);
+          line-height: 1;
+          color: var(--forest-deep);
+          display: flex;
+          align-items: baseline;
+          gap: 0.1em;
+        }
+        .hh-hero-stats .small-label { margin-top: 0.4rem; color: var(--ink-mute); }
+
+        /* hero right column */
+        .hh-hero-frame { position: relative; display: grid; gap: 1.2rem; }
+        .hh-hero-image-wrap {
+          position: relative;
+          border-radius: 28px;
+          overflow: hidden;
+          box-shadow: var(--shadow-strong);
+          aspect-ratio: 4 / 5;
+          background: var(--ivory-deep);
+        }
+        @media (max-width: 980px) {
+          .hh-hero-image-wrap { aspect-ratio: 16 / 10; }
+        }
+        .hh-hero-image { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .hh-hero-frame-overlay {
+          position: absolute;
+          left: 1rem;
+          right: 1rem;
+          bottom: 1rem;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 0.7rem 0.9rem;
+          border-radius: 16px;
+          background: rgba(255,255,255,0.85);
+          backdrop-filter: blur(12px);
+          border: 1px solid rgba(255,255,255,0.6);
+          color: var(--forest-deep);
+        }
+        .hh-hero-frame-overlay .small-label { color: var(--ink-mute); }
+
+        .hh-hero-side-card {
+          padding: 1.2rem 1.3rem;
+          border-radius: 24px;
+          display: grid;
+          gap: 0.75rem;
+        }
+        .hh-hero-side-row {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 0.6rem;
+        }
+        .hh-hero-side-title { font-size: 1.2rem; color: var(--forest-deep); line-height: 1; }
+        .hh-hero-side-meta { font-size: 0.8rem; color: var(--ink-mute); margin-top: 0.25rem; }
+        .hh-hero-side-time { color: var(--terracotta-deep); font-size: 0.95rem; text-align: right; line-height: 1.1; }
+
+        /* ============= SECTION HEADER ============= */
+        .hh-section-header { display: grid; gap: 0.8rem; margin-bottom: 2.4rem; max-width: 60ch; }
+        .hh-section-header-row {
+          max-width: none;
+          display: flex;
+          align-items: end;
+          justify-content: space-between;
+          gap: 2rem;
+          flex-wrap: wrap;
+        }
+        .hh-section-header-row > div { display: grid; gap: 0.7rem; max-width: 60ch; }
+        .hh-section-header-center { text-align: center; margin-left: auto; margin-right: auto; }
+        .hh-section-title {
+          font-size: clamp(2rem, 4.5vw, 3.4rem);
+          line-height: 1.02;
+          letter-spacing: -0.02em;
+          color: var(--forest-deep);
+          margin: 0;
+        }
+        .hh-em { color: var(--terracotta-deep); font-style: italic; font-weight: 400; }
+        .hh-section-lead { margin-top: 0.4rem; }
+        .hh-section-link { color: var(--forest-deep); align-self: flex-end; }
+        .hh-section-meta { color: var(--ink-mute); }
+
+        /* ============= INTENT GRID ============= */
+        .hh-intent { padding: clamp(3rem, 6vw, 5rem) 0; }
+        .hh-intent-grid {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 1.2rem;
+        }
+        @media (max-width: 880px) { .hh-intent-grid { grid-template-columns: 1fr; } }
+        .hh-intent-card {
+          padding: 1.6rem;
+          background: rgba(255,255,255,0.6);
+          backdrop-filter: blur(18px) saturate(150%);
+          border: 1px solid rgba(255,255,255,0.6);
+          border-radius: 22px;
+          box-shadow: var(--glass-inner), var(--glass-shadow);
+          display: grid;
+          gap: 0.8rem;
+          align-content: start;
+        }
+        .hh-intent-icon {
+          width: 48px;
+          height: 48px;
+          border-radius: 14px;
+          background: rgba(56,189,248,0.18);
+          color: var(--forest-deep);
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .hh-intent-title { font-size: 1.4rem; color: var(--forest-deep); margin: 0; line-height: 1.1; }
+        .hh-intent-desc { color: var(--ink-soft); line-height: 1.6; margin: 0; }
+        .hh-intent-cta {
+          margin-top: 0.4rem;
+          align-self: flex-start;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.3rem;
+          padding: 0.5rem 0;
+          background: none;
+          border: none;
+          color: var(--forest-deep);
+          font: inherit;
+          font-weight: 600;
+          cursor: pointer;
+          border-bottom: 1px solid currentColor;
+        }
+
+        /* ============= SERVICES ============= */
+        .hh-services { padding: clamp(3rem, 6vw, 6rem) 0; }
+        .hh-services-grid {
+          display: grid;
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          grid-auto-rows: minmax(220px, auto);
+          gap: 1rem;
+        }
+        @media (max-width: 1024px) { .hh-services-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 600px)  { .hh-services-grid { grid-template-columns: 1fr; } }
+
+        .hh-service-card {
+          position: relative;
+          border-radius: 22px;
+          background: rgba(255,255,255,0.7);
+          backdrop-filter: blur(16px);
+          border: 1px solid rgba(255,255,255,0.65);
+          padding: 1.2rem 1.2rem 1.2rem;
+          display: grid;
+          align-content: start;
+          gap: 0.4rem;
+        }
+        .hh-service-feature {
+          grid-column: span 2;
+          grid-row: span 2;
+          padding: 0;
+          overflow: hidden;
+        }
+        @media (max-width: 1024px) { .hh-service-feature { grid-column: span 2; grid-row: auto; } }
+        @media (max-width: 600px)  { .hh-service-feature { grid-column: span 1; } }
+        .hh-service-feature-image { position: relative; aspect-ratio: 16/10; overflow: hidden; }
+        .hh-service-feature-image img { width: 100%; height: 100%; object-fit: cover; }
+        .hh-service-feature-tag {
+          position: absolute; top: 1rem; left: 1rem;
+          padding: 0.35rem 0.75rem;
+          border-radius: 999px;
+          background: var(--gold);
+          color: var(--forest-deep);
+          font-size: 0.7rem;
+          font-weight: 700;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+        }
+        .hh-service-feature-body { padding: 1.6rem; display: grid; gap: 0.8rem; }
+        .hh-service-title-lg { font-size: 1.8rem; color: var(--forest-deep); margin: 0; line-height: 1.05; }
+        .hh-service-desc { color: var(--ink-soft); line-height: 1.6; margin: 0; }
+        .hh-service-expect { padding-top: 0.8rem; border-top: 1px solid var(--line); }
+        .hh-service-expect-text { font-size: 0.9rem; color: var(--ink-soft); margin-top: 0.2rem; margin-bottom: 0.7rem; }
+
+        .hh-service-icon {
+          width: 40px; height: 40px;
+          border-radius: 12px;
+          background: rgba(56,189,248,0.18);
+          color: var(--forest-deep);
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .hh-service-num {
+          position: absolute;
+          top: 1rem;
+          right: 1.2rem;
+          font-size: 1.2rem;
+          color: var(--sage-light);
+        }
+        .hh-service-tagline { color: var(--terracotta-deep); }
+        .hh-service-title { font-size: 1.18rem; color: var(--forest-deep); line-height: 1.1; margin: 0; }
+        .hh-service-desc-sm { font-size: 0.85rem; color: var(--ink-soft); line-height: 1.55; margin: 0; }
+        .hh-service-foot { margin-top: auto; padding-top: 0.7rem; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
+        .hh-service-link {
+          background: none; border: none; padding: 0; font: inherit;
+          color: var(--forest-deep); font-weight: 600; cursor: pointer;
+        }
+
+        /* ============= SPOTLIGHT ============= */
+        .hh-spotlight {
+          margin-top: clamp(3rem, 5vw, 5rem);
+          display: grid;
+          grid-template-columns: 0.9fr 1.1fr;
+          gap: clamp(2rem, 4vw, 4rem);
+          align-items: center;
+        }
+        @media (max-width: 980px) { .hh-spotlight { grid-template-columns: 1fr; } }
+        .hh-spotlight-copy { display: grid; gap: 1.1rem; }
+        .hh-spotlight-title {
+          font-size: clamp(1.8rem, 4vw, 2.6rem);
+          line-height: 1.05;
+          letter-spacing: -0.02em;
+          color: var(--forest-deep);
+          margin: 0;
+        }
+        .hh-spotlight-stats { display: grid; gap: 0.6rem; margin: 0.6rem 0 0.4rem; }
+        .hh-spotlight-stat {
+          display: flex;
+          align-items: baseline;
+          gap: 1rem;
+          padding-bottom: 0.7rem;
+          border-bottom: 1px solid var(--line);
+          color: var(--ink-soft);
+        }
+        .hh-spotlight-num { font-size: clamp(1.4rem, 3vw, 2rem); color: var(--terracotta-deep); flex-shrink: 0; min-width: 8ch; }
+        .hh-spotlight-caption { text-align: center; margin-top: 0.6rem; }
+
+        /* ============= MISSION ============= */
+        .hh-mission {
+          padding: clamp(4rem, 7vw, 7rem) 0;
+          background: linear-gradient(170deg, #07172d 0%, #0b2747 60%, #134075 100%);
+          color: var(--bone);
+          position: relative;
+        }
+        .hh-mission-inner { position: relative; }
+        .hh-mission-head { display: grid; gap: 0.8rem; max-width: 30ch; }
+        .hh-mission-title {
+          font-size: clamp(2.2rem, 5vw, 4rem);
+          line-height: 1.04;
+          color: var(--bone);
+          margin: 0;
+          letter-spacing: -0.022em;
+          font-weight: 400;
+        }
+        .hh-mission-em { color: var(--terracotta-pale); font-style: italic; }
+        .hh-mission-letter { margin-top: 1.6rem; max-width: 60ch; }
+        .hh-mission-letter-body { color: var(--sage-light); font-size: 1.08rem; line-height: 1.7; margin: 0 0 0.6rem; }
+        .hh-mission-sig { color: var(--terracotta-pale); }
+
+        .hh-mission-rule { margin: 2.4rem 0; opacity: 0.5; }
+        .hh-mission-stats {
+          display: grid;
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          gap: 1.6rem;
+        }
+        @media (max-width: 720px) { .hh-mission-stats { grid-template-columns: repeat(2, 1fr); gap: 1.2rem; } }
+        .hh-mission-stat-num {
+          font-size: clamp(2.6rem, 5vw, 4.4rem);
+          line-height: 1;
+          color: var(--bone);
+        }
+        .hh-mission-stat-label { color: var(--terracotta-pale); margin: 0.6rem 0 0.2rem; }
+        .hh-mission-stat-sub { color: var(--sage-light); font-size: 0.85rem; line-height: 1.5; }
+
+        .hh-mission-foot {
+          text-align: center;
+          margin: 2rem auto 0;
+          max-width: 50ch;
+          color: var(--sage-light);
+          font-size: 0.95rem;
+        }
+        .hh-mission-foot .small-label { color: var(--terracotta-pale); margin-bottom: 0.6rem; display: block; }
+
+        /* ============= TEAM ============= */
+        .hh-team {
+          padding: clamp(3rem, 6vw, 6rem) 0;
+          background: linear-gradient(180deg, var(--ivory-deep), var(--sand-soft));
+        }
+        .hh-team-filters {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.5rem;
+          margin-bottom: 2rem;
+          padding-bottom: 0.8rem;
+          border-bottom: 1px solid var(--line);
+        }
+        .hh-team-filter {
+          padding: 0.55rem 1rem;
+          border-radius: 999px;
+          border: 1px solid var(--line);
+          background: rgba(255,255,255,0.6);
+          backdrop-filter: blur(10px);
+          color: var(--ink-soft);
+          font: inherit;
+          font-size: 0.9rem;
+          cursor: pointer;
+        }
+        .hh-team-filter.is-active { background: var(--forest); color: var(--bone); border-color: var(--forest); }
+        .hh-team-filter-count { margin-left: 0.5rem; opacity: 0.7; font-size: 0.8rem; }
+
+        .hh-team-grid {
+          display: grid;
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          gap: 1rem;
+        }
+        @media (max-width: 1024px) { .hh-team-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 720px)  { .hh-team-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 480px)  { .hh-team-grid { grid-template-columns: 1fr; } }
+
+        .hh-provider {
+          background: rgba(255,255,255,0.7);
+          backdrop-filter: blur(12px);
+          border: 1px solid rgba(255,255,255,0.62);
+          border-radius: 24px;
+          padding: 0;
+          text-align: left;
+          font: inherit;
+          color: inherit;
+          cursor: pointer;
+          overflow: hidden;
+          display: grid;
+          align-content: start;
+        }
+        .hh-provider-portrait {
+          position: relative;
+          aspect-ratio: 4/5;
+          background: var(--ivory-deep);
+          overflow: hidden;
+        }
+        .hh-provider-portrait img { width: 100%; height: 100%; object-fit: cover; transition: 600ms ease; }
+        .hh-provider:hover .hh-provider-portrait img { transform: scale(1.04); }
+        .hh-provider-initials {
+          width: 100%; height: 100%;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          font-size: clamp(2.5rem, 5vw, 4rem);
+          color: var(--forest-deep);
+          background: linear-gradient(135deg, var(--ivory-deep), var(--sage-pale));
+        }
+        .hh-provider-badge {
+          position: absolute; top: 0.7rem; left: 0.7rem;
+          background: rgba(255,255,255,0.95);
+          color: var(--forest-deep);
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 0.65rem;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+          padding: 0.25rem 0.55rem;
+          border-radius: 999px;
+          font-weight: 700;
+        }
+        .hh-provider-badge-gold { background: var(--gold); color: var(--bone); }
+        .hh-provider-meta { padding: 1rem 1.1rem 1.2rem; }
+        .hh-provider-name { font-size: 1.05rem; color: var(--forest-deep); margin: 0; line-height: 1.2; }
+        .hh-provider-role { color: var(--terracotta-deep); margin-top: 0.45rem; }
+        .hh-provider-specialty { color: var(--ink-soft); font-size: 0.85rem; font-style: italic; margin-top: 0.5rem; }
+
+        /* ============= LOCATION ============= */
+        .hh-location { padding: clamp(3rem, 6vw, 6rem) 0; }
+        .hh-location-grid {
+          display: grid;
+          grid-template-columns: 0.9fr 1.3fr;
+          gap: 1.4rem;
+        }
+        @media (max-width: 980px) { .hh-location-grid { grid-template-columns: 1fr; } }
+
+        .hh-location-card {
+          padding: 1.6rem 1.6rem 1.4rem;
+          border-radius: 28px;
+          display: grid;
+          gap: 1rem;
+          align-content: start;
+        }
+        .hh-location-card-row { display: flex; justify-content: space-between; align-items: center; }
+        .hh-location-title { font-size: clamp(1.6rem, 3.4vw, 2.2rem); color: var(--forest-deep); margin: 0; line-height: 1; }
+
+        .hh-location-meta { display: grid; gap: 0.7rem; }
+        .hh-location-meta > div { display: grid; gap: 0.15rem; font-size: 0.94rem; color: var(--ink-soft); }
+        .hh-location-meta a { color: var(--forest-deep); }
+
+        .hh-location-services-list {
+          display: flex; flex-wrap: wrap; gap: 0.4rem;
+          margin-top: 0.4rem;
+        }
+        .hh-location-chip {
+          padding: 0.3rem 0.7rem;
+          border-radius: 999px;
+          background: rgba(56,189,248,0.16);
+          color: var(--forest-deep);
+          font-size: 0.78rem;
+        }
+
+        .hh-location-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .hh-location-actions .btn { flex: 1; min-width: 140px; }
+
+        /* ============= REVIEWS ============= */
+        .hh-reviews {
+          padding: clamp(3rem, 6vw, 6rem) 0;
+          background: linear-gradient(165deg, var(--ivory-deep), var(--sand-soft));
+        }
+        .hh-reviews-summary { display: flex; gap: 1.2rem; align-items: end; }
+        .hh-reviews-summary > div { display: grid; gap: 0.2rem; }
+        .hh-reviews-num { font-size: 2.6rem; line-height: 1; color: var(--forest-deep); }
+        .hh-reviews-stars { color: var(--terracotta-deep); letter-spacing: 0.05em; }
+        .hh-reviews-source { font-size: 0.92rem; color: var(--forest-deep); font-weight: 600; }
+
+        .hh-reviews-grid {
+          display: grid;
+          grid-template-columns: 1.4fr 1fr 1fr;
+          gap: 1rem;
+        }
+        @media (max-width: 980px) {
+          .hh-reviews-grid { grid-template-columns: 1fr; }
+        }
+
+        .hh-review-feature {
+          padding: 2rem;
+          border-radius: 28px;
+          display: grid;
+          gap: 1.2rem;
+          align-content: start;
+          grid-row: span 2;
+        }
+        @media (max-width: 980px) { .hh-review-feature { grid-row: auto; } }
+        .hh-review-feature-quote { font-size: clamp(1.2rem, 2.4vw, 1.6rem); line-height: 1.35; color: var(--forest-deep); margin: 0; }
+        .hh-review-feature-meta { display: flex; justify-content: space-between; align-items: end; padding-top: 0.8rem; border-top: 1px solid var(--line); }
+        .hh-review-feature-name { font-size: 1.05rem; color: var(--forest-deep); margin: 0; }
+        .hh-review-stars { color: var(--terracotta-deep); letter-spacing: 0.04em; }
+        .hh-review-feature-dots { display: flex; gap: 0.4rem; margin-top: 0.6rem; }
+        .hh-review-dot {
+          width: 8px; height: 8px; border-radius: 999px;
+          background: var(--line-strong);
+          border: none; padding: 0; cursor: pointer;
+        }
+        .hh-review-dot.is-active { background: var(--forest); }
+
+        .hh-review-card {
+          padding: 1.4rem 1.4rem 1.2rem;
+          border-radius: 22px;
+          background: rgba(255,255,255,0.78);
+          border: 1px solid var(--line);
+          display: grid;
+          gap: 0.8rem;
+        }
+        .hh-review-card-row { display: flex; justify-content: space-between; align-items: center; }
+        .hh-review-quote { font-size: 1rem; line-height: 1.45; color: var(--forest-deep); margin: 0; }
+        .hh-review-name { font-size: 0.94rem; font-weight: 600; color: var(--forest-deep); }
+
+        /* ============= FAQ ============= */
+        .hh-faq { padding: clamp(3rem, 6vw, 6rem) 0; }
+        .hh-faq-inner { max-width: 880px; }
+        .hh-faq-list { display: grid; gap: 0.6rem; }
+        .hh-faq-item {
+          background: rgba(255,255,255,0.62);
+          backdrop-filter: blur(14px);
+          border: 1px solid var(--line);
+          border-radius: 18px;
+          overflow: hidden;
+        }
+        .hh-faq-item.is-open { border-color: var(--forest); background: rgba(255,255,255,0.85); }
+        .hh-faq-q {
+          width: 100%;
+          display: grid;
+          grid-template-columns: auto 1fr auto;
+          align-items: start;
+          gap: 1rem;
+          padding: 1.1rem 1.2rem;
+          background: none;
+          border: none;
+          text-align: left;
+          font: inherit;
+          color: inherit;
+          cursor: pointer;
+        }
+        .hh-faq-num { color: var(--sage-light); font-size: 1.4rem; }
+        .hh-faq-item.is-open .hh-faq-num { color: var(--terracotta-deep); }
+        .hh-faq-q-text { font-size: 1.05rem; color: var(--forest-deep); padding-top: 0.15rem; }
+        .hh-faq-toggle {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 32px;
+          height: 32px;
+          border-radius: 999px;
+          background: var(--ivory-deep);
+          color: var(--forest);
+        }
+        .hh-faq-item.is-open .hh-faq-toggle { background: var(--forest); color: var(--bone); }
+        .hh-faq-a {
+          padding: 0 1.2rem 1.2rem 4rem;
+          color: var(--ink-soft);
+          line-height: 1.6;
+          font-size: 0.96rem;
+        }
+        @media (max-width: 600px) { .hh-faq-a { padding-left: 1.2rem; } }
+        .hh-faq-foot { text-align: center; margin-top: 1.6rem; color: var(--ink-soft); }
+        .hh-faq-call { display: inline-block; margin-top: 0.5rem; font-size: 1.4rem; color: var(--forest-deep); }
+
+        /* ============= FINAL CTA ============= */
+        .hh-cta { padding: clamp(3rem, 6vw, 6rem) 0; }
+        .hh-cta-card {
+          position: relative;
+          padding: clamp(2.4rem, 5vw, 4rem);
+          border-radius: 36px;
+          background:
+            radial-gradient(120% 80% at 80% 0%, rgba(56,189,248,0.35), transparent 60%),
+            linear-gradient(160deg, #07172d 0%, #0b2747 50%, #1565c9 100%);
+          color: var(--bone);
+          overflow: hidden;
+          display: grid;
+          gap: 1.4rem;
+          max-width: 1100px;
+          margin: 0 auto;
+        }
+        .hh-cta-card::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: radial-gradient(60% 100% at 0% 100%, rgba(125,211,252,0.16), transparent 60%);
+          pointer-events: none;
+        }
+        .hh-cta-title {
+          font-size: clamp(2rem, 5vw, 3.6rem);
+          line-height: 1.05;
+          margin: 0;
+          letter-spacing: -0.022em;
+          color: var(--bone);
+          font-weight: 400;
+          position: relative;
+        }
+        .hh-cta-em { color: var(--terracotta-pale); font-style: italic; }
+        .hh-cta-lead { max-width: 60ch; color: var(--sage-light); font-size: 1.05rem; line-height: 1.65; margin: 0; position: relative; }
+        .hh-cta-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; position: relative; }
+        .hh-cta-trust { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--sage-light); position: relative; }
+      `}</style>
     </>
   );
 };

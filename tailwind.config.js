@@ -10,65 +10,75 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
         display: ['Fraunces', 'Georgia', 'serif'],
         mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
-        // Legacy alias kept so existing pages don't break.
         serif: ['Fraunces', 'Georgia', 'serif'],
       },
       colors: {
-        // Harmony palette — primary tokens
-        ivory: {
-          DEFAULT: '#FAF7F2',
-          deep: '#F2EDE3',
-          warm: '#EDE6D6',
+        // Harmony 2 cool blue palette
+        bone:   '#f8fbfe',
+        ivory:  {
+          DEFAULT: '#ecf4fb',
+          deep:    '#dfeaf7',
+          warm:    '#d4e3f3',
+        },
+        sand: {
+          DEFAULT: '#c9daee',
+          soft:    '#d8e8f6',
         },
         forest: {
-          DEFAULT: '#1F3A2E',
-          deep: '#142319',
-          soft: '#2D4A3C',
+          DEFAULT: '#1565c9',
+          deep:    '#07172d',
+          soft:    '#3d8fd9',
         },
         sage: {
-          DEFAULT: '#7A9885',
-          light: '#B8C9BD',
-          pale: '#DCE4DD',
+          DEFAULT: '#5c92c4',
+          light:   '#a8cff0',
+          pale:    '#cfe8fb',
         },
+        sky: {
+          DEFAULT: '#38bdf8',
+          deep:    '#0284c7',
+          pale:    '#bae6fd',
+          bright:  '#7dd3fc',
+        },
+        // Aliases preserved for legacy code
         terracotta: {
-          DEFAULT: '#C97B5A',
-          deep: '#A85F3F',
-          pale: '#E8C5B0',
+          DEFAULT: '#38bdf8',
+          deep:    '#0284c7',
+          pale:    '#bae6fd',
         },
         gold: {
-          DEFAULT: '#B8924A',
-          deep: '#8F6F36',
-          pale: '#E8D9B8',
+          DEFAULT: '#38bdf8',
+          deep:    '#0369a1',
+          pale:    '#e0f2fe',
         },
         ink: {
-          DEFAULT: '#1A1A1A',
-          soft: '#4A4A4A',
-          mute: '#8A8A8A',
+          DEFAULT: '#071524',
+          soft:    '#1e3a55',
+          mute:    '#5a6e82',
         },
 
-        // Legacy "medical" + "accent" tokens — remapped onto the new
-        // palette so existing pages absorb the redesign automatically.
+        // Legacy "medical" + "accent" tokens — remapped onto cool-blue
         medical: {
-          50:  '#F2EDE3', // ivory-deep
-          100: '#DCE4DD', // sage-pale
-          200: '#B8C9BD', // sage-light
-          400: '#7A9885', // sage
-          500: '#2D4A3C', // forest-soft
-          600: '#1F3A2E', // forest
-          700: '#1F3A2E',
-          800: '#142319', // forest-deep
-          900: '#142319',
+          50:  '#dfeaf7',
+          100: '#cfe8fb',
+          200: '#a8cff0',
+          400: '#5c92c4',
+          500: '#3d8fd9',
+          600: '#1565c9',
+          700: '#1565c9',
+          800: '#07172d',
+          900: '#07172d',
         },
         accent: {
-          50:  '#E8C5B0', // terracotta-pale
-          100: '#E8C5B0',
-          400: '#C97B5A', // terracotta
-          500: '#C97B5A',
-          600: '#A85F3F', // terracotta-deep
-          700: '#A85F3F',
+          50:  '#bae6fd',
+          100: '#bae6fd',
+          400: '#38bdf8',
+          500: '#38bdf8',
+          600: '#0284c7',
+          700: '#0284c7',
         },
       },
     },
