@@ -806,7 +806,7 @@ const Home: React.FC = () => {
           opacity: 0.55;
           mix-blend-mode: screen;
         }
-        .hh-orb-a { top: -160px; right: -120px; width: 560px; height: 560px; background: radial-gradient(circle, rgba(244,212,208,0.62), transparent 70%); }
+        .hh-orb-a { top: -160px; right: -120px; width: 560px; height: 560px; background: radial-gradient(circle, rgba(251, 218, 218,0.62), transparent 70%); }
         .hh-orb-b { bottom: -180px; left: -120px; width: 600px; height: 600px; background: radial-gradient(circle, rgba(237,225,200,0.5), transparent 70%); animation: drift 16s ease-in-out infinite; }
 
         .hh-hero-grid {
@@ -969,7 +969,7 @@ const Home: React.FC = () => {
           width: 52px;
           height: 52px;
           border-radius: var(--radius-md);
-          background: rgba(193,53,42,0.12);
+          background: rgba(225, 27, 27,0.12);
           color: var(--terracotta-deep);
           display: inline-flex;
           align-items: center;
@@ -1060,7 +1060,7 @@ const Home: React.FC = () => {
         .hh-service-icon {
           width: 44px; height: 44px;
           border-radius: var(--radius-sm);
-          background: rgba(193,53,42,0.10);
+          background: rgba(225, 27, 27,0.10);
           color: var(--terracotta-deep);
           display: inline-flex;
           align-items: center;
@@ -1257,7 +1257,7 @@ const Home: React.FC = () => {
         .hh-location-meta > div { display: grid; gap: 0.2rem; font-size: 0.95rem; color: var(--ink-soft); }
         .hh-location-meta a { color: var(--forest-deep); }
         .hh-location-services-list { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 0.5rem; }
-        .hh-location-chip { padding: 0.32rem 0.75rem; border-radius: 999px; background: rgba(193,53,42,0.10); color: var(--terracotta-deep); font-size: 0.78rem; }
+        .hh-location-chip { padding: 0.32rem 0.75rem; border-radius: 999px; background: rgba(225, 27, 27,0.10); color: var(--terracotta-deep); font-size: 0.78rem; }
         .hh-location-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
         .hh-location-actions .btn { flex: 1; min-width: 140px; }
 
@@ -1366,8 +1366,8 @@ const Home: React.FC = () => {
           padding: clamp(2.4rem, 5vw, 4.5rem);
           border-radius: var(--radius-2xl);
           background:
-            radial-gradient(120% 80% at 85% 0%, rgba(193,53,42,0.42), transparent 58%),
-            linear-gradient(160deg, #0c1c2e 0%, #1f3a5b 55%, #971f15 100%);
+            radial-gradient(120% 80% at 85% 0%, rgba(225, 27, 27,0.42), transparent 58%),
+            linear-gradient(160deg, #0c1c2e 0%, #1f3a5b 55%, #a81313 100%);
           color: var(--bone);
           overflow: hidden;
           display: grid;
@@ -1379,7 +1379,7 @@ const Home: React.FC = () => {
           content: '';
           position: absolute;
           inset: 0;
-          background: radial-gradient(60% 100% at 0% 100%, rgba(244,212,208,0.18), transparent 60%);
+          background: radial-gradient(60% 100% at 0% 100%, rgba(251, 218, 218,0.18), transparent 60%);
           pointer-events: none;
         }
         .hh-cta-title {

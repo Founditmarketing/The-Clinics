@@ -234,7 +234,7 @@ const PatientResources: React.FC = () => {
         .hh-resources-forms-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin-top: 1.4rem; }
         @media (max-width: 880px) { .hh-resources-forms-grid { grid-template-columns: 1fr; } }
         .hh-resources-form-card { padding: 1.4rem 1.6rem; border-radius: 22px; display: grid; gap: 0.6rem; align-content: start; }
-        .hh-resources-form-icon { width: 38px; height: 38px; border-radius: 12px; background: rgba(193,53,42,0.10); color: var(--terracotta-deep); display: inline-flex; align-items: center; justify-content: center; }
+        .hh-resources-form-icon { width: 38px; height: 38px; border-radius: 12px; background: rgba(225, 27, 27,0.10); color: var(--terracotta-deep); display: inline-flex; align-items: center; justify-content: center; }
         .hh-resources-form-title { font-size: 1.15rem; color: var(--forest-deep); margin: 0.4rem 0 0.4rem; }
         .hh-resources-form-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.4rem; }
         .hh-resources-form-link { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--forest-deep); font-weight: 500; padding: 0.4rem 0; }

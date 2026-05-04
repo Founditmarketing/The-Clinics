@@ -38,16 +38,16 @@ const BeforeAfterSlider: React.FC = () => {
         <svg viewBox="0 0 200 125" className="w-full h-full">
           <defs>
             <linearGradient id="ba-clean-grid" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor="#c1352a" stopOpacity="0.18" />
-              <stop offset="100%" stopColor="#c1352a" stopOpacity="0" />
+              <stop offset="0%" stopColor="#e11b1b" stopOpacity="0.18" />
+              <stop offset="100%" stopColor="#e11b1b" stopOpacity="0" />
             </linearGradient>
           </defs>
           <rect width="200" height="125" fill="url(#ba-clean-grid)" />
           {[20, 40, 60, 80, 100].map((y) => (
-            <line key={`h-${y}`} x1="10" x2="190" y1={y} y2={y} stroke="#c1352a" strokeWidth="0.2" opacity="0.45" />
+            <line key={`h-${y}`} x1="10" x2="190" y1={y} y2={y} stroke="#e11b1b" strokeWidth="0.2" opacity="0.45" />
           ))}
           {[20, 50, 80, 110, 140, 170].map((x) => (
-            <line key={`v-${x}`} x1={x} x2={x} y1="20" y2="100" stroke="#c1352a" strokeWidth="0.2" opacity="0.45" />
+            <line key={`v-${x}`} x1={x} x2={x} y1="20" y2="100" stroke="#e11b1b" strokeWidth="0.2" opacity="0.45" />
           ))}
           <path
             d="M 10 60 L 30 60 L 35 60 L 38 55 L 42 65 L 46 30 L 50 90 L 54 45 L 58 60 L 80 60 L 95 60 L 100 50 L 110 70 L 115 60 L 140 60 L 145 55 L 150 65 L 155 30 L 159 90 L 163 45 L 167 60 L 190 60"
@@ -63,7 +63,7 @@ const BeforeAfterSlider: React.FC = () => {
             textAnchor="middle"
             fontSize="6"
             fontFamily="'JetBrains Mono', monospace"
-            fill="#971f15"
+            fill="#a81313"
             letterSpacing="1"
           >
             DIGITAL EKG · READ IN-VISIT

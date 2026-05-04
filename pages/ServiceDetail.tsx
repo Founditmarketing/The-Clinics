@@ -268,7 +268,7 @@ const ServiceDetail: React.FC = () => {
         .hh-svc-hero-icon {
           width: 60px; height: 60px;
           border-radius: 18px;
-          background: rgba(193,53,42,0.10);
+          background: rgba(225, 27, 27,0.10);
           color: var(--terracotta-deep);
           display: inline-flex;
           align-items: center;
@@ -362,7 +362,7 @@ const ServiceDetail: React.FC = () => {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          background: rgba(193,53,42,0.10);
+          background: rgba(225, 27, 27,0.10);
           color: var(--terracotta-deep);
         }
         .hh-svc-related-title { font-size: 1.1rem; color: var(--forest-deep); margin: 0.2rem 0 0.4rem; line-height: 1.1; }

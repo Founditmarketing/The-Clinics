@@ -220,7 +220,7 @@ const Dashboard: React.FC = () => {
         .hh-dash-next { padding: 1.6rem; border-radius: 28px; }
         .hh-dash-next-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
         .hh-dash-next-title { font-size: 1.5rem; color: var(--forest-deep); margin: 0.3rem 0 0; }
-        .hh-dash-next-icon { width: 44px; height: 44px; border-radius: 14px; background: rgba(193,53,42,0.10); color: var(--terracotta-deep); display: inline-flex; align-items: center; justify-content: center; }
+        .hh-dash-next-icon { width: 44px; height: 44px; border-radius: 14px; background: rgba(225, 27, 27,0.10); color: var(--terracotta-deep); display: inline-flex; align-items: center; justify-content: center; }
         .hh-dash-next-meta { display: grid; grid-template-columns: 1fr 1fr auto; gap: 1rem; align-items: center; margin-top: 1.2rem; padding-top: 1.2rem; border-top: 1px solid var(--line); }
         @media (max-width: 720px) { .hh-dash-next-meta { grid-template-columns: 1fr; } }
         .hh-dash-next-meta-item { display: grid; grid-template-columns: 26px 1fr; gap: 0.6rem; align-items: center; color: var(--ink-soft); }

@@ -204,7 +204,7 @@ const Footer: React.FC = () => {
           position: absolute;
           inset: -10% -10% auto -10%;
           height: 50%;
-          background: radial-gradient(60% 100% at 30% 0%, rgba(193,53,42,0.22), transparent 70%);
+          background: radial-gradient(60% 100% at 30% 0%, rgba(225, 27, 27,0.22), transparent 70%);
           pointer-events: none;
         }
         .hh-footer-inner { position: relative; z-index: 1; }
@@ -289,7 +289,7 @@ const Footer: React.FC = () => {
         .hh-newsletter-input:focus {
           outline: none;
           border-color: var(--terracotta);
-          box-shadow: 0 0 0 3px rgba(193,53,42,0.32);
+          box-shadow: 0 0 0 3px rgba(225, 27, 27,0.32);
         }
         .hh-newsletter-btn { padding: 0.55rem 1.1rem; min-height: 0; }
 

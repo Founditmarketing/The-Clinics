@@ -185,7 +185,7 @@ const Services: React.FC = () => {
         }
         .hh-service-row { border-top: 1px solid var(--line); }
         .hh-service-row:first-child { border-top: none; }
-        .hh-service-row.is-featured { background: rgba(193,53,42,0.06); }
+        .hh-service-row.is-featured { background: rgba(225, 27, 27,0.06); }
         .hh-service-row.is-open { background: rgba(255,255,255,0.85); }
 
         .hh-service-row-btn {
@@ -214,7 +214,7 @@ const Services: React.FC = () => {
           align-items: center;
           justify-content: center;
           border-radius: var(--radius-sm);
-          background: rgba(193,53,42,0.10);
+          background: rgba(225, 27, 27,0.10);
           color: var(--forest-deep);
         }
         .hh-service-row-title { font-size: 1.1rem; color: var(--forest-deep); line-height: 1.1; letter-spacing: -0.01em; }

@@ -368,7 +368,7 @@ const Header: React.FC = () => {
           border-radius: 10px;
           cursor: pointer;
         }
-        .hh-user-item:hover { background: rgba(193,53,42,0.10); }
+        .hh-user-item:hover { background: rgba(225, 27, 27,0.10); }
         .hh-user-item.is-danger { color: #b91c1c; }
 
         .hh-mobile-menu {
@@ -396,7 +396,7 @@ const Header: React.FC = () => {
           gap: 0.4rem;
         }
         .hh-mobile-lang .hh-lang-btn {
-          background: rgba(193,53,42,0.10);
+          background: rgba(225, 27, 27,0.10);
           color: var(--forest-deep);
           padding: 0.4rem 1rem;
         }
