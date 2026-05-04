@@ -137,9 +137,9 @@ const InsuranceChecker: React.FC<InsuranceCheckerProps> = ({
       </div>
 
       <style>{`
-        .insurance { padding: 4rem 0; background: linear-gradient(165deg, rgba(224,242,254,0.65), var(--sand-soft)); border-block: 1px solid var(--line); }
-        .insurance-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 3rem; align-items: center; }
-        .insurance h2 { font-size: clamp(1.7rem, 2.8vw, 2.4rem); margin: 0.6rem 0 0.6rem; color: var(--forest-deep); }
+        .insurance { padding-block: clamp(2.5rem, 5vw, 4.5rem); background: linear-gradient(165deg, rgba(251, 218, 218,0.32), var(--sand-soft)); border-block: 1px solid var(--line); }
+        .insurance-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: clamp(1.6rem, 3.5vw, 3rem); align-items: center; }
+        .insurance h2 { font-size: clamp(1.5rem, 3vw, 2.4rem); margin: 0.6rem 0 0.6rem; color: var(--forest-deep); letter-spacing: -0.02em; }
         .insurance-card { background: rgba(255,255,255,0.52); backdrop-filter: blur(22px) saturate(160%); -webkit-backdrop-filter: blur(22px) saturate(160%); border: 1px solid rgba(255,255,255,0.58); border-radius: 24px; padding: 1.4rem; box-shadow: inset 0 1px 0 rgba(255,255,255,0.72), var(--glass-shadow); position: relative; }
         .insurance-input { display: flex; align-items: center; gap: 0.65rem; background: rgba(255,255,255,0.42); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.55); border-radius: 16px; padding: 0.85rem 1rem; color: var(--ink-mute); }
         .insurance-input:focus-within { border-color: var(--forest); box-shadow: var(--focus); }

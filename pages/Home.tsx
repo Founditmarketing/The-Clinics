@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Activity,
@@ -29,7 +29,6 @@ import {
   SERVICES,
   FAQS,
   TESTIMONIALS,
-  PROVIDER_FILTER_TABS,
   INSURANCE_PLANS,
 } from '../data/clinicData';
 import { Doctor, ServiceItem } from '../types';
@@ -81,7 +80,6 @@ const Home: React.FC = () => {
   const heroRef = useRef<HTMLElement | null>(null);
   const missionRef = useRef<HTMLDivElement | null>(null);
 
-  const [providerFilter, setProviderFilter] = useState('all');
   const [openProvider, setOpenProvider] = useState<Doctor | null>(null);
   const [openFaq, setOpenFaq] = useState<number>(0);
   const [missionVisible, setMissionVisible] = useState(false);
@@ -119,14 +117,6 @@ const Home: React.FC = () => {
       document.body.style.overflow = '';
     };
   }, [openProvider]);
-
-  const filteredProviders = useMemo(
-    () =>
-      providerFilter === 'all'
-        ? DOCTORS
-        : DOCTORS.filter((d) => d.tags?.includes(providerFilter)),
-    [providerFilter],
-  );
 
   const heroFeatured = SERVICES.find((s) => s.feature);
   const restServices = SERVICES.filter((s) => !s.feature).slice(0, 4);
@@ -464,65 +454,53 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* ==================== TEAM ==================== */}
-      <section id="team" className="hh-team hh-section">
+      {/* ==================== TEAM (compact strip) ==================== */}
+      <section id="team" className="hh-team hh-section-tight">
         <div className="container">
-          <Reveal as="div" className="hh-section-header">
-            <span className="eyebrow">{t.team.eyebrow}</span>
-            <h2 className="font-display hh-section-title">
-              {t.team.title_a} <span className="hh-em">{t.team.title_em}</span>
-              {t.team.title_b}
-            </h2>
-            <p className="lead hh-section-lead">{t.team.lead}</p>
-          </Reveal>
+          <div className="hh-team-strip">
+            <Reveal as="div" className="hh-team-strip-copy">
+              <span className="eyebrow">{t.team.eyebrow}</span>
+              <h2 className="font-display hh-team-strip-title">
+                {DOCTORS.length} providers, <span className="hh-em">one phone call.</span>
+              </h2>
+              <p className="hh-team-strip-lead">{t.team.lead}</p>
+              <Link to="/about" className="btn btn-ghost hh-team-strip-cta">
+                Meet the team <ArrowRight size={14} />
+              </Link>
+            </Reveal>
 
-          <div className="hh-team-filters">
-            {PROVIDER_FILTER_TABS.map((tab) => {
-              const count =
-                tab.id === 'all'
-                  ? DOCTORS.length
-                  : DOCTORS.filter((d) => d.tags?.includes(tab.id)).length;
-              const isActive = providerFilter === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setProviderFilter(tab.id)}
-                  className={`hh-team-filter ${isActive ? 'is-active' : ''}`}
-                >
-                  {tab.label}
-                  {isActive && <span className="hh-team-filter-count">{count}</span>}
-                </button>
-              );
-            })}
-          </div>
-
-          <div className="hh-team-grid">
-            {filteredProviders.map((p) => (
-              <button
-                key={p.id}
-                onClick={() => setOpenProvider(p)}
-                className="hh-provider card-lift"
-              >
-                <div className="hh-provider-portrait">
-                  {p.image ? (
-                    <img src={p.image} alt={p.name} loading="lazy" />
-                  ) : (
-                    <div className="hh-provider-initials font-display">{initialsFor(p.name)}</div>
-                  )}
-                  {p.featured && (
-                    <span className="hh-provider-badge hh-provider-badge-gold">Founder</span>
-                  )}
-                  {p.accepting && !p.featured && (
-                    <span className="hh-provider-badge">Accepting</span>
-                  )}
-                </div>
-                <div className="hh-provider-meta">
-                  <h3 className="font-display hh-provider-name">{p.name}</h3>
-                  <div className="small-label hh-provider-role">{p.role || p.specialty}</div>
-                  <div className="hh-provider-specialty font-display">{p.specialty}</div>
-                </div>
-              </button>
-            ))}
+            <Reveal as="div" delay={120} className="hh-team-strip-side">
+              <div className="hh-avatar-row" role="list">
+                {DOCTORS.slice(0, 5).map((p, i) => (
+                  <button
+                    key={p.id}
+                    onClick={() => setOpenProvider(p)}
+                    className="hh-avatar"
+                    style={{ zIndex: 5 - i }}
+                    aria-label={`${p.name} — ${p.role ?? p.specialty}`}
+                  >
+                    {p.image ? (
+                      <img src={p.image} alt="" loading="lazy" />
+                    ) : (
+                      <span className="hh-avatar-initials font-display">
+                        {initialsFor(p.name)}
+                      </span>
+                    )}
+                  </button>
+                ))}
+                {DOCTORS.length > 5 && (
+                  <Link to="/about" className="hh-avatar hh-avatar-more font-display">
+                    +{DOCTORS.length - 5}
+                  </Link>
+                )}
+              </div>
+              <div className="hh-team-strip-meta">
+                <span className="hh-team-strip-pill">
+                  <span className="hh-team-strip-dot" aria-hidden />
+                  All accepting new patients
+                </span>
+              </div>
+            </Reveal>
           </div>
         </div>
       </section>
@@ -795,7 +773,7 @@ const Home: React.FC = () => {
         /* ============= HERO ============= */
         .hh-hero {
           position: relative;
-          padding-block: clamp(3.5rem, 6vw, 6rem) clamp(2.5rem, 4vw, 4rem);
+          padding-block: clamp(2.4rem, 5vw, 5.5rem) clamp(2rem, 4vw, 4rem);
           overflow: hidden;
         }
         .hh-hero-bg { position: absolute; inset: 0; pointer-events: none; }
@@ -881,29 +859,30 @@ const Home: React.FC = () => {
           display: grid;
           grid-template-columns: repeat(3, auto);
           justify-content: start;
-          gap: clamp(2rem, 5vw, 4rem);
+          gap: clamp(1.4rem, 4vw, 3.6rem);
         }
-        @media (max-width: 600px) { .hh-hero-stats { grid-template-columns: repeat(3, 1fr); gap: 1rem; } }
+        @media (max-width: 600px) { .hh-hero-stats { grid-template-columns: repeat(3, 1fr); gap: 0.8rem; } }
         .hh-hero-stat-num {
-          font-size: clamp(2rem, 3.6vw, 2.8rem);
+          font-size: clamp(1.6rem, 3.4vw, 2.6rem);
           line-height: 1;
           color: var(--forest-deep);
           display: flex;
           align-items: baseline;
           gap: 0.1em;
+          letter-spacing: -0.015em;
         }
         .hh-hero-stats .small-label { margin-top: 0.45rem; color: var(--ink-mute); display: block; }
 
         .hh-hero-next {
           display: grid;
           grid-template-columns: 1fr auto;
-          gap: 1.4rem;
+          gap: 1.2rem;
           align-items: center;
-          padding: 0.95rem 1.2rem;
+          padding: 0.9rem 1.1rem;
           border-radius: var(--radius-lg);
-          min-width: 320px;
+          min-width: 0;
         }
-        @media (max-width: 480px) { .hh-hero-next { grid-template-columns: 1fr; gap: 0.8rem; } }
+        @media (max-width: 600px) { .hh-hero-next { grid-template-columns: 1fr; gap: 0.7rem; } }
         .hh-hero-next-title {
           font-size: 1.18rem;
           color: var(--forest-deep);
@@ -1104,7 +1083,7 @@ const Home: React.FC = () => {
 
         /* ============= MISSION ============= */
         .hh-mission {
-          padding-block: clamp(5rem, 8vw, 8rem);
+          padding-block: clamp(3.5rem, 7vw, 7rem);
           background: linear-gradient(170deg, #07172d 0%, #0b2747 60%, #134075 100%);
           color: var(--bone);
           position: relative;
@@ -1132,7 +1111,7 @@ const Home: React.FC = () => {
         }
         @media (max-width: 720px) { .hh-mission-stats { grid-template-columns: repeat(2, 1fr); gap: 1.6rem; } }
         .hh-mission-stat-num {
-          font-size: clamp(2.8rem, 5.5vw, 5rem);
+          font-size: clamp(2.2rem, 5vw, 4.6rem);
           line-height: 1;
           color: var(--bone);
           letter-spacing: -0.02em;
@@ -1149,86 +1128,102 @@ const Home: React.FC = () => {
         }
         .hh-mission-foot .small-label { color: var(--terracotta-pale); margin-bottom: 0.7rem; display: block; }
 
-        /* ============= TEAM ============= */
+        /* ============= TEAM (compact strip on home) ============= */
         .hh-team {
           background: linear-gradient(180deg, var(--ivory-deep), var(--sand-soft));
         }
-        .hh-team-filters {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 0.5rem;
-          margin: 0 0 clamp(2rem, 3vw, 2.6rem);
-          padding-bottom: 1rem;
-          border-bottom: 1px solid var(--line);
+        .hh-team-strip {
+          display: grid;
+          grid-template-columns: 1.1fr 0.9fr;
+          gap: clamp(2rem, 4vw, 4rem);
+          align-items: center;
         }
-        .hh-team-filter {
-          padding: 0.55rem 1rem;
+        @media (max-width: 880px) { .hh-team-strip { grid-template-columns: 1fr; gap: 1.6rem; } }
+        .hh-team-strip-copy { display: grid; gap: 1rem; align-content: start; max-width: 50ch; }
+        .hh-team-strip-title {
+          font-size: var(--type-h2);
+          line-height: 1.04;
+          letter-spacing: -0.025em;
+          color: var(--forest-deep);
+          margin: 0;
+          font-weight: 400;
+        }
+        .hh-team-strip-lead { color: var(--ink-soft); line-height: 1.65; margin: 0; }
+        .hh-team-strip-cta { align-self: flex-start; }
+
+        .hh-team-strip-side { display: grid; gap: 1rem; align-content: center; justify-items: start; }
+        @media (max-width: 880px) { .hh-team-strip-side { justify-items: start; } }
+
+        .hh-avatar-row { display: inline-flex; align-items: center; padding-left: 12px; }
+        .hh-avatar {
+          width: 72px;
+          height: 72px;
           border-radius: 999px;
-          border: 1px solid var(--line);
-          background: rgba(255,255,255,0.6);
-          backdrop-filter: blur(10px);
-          color: var(--ink-soft);
-          font: inherit;
-          font-size: 0.9rem;
-          cursor: pointer;
-          transition: 200ms ease;
-        }
-        .hh-team-filter:hover { border-color: var(--forest); color: var(--forest-deep); }
-        .hh-team-filter.is-active { background: var(--forest); color: var(--bone); border-color: var(--forest); }
-        .hh-team-filter-count { margin-left: 0.5rem; opacity: 0.7; font-size: 0.8rem; }
-
-        .hh-team-grid {
-          display: grid;
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-          gap: clamp(1rem, 1.6vw, 1.4rem);
-        }
-        @media (max-width: 1024px) { .hh-team-grid { grid-template-columns: repeat(3, 1fr); } }
-        @media (max-width: 800px)  { .hh-team-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 480px)  { .hh-team-grid { grid-template-columns: 1fr; } }
-
-        .hh-provider {
-          background: rgba(255,255,255,0.72);
-          backdrop-filter: blur(12px);
-          border: 1px solid rgba(255,255,255,0.62);
-          border-radius: var(--radius-xl);
-          padding: 0;
-          text-align: left;
-          font: inherit;
-          color: inherit;
-          cursor: pointer;
           overflow: hidden;
-          display: grid;
-          align-content: start;
-        }
-        .hh-provider-portrait { position: relative; aspect-ratio: 4/5; background: var(--ivory-deep); overflow: hidden; }
-        .hh-provider-portrait img { width: 100%; height: 100%; object-fit: cover; transition: 600ms ease; }
-        .hh-provider:hover .hh-provider-portrait img { transform: scale(1.04); }
-        .hh-provider-initials {
-          width: 100%; height: 100%;
+          background: var(--ivory-deep);
+          border: 3px solid var(--bone);
+          box-shadow: 0 6px 18px -8px rgba(28, 24, 22, 0.35);
+          margin-left: -16px;
+          padding: 0;
+          cursor: pointer;
+          transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1), z-index 0s 240ms;
+          position: relative;
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          font-size: clamp(3rem, 6vw, 5rem);
           color: var(--forest-deep);
+        }
+        @media (max-width: 480px) {
+          .hh-avatar { width: 60px; height: 60px; border-width: 2.5px; margin-left: -14px; }
+          .hh-avatar-row { padding-left: 10px; }
+        }
+        .hh-avatar:first-child { margin-left: 0; }
+        .hh-avatar:hover, .hh-avatar:focus-visible {
+          transform: translateY(-4px) scale(1.06);
+          z-index: 20 !important;
+          transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .hh-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .hh-avatar-initials {
+          font-size: 1.1rem;
           background: linear-gradient(135deg, var(--ivory-deep), var(--sage-pale));
-        }
-        .hh-provider-badge {
-          position: absolute; top: 0.85rem; left: 0.85rem;
-          background: rgba(255,255,255,0.95);
+          width: 100%;
+          height: 100%;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
           color: var(--forest-deep);
-          font-family: 'JetBrains Mono', monospace;
-          font-size: 0.65rem;
-          letter-spacing: 0.18em;
-          text-transform: uppercase;
-          padding: 0.3rem 0.65rem;
-          border-radius: 999px;
-          font-weight: 700;
         }
-        .hh-provider-badge-gold { background: var(--gold); color: var(--bone); }
-        .hh-provider-meta { padding: 1.15rem 1.3rem 1.4rem; }
-        .hh-provider-name { font-size: 1.1rem; color: var(--forest-deep); margin: 0; line-height: 1.2; }
-        .hh-provider-role { color: var(--terracotta-deep); margin-top: 0.5rem; }
-        .hh-provider-specialty { color: var(--ink-soft); font-size: 0.88rem; font-style: italic; margin-top: 0.55rem; }
+        .hh-avatar-more {
+          background: var(--forest-deep);
+          color: var(--bone);
+          font-size: 0.95rem;
+          letter-spacing: 0;
+          text-decoration: none;
+        }
+        .hh-avatar-more:hover { color: var(--bone); }
+
+        .hh-team-strip-meta { display: inline-flex; align-items: center; gap: 0.5rem; }
+        .hh-team-strip-pill {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.4rem 0.9rem;
+          border-radius: 999px;
+          background: rgba(34, 197, 94, 0.10);
+          color: #166534;
+          border: 1px solid rgba(34, 197, 94, 0.22);
+          font-size: 0.8rem;
+          font-weight: 600;
+        }
+        .hh-team-strip-dot {
+          width: 7px;
+          height: 7px;
+          border-radius: 999px;
+          background: #16a34a;
+          box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.55);
+          animation: live-pulse 1.6s ease-in-out infinite;
+        }
 
         /* ============= LOCATION ============= */
         .hh-location-grid {
@@ -1363,7 +1358,7 @@ const Home: React.FC = () => {
         /* ============= FINAL CTA ============= */
         .hh-cta-card {
           position: relative;
-          padding: clamp(2.4rem, 5vw, 4.5rem);
+          padding: clamp(1.8rem, 4.5vw, 4.5rem);
           border-radius: var(--radius-2xl);
           background:
             radial-gradient(120% 80% at 85% 0%, rgba(225, 27, 27,0.42), transparent 58%),
@@ -1371,7 +1366,7 @@ const Home: React.FC = () => {
           color: var(--bone);
           overflow: hidden;
           display: grid;
-          gap: 1.4rem;
+          gap: 1.2rem;
           max-width: 1100px;
           margin: 0 auto;
         }
