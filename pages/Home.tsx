@@ -35,7 +35,6 @@ import { Doctor, ServiceItem } from '../types';
 
 import StatCounter from '../components/Harmony/StatCounter';
 import BeforeAfterSlider from '../components/Harmony/BeforeAfterSlider';
-import SymptomChecker from '../components/Harmony/SymptomChecker';
 import DoctorModal from '../components/Harmony/DoctorModal';
 import MobileBottomBar from '../components/Harmony/MobileBottomBar';
 import LocationsMap from '../components/Harmony/LocationsMap';
@@ -78,24 +77,11 @@ const Home: React.FC = () => {
   const { now, isOpenNow, greeting, closeLabel } = useClinicStatus();
 
   const heroRef = useRef<HTMLElement | null>(null);
-  const missionRef = useRef<HTMLDivElement | null>(null);
 
   const [openProvider, setOpenProvider] = useState<Doctor | null>(null);
   const [openFaq, setOpenFaq] = useState<number>(0);
-  const [missionVisible, setMissionVisible] = useState(false);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
-  const [emergencyFlash, setEmergencyFlash] = useState(false);
   const [heroVisible, setHeroVisible] = useState(false);
-
-  useEffect(() => {
-    if (!missionRef.current) return;
-    const obs = new IntersectionObserver(
-      ([e]) => e.isIntersecting && setMissionVisible(true),
-      { threshold: 0.3 },
-    );
-    obs.observe(missionRef.current);
-    return () => obs.disconnect();
-  }, []);
 
   useEffect(() => {
     const tid = window.setTimeout(() => setHeroVisible(true), 350);
@@ -129,10 +115,6 @@ const Home: React.FC = () => {
 
   return (
     <>
-      {emergencyFlash && (
-        <div className="fixed inset-0 pointer-events-none z-[60] emergency-flash-active" />
-      )}
-
       {/* ==================== HERO ==================== */}
       <section ref={heroRef} id="top" className="hh-hero grain">
         <div className="hh-hero-bg" aria-hidden>
@@ -266,16 +248,6 @@ const Home: React.FC = () => {
       {/* ==================== INSURANCE CHECKER ==================== */}
       <InsuranceChecker t={t} plans={INSURANCE_PLANS as any} callTel={CLINIC.tel} />
 
-      {/* ==================== SYMPTOM CHECKER (AI) ==================== */}
-      <SymptomChecker
-        onOpenProvider={(d) => setOpenProvider(d)}
-        onBook={openBookingModal}
-        onEmergency={() => {
-          setEmergencyFlash(true);
-          window.setTimeout(() => setEmergencyFlash(false), 600);
-        }}
-      />
-
       {/* ==================== SERVICES ==================== */}
       <section id="services" className="hh-section">
         <div className="container">
@@ -388,69 +360,6 @@ const Home: React.FC = () => {
               </div>
             </Reveal>
           </div>
-        </div>
-      </section>
-
-      {/* ==================== MISSION ==================== */}
-      <section
-        id="about"
-        ref={missionRef}
-        className="hh-mission grain"
-      >
-        <div className="container hh-mission-inner">
-          <Reveal as="div" className="hh-mission-head">
-            <span className="eyebrow eyebrow-light">{t.founder.eyebrow}</span>
-            <h2 className="font-display hh-mission-title">
-              We started this <br />
-              because <span className="hh-mission-em">Cenla</span> <br />
-              deserved better.
-            </h2>
-          </Reveal>
-          <Reveal as="div" className="hh-mission-letter" delay={120}>
-            <p className="hh-mission-letter-body">{t.founder.letter}</p>
-            <div className="small-label hh-mission-sig">— {t.founder.sig}</div>
-          </Reveal>
-
-          <div className="gold-rule hh-mission-rule" />
-          <div className="hh-mission-stats">
-            {[
-              { num: 1, label: 'Location', sub: '1587 N Bolton Ave, Alexandria, LA' },
-              { num: DOCTORS.length, label: 'Providers', sub: 'MDs and nurse practitioners' },
-              { num: 20, suffix: 'K+', label: 'Annual visits', sub: 'Across primary, cardiac, GI, and labs' },
-              {
-                num: CLINIC.rating,
-                decimals: 1,
-                suffix: '★',
-                label: 'Patient rating',
-                sub: `From ${CLINIC.reviewCount}+ verified reviews`,
-              },
-            ].map((stat) => (
-              <div key={stat.label}>
-                <div className="hh-mission-stat-num font-display">
-                  <StatCounter
-                    target={stat.num}
-                    decimals={stat.decimals || 0}
-                    suffix={stat.suffix || ''}
-                    trigger={missionVisible}
-                  />
-                </div>
-                <div className="small-label hh-mission-stat-label">{stat.label}</div>
-                <div className="hh-mission-stat-sub">{stat.sub}</div>
-              </div>
-            ))}
-          </div>
-          <div className="gold-rule hh-mission-rule" />
-
-          <Reveal as="div" className="hh-mission-foot" delay={120}>
-            <span className="small-label">Founded {CLINIC.foundedYear} · Cenla Family Medicine Associates</span>
-            <p>
-              A care team partnering with{' '}
-              <span style={{ color: 'var(--bone)' }}>
-                LSU Health, Rapides Regional, and Christus St. Frances Cabrini
-              </span>{' '}
-              — practicing right here at home.
-            </p>
-          </Reveal>
         </div>
       </section>
 
@@ -1080,53 +989,6 @@ const Home: React.FC = () => {
         }
         .hh-spotlight-num { font-size: clamp(1.4rem, 2.6vw, 1.9rem); color: var(--terracotta-deep); flex-shrink: 0; min-width: 9ch; }
         .hh-spotlight-caption { text-align: center; margin-top: 0.7rem; }
-
-        /* ============= MISSION ============= */
-        .hh-mission {
-          padding-block: clamp(3.5rem, 7vw, 7rem);
-          background: linear-gradient(170deg, #07172d 0%, #0b2747 60%, #134075 100%);
-          color: var(--bone);
-          position: relative;
-        }
-        .hh-mission-inner { position: relative; }
-        .hh-mission-head { display: grid; gap: 1rem; max-width: 30ch; }
-        .hh-mission-title {
-          font-size: clamp(2.4rem, 5.5vw, 4.4rem);
-          line-height: 1.04;
-          color: var(--bone);
-          margin: 0;
-          letter-spacing: -0.025em;
-          font-weight: 400;
-        }
-        .hh-mission-em { color: var(--terracotta-pale); font-style: italic; }
-        .hh-mission-letter { margin-top: 1.8rem; max-width: 60ch; }
-        .hh-mission-letter-body { color: var(--sage-light); font-size: 1.08rem; line-height: 1.75; margin: 0 0 0.7rem; }
-        .hh-mission-sig { color: var(--terracotta-pale); }
-
-        .hh-mission-rule { margin: clamp(2.4rem, 4vw, 3.4rem) 0; opacity: 0.5; }
-        .hh-mission-stats {
-          display: grid;
-          grid-template-columns: repeat(4, minmax(0, 1fr));
-          gap: clamp(1.4rem, 2.5vw, 2.4rem);
-        }
-        @media (max-width: 720px) { .hh-mission-stats { grid-template-columns: repeat(2, 1fr); gap: 1.6rem; } }
-        .hh-mission-stat-num {
-          font-size: clamp(2.2rem, 5vw, 4.6rem);
-          line-height: 1;
-          color: var(--bone);
-          letter-spacing: -0.02em;
-        }
-        .hh-mission-stat-label { color: var(--terracotta-pale); margin: 0.7rem 0 0.25rem; }
-        .hh-mission-stat-sub { color: var(--sage-light); font-size: 0.9rem; line-height: 1.55; }
-
-        .hh-mission-foot {
-          text-align: center;
-          margin: clamp(2rem, 3.5vw, 3rem) auto 0;
-          max-width: 56ch;
-          color: var(--sage-light);
-          font-size: 0.96rem;
-        }
-        .hh-mission-foot .small-label { color: var(--terracotta-pale); margin-bottom: 0.7rem; display: block; }
 
         /* ============= TEAM (compact strip on home) ============= */
         .hh-team {
