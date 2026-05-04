@@ -79,21 +79,8 @@ const Header: React.FC = () => {
 
       <header className={`hh-nav ${scrolled ? 'is-scrolled' : ''}`}>
         <div className="hh-nav-inner">
-          <Link to={PageRoute.HOME} className="hh-brand">
-            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-              <circle cx="20" cy="20" r="19" stroke="var(--forest)" strokeWidth="1.5" />
-              <path
-                d="M13 14v12M27 14v12M13 20h14"
-                stroke="var(--forest)"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-              <circle cx="20" cy="20" r="2.8" fill="var(--terracotta-deep)" />
-            </svg>
-            <div className="hh-brand-text">
-              <div className="font-display hh-brand-name">theCLINICS</div>
-              <div className="small-label hh-brand-tag">Cenla · Modern healthcare</div>
-            </div>
+          <Link to={PageRoute.HOME} className="hh-brand" aria-label="theCLINICS — home">
+            <img src="/logo.png" alt="theCLINICS" className="hh-brand-logo" />
           </Link>
 
           <nav className="hh-links" aria-label="Primary">
@@ -241,21 +228,21 @@ const Header: React.FC = () => {
           .hh-top-bar { display: block; }
         }
         .hh-top-inner {
-          max-width: 1280px;
+          width: var(--container);
           margin: 0 auto;
-          padding: 0.55rem 1.2rem;
+          padding: 0.6rem 0;
           display: flex;
           align-items: center;
           justify-content: space-between;
           gap: 1rem;
         }
-        .hh-top-left, .hh-top-right { display: flex; align-items: center; gap: 1rem; }
-        .hh-top-divider { color: rgba(255,255,255,0.3); }
-        .hh-top-phone { color: var(--bone); opacity: 0.92; }
+        .hh-top-left, .hh-top-right { display: flex; align-items: center; gap: 1.2rem; }
+        .hh-top-divider { color: rgba(255,255,255,0.28); }
+        .hh-top-phone { color: var(--bone); opacity: 0.92; letter-spacing: 0.01em; }
 
         .hh-lang { display: inline-flex; gap: 0.15rem; padding: 0.15rem; border-radius: 999px; background: rgba(255,255,255,0.08); }
         .hh-lang-btn {
-          padding: 0.2rem 0.6rem;
+          padding: 0.22rem 0.65rem;
           border-radius: 999px;
           border: none;
           background: transparent;
@@ -266,50 +253,60 @@ const Header: React.FC = () => {
           cursor: pointer;
           transition: 200ms ease;
         }
+        .hh-lang-btn:hover { color: var(--bone); }
         .hh-lang-btn.is-active { background: var(--bone); color: var(--forest-deep); }
 
         .hh-nav {
           position: sticky;
           top: 0;
           z-index: 50;
-          background: rgba(248,251,254,0.5);
-          backdrop-filter: blur(20px) saturate(160%);
-          -webkit-backdrop-filter: blur(20px) saturate(160%);
+          background: rgba(248,251,254,0.55);
+          backdrop-filter: blur(22px) saturate(160%);
+          -webkit-backdrop-filter: blur(22px) saturate(160%);
           border-bottom: 1px solid transparent;
           transition: 280ms ease;
         }
         .hh-nav.is-scrolled {
-          background: rgba(248,251,254,0.85);
+          background: rgba(248,251,254,0.88);
           border-bottom: 1px solid var(--line);
-          box-shadow: 0 6px 24px -16px rgba(7,46,88,0.18);
+          box-shadow: 0 8px 28px -18px rgba(7,46,88,0.22);
         }
         .hh-nav-inner {
-          max-width: 1280px;
+          width: var(--container);
           margin: 0 auto;
-          padding: 0.9rem 1.2rem;
+          padding: 1rem 0;
           display: flex;
           align-items: center;
           justify-content: space-between;
-          gap: 1rem;
+          gap: 1.2rem;
         }
-        .hh-brand { display: inline-flex; align-items: center; gap: 0.7rem; }
-        .hh-brand-text { line-height: 1; }
-        .hh-brand-name { font-size: 1.18rem; color: var(--forest-deep); }
-        .hh-brand-tag { margin-top: 0.35rem; opacity: 0.72; }
+        .hh-brand { display: inline-flex; align-items: center; gap: 0.8rem; flex-shrink: 0; }
+        .hh-brand-logo {
+          height: 48px;
+          width: auto;
+          object-fit: contain;
+          display: block;
+          transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .hh-brand:hover .hh-brand-logo { transform: scale(1.04); }
+        @media (max-width: 600px) {
+          .hh-brand-logo { height: 40px; }
+        }
 
         .hh-links {
           display: none;
-          gap: 1.6rem;
+          gap: 2rem;
           align-items: center;
-          font-size: 0.9rem;
+          font-size: 0.92rem;
           color: var(--ink-soft);
         }
         @media (min-width: 1024px) { .hh-links { display: flex; } }
-        .hh-link { color: var(--ink-soft); }
+        .hh-link { color: var(--ink-soft); transition: color 180ms ease; }
+        .hh-link:hover { color: var(--forest-deep); }
 
-        .hh-actions { display: flex; align-items: center; gap: 0.5rem; }
+        .hh-actions { display: flex; align-items: center; gap: 0.55rem; }
         .hh-call-btn { padding: 0.7rem 1rem; min-height: 44px; }
-        .hh-book-btn { padding: 0.7rem 1.2rem; min-height: 44px; }
+        .hh-book-btn { padding: 0.7rem 1.3rem; min-height: 44px; }
         @media (max-width: 1023px) { .hh-book-btn { display: none; } }
 
         .hh-menu-toggle {
@@ -375,16 +372,16 @@ const Header: React.FC = () => {
         .hh-user-item.is-danger { color: #b91c1c; }
 
         .hh-mobile-menu {
-          background: rgba(248,251,254,0.96);
-          backdrop-filter: blur(20px);
+          background: rgba(248,251,254,0.97);
+          backdrop-filter: blur(22px);
           border-top: 1px solid var(--line);
         }
         .hh-mobile-inner {
-          max-width: 1280px;
+          width: var(--container);
           margin: 0 auto;
-          padding: 1rem 1.2rem 1.4rem;
+          padding: 1.2rem 0 1.6rem;
           display: grid;
-          gap: 0.6rem;
+          gap: 0.7rem;
         }
         .hh-mobile-link {
           display: block;

@@ -157,12 +157,12 @@ const Services: React.FC = () => {
 
       <style>{`
         .hh-page-hero {
-          padding: clamp(3rem, 6vw, 5rem) 0 clamp(2rem, 4vw, 3rem);
+          padding-block: clamp(3.5rem, 6vw, 6rem) clamp(2.5rem, 4vw, 4rem);
         }
         .hh-page-title {
-          font-size: clamp(2.4rem, 6vw, 4.6rem);
+          font-size: var(--type-h1);
           line-height: 1.02;
-          letter-spacing: -0.022em;
+          letter-spacing: -0.025em;
           color: var(--forest-deep);
           margin: 0;
           font-weight: 400;
@@ -170,16 +170,16 @@ const Services: React.FC = () => {
         .hh-page-title .hh-em { color: var(--terracotta-deep); font-style: italic; }
 
         .hh-services-table-section {
-          padding: 1rem 0 clamp(3rem, 6vw, 5rem);
+          padding-block: 0 var(--space-section);
         }
         .hh-services-table {
           list-style: none;
           padding: 0;
           margin: 0;
-          background: rgba(255,255,255,0.55);
-          backdrop-filter: blur(14px);
-          border: 1px solid rgba(255,255,255,0.55);
-          border-radius: 24px;
+          background: rgba(255,255,255,0.6);
+          backdrop-filter: blur(16px);
+          border: 1px solid rgba(255,255,255,0.6);
+          border-radius: var(--radius-2xl);
           overflow: hidden;
           box-shadow: var(--shadow-card);
         }
@@ -191,10 +191,10 @@ const Services: React.FC = () => {
         .hh-service-row-btn {
           width: 100%;
           display: grid;
-          grid-template-columns: 48px 36px minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1.2fr) 24px;
+          grid-template-columns: 56px 44px minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1.2fr) 24px;
           align-items: center;
-          gap: 1rem;
-          padding: 1.05rem 1.4rem;
+          gap: 1.2rem;
+          padding: 1.2rem 1.6rem;
           background: none;
           border: none;
           text-align: left;
@@ -205,20 +205,20 @@ const Services: React.FC = () => {
         }
         .hh-service-row-btn:hover { background: rgba(255,255,255,0.65); }
         .hh-service-row.is-open .hh-service-row-btn:hover { background: transparent; }
-        .hh-service-row-num { color: var(--sage-light); font-size: 1.4rem; }
+        .hh-service-row-num { color: var(--sage-light); font-size: 1.5rem; }
         .hh-service-row.is-open .hh-service-row-num { color: var(--terracotta-deep); }
         .hh-service-row-icon {
-          width: 36px;
-          height: 36px;
+          width: 44px;
+          height: 44px;
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          border-radius: 10px;
+          border-radius: var(--radius-sm);
           background: rgba(56,189,248,0.16);
           color: var(--forest-deep);
         }
-        .hh-service-row-title { font-size: 1.05rem; color: var(--forest-deep); line-height: 1; }
-        .hh-service-row-tagline { font-style: italic; color: var(--ink-soft); font-size: 0.92rem; }
+        .hh-service-row-title { font-size: 1.1rem; color: var(--forest-deep); line-height: 1.1; letter-spacing: -0.01em; }
+        .hh-service-row-tagline { font-style: italic; color: var(--ink-soft); font-size: 0.95rem; }
         .hh-service-row-expect {
           color: var(--ink-mute);
           font-size: 0.7rem;
@@ -228,9 +228,9 @@ const Services: React.FC = () => {
 
         @media (max-width: 880px) {
           .hh-service-row-btn {
-            grid-template-columns: 36px 32px 1fr 24px;
+            grid-template-columns: 36px 36px 1fr 24px;
             row-gap: 0.4rem;
-            padding: 0.95rem 1rem;
+            padding: 1rem 1.1rem;
           }
           .hh-service-row-tagline,
           .hh-service-row-expect {
@@ -240,18 +240,18 @@ const Services: React.FC = () => {
         }
 
         .hh-service-row-detail {
-          padding: 0 1.4rem 1.4rem 5.4rem;
+          padding: 0 1.6rem 1.6rem 6.4rem;
           display: grid;
           gap: 1rem;
         }
         @media (max-width: 880px) {
-          .hh-service-row-detail { padding: 0 1rem 1.2rem; }
+          .hh-service-row-detail { padding: 0 1.1rem 1.4rem; }
         }
         .hh-service-row-desc { color: var(--ink-soft); line-height: 1.6; max-width: 70ch; margin: 0; }
         .hh-service-row-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
 
         .hh-services-call {
-          padding: clamp(2.4rem, 4vw, 3.4rem) 0;
+          padding-block: clamp(2.8rem, 4.5vw, 4rem);
           background: var(--forest-deep);
           color: var(--bone);
         }

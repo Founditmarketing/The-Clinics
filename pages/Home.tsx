@@ -89,7 +89,6 @@ const Home: React.FC = () => {
   const [emergencyFlash, setEmergencyFlash] = useState(false);
   const [heroVisible, setHeroVisible] = useState(false);
 
-  // Stats reveal on scroll
   useEffect(() => {
     if (!missionRef.current) return;
     const obs = new IntersectionObserver(
@@ -100,13 +99,11 @@ const Home: React.FC = () => {
     return () => obs.disconnect();
   }, []);
 
-  // Hero stats trigger
   useEffect(() => {
-    const t = window.setTimeout(() => setHeroVisible(true), 350);
-    return () => window.clearTimeout(t);
+    const tid = window.setTimeout(() => setHeroVisible(true), 350);
+    return () => window.clearTimeout(tid);
   }, []);
 
-  // Testimonial auto-rotate
   useEffect(() => {
     const id = window.setInterval(
       () => setActiveTestimonial((i) => (i + 1) % TESTIMONIALS.length),
@@ -115,7 +112,6 @@ const Home: React.FC = () => {
     return () => window.clearInterval(id);
   }, []);
 
-  // Body lock for provider modal
   useEffect(() => {
     if (openProvider) document.body.style.overflow = 'hidden';
     else document.body.style.overflow = '';
@@ -133,7 +129,7 @@ const Home: React.FC = () => {
   );
 
   const heroFeatured = SERVICES.find((s) => s.feature);
-  const restServices = SERVICES.filter((s) => !s.feature).slice(0, 5);
+  const restServices = SERVICES.filter((s) => !s.feature).slice(0, 4);
 
   const intentCards = [
     { key: 'sick',     copy: t.intent.sick,     icon: <Zap size={26} strokeWidth={1.5} /> },
@@ -187,31 +183,6 @@ const Home: React.FC = () => {
                 <Phone size={16} strokeWidth={1.8} />
                 <span className="font-mono">{CLINIC.phone}</span>
               </a>
-              <Link to="/services" className="btn btn-text">
-                {t.hero.cta_secondary} →
-              </Link>
-            </Reveal>
-
-            <Reveal as="div" className="hh-hero-stats" delay={700}>
-              <div>
-                <div className="hh-hero-stat-num font-display">
-                  <StatCounter target={DOCTORS.length} trigger={heroVisible} />
-                </div>
-                <div className="small-label">{t.hero.stats_providers}</div>
-              </div>
-              <div>
-                <div className="hh-hero-stat-num font-display">
-                  <StatCounter target={20} suffix="K+" trigger={heroVisible} />
-                </div>
-                <div className="small-label">visits / year</div>
-              </div>
-              <div>
-                <div className="hh-hero-stat-num font-display">
-                  <StatCounter target={CLINIC.rating} decimals={1} trigger={heroVisible} />
-                  <span style={{ color: 'var(--terracotta-deep)' }}>★</span>
-                </div>
-                <div className="small-label">patient rating</div>
-              </div>
             </Reveal>
           </div>
 
@@ -235,28 +206,50 @@ const Home: React.FC = () => {
                 </div>
               </div>
             </div>
-
-            <div className="hh-hero-side-card hh-glass-surface">
-              <div className="small-label">{t.hero.proof_title}</div>
-              <div className="hh-hero-side-row">
-                <div>
-                  <div className="font-display hh-hero-side-title">{t.hero.proof_loc}, LA</div>
-                  <div className="hh-hero-side-meta">{CLINIC.address.split(',')[0]}</div>
-                </div>
-                <div className="hh-hero-side-time font-mono">
-                  Today<br />3:30p
-                </div>
-              </div>
-              <button onClick={openBookingModal} className="btn btn-primary" style={{ width: '100%' }}>
-                Reserve this slot →
-              </button>
-            </div>
           </Reveal>
+        </div>
+
+        {/* Hero footer band — stats + next slot */}
+        <div className="container hh-hero-footer">
+          <div className="hh-hero-stats">
+            <div>
+              <div className="hh-hero-stat-num font-display">
+                <StatCounter target={DOCTORS.length} trigger={heroVisible} />
+              </div>
+              <div className="small-label">{t.hero.stats_providers}</div>
+            </div>
+            <div>
+              <div className="hh-hero-stat-num font-display">
+                <StatCounter target={20} suffix="K+" trigger={heroVisible} />
+              </div>
+              <div className="small-label">visits / year</div>
+            </div>
+            <div>
+              <div className="hh-hero-stat-num font-display">
+                <StatCounter target={CLINIC.rating} decimals={1} trigger={heroVisible} />
+                <span style={{ color: 'var(--terracotta-deep)' }}>★</span>
+              </div>
+              <div className="small-label">patient rating</div>
+            </div>
+          </div>
+
+          <div className="hh-hero-next hh-glass-surface">
+            <div>
+              <div className="small-label">{t.hero.proof_title}</div>
+              <div className="font-display hh-hero-next-title">
+                {t.hero.proof_loc}, LA
+                <span className="hh-hero-next-time font-mono">Today 3:30p</span>
+              </div>
+            </div>
+            <button onClick={openBookingModal} className="btn btn-primary hh-hero-next-cta">
+              Reserve <ArrowRight size={14} />
+            </button>
+          </div>
         </div>
       </section>
 
       {/* ==================== INTENT GRID ==================== */}
-      <section className="hh-intent" id="intent">
+      <section className="hh-intent hh-section-tight" id="intent">
         <div className="container">
           <Reveal as="div" className="hh-section-header">
             <span className="eyebrow">{t.intent.eyebrow}</span>
@@ -294,7 +287,7 @@ const Home: React.FC = () => {
       />
 
       {/* ==================== SERVICES ==================== */}
-      <section id="services" className="hh-services">
+      <section id="services" className="hh-section">
         <div className="container">
           <Reveal as="div" className="hh-section-header hh-section-header-row">
             <div>
@@ -310,16 +303,16 @@ const Home: React.FC = () => {
             </Link>
           </Reveal>
 
-          <div className="hh-services-grid">
+          <div className="hh-services-stack">
             {heroFeatured && (
-              <Reveal as="div" className="hh-service-card hh-service-feature card-lift">
+              <Reveal as="div" className="hh-service-feature card-lift">
                 <div className="hh-service-feature-image">
                   <img
                     src="/clinicsdoctor.png"
                     alt="theCLINICS primary care"
                     onError={(e) => {
                       (e.currentTarget as HTMLImageElement).src =
-                        'https://images.unsplash.com/photo-1666214280165-c0bcc1c4b78f?auto=format&fit=crop&w=900&q=80';
+                        'https://images.unsplash.com/photo-1666214280165-c0bcc1c4b78f?auto=format&fit=crop&w=1100&q=80';
                     }}
                   />
                   <div className="hh-service-feature-tag">Featured · Most visits</div>
@@ -334,31 +327,40 @@ const Home: React.FC = () => {
                     <div className="small-label">What to expect</div>
                     <div className="hh-service-expect-text">{heroFeatured.expect}</div>
                   </div>
-                  <button onClick={openBookingModal} className="btn btn-primary">
-                    Book a {heroFeatured.title.split(' ')[0].toLowerCase()} visit
-                    <ArrowRight size={14} />
-                  </button>
+                  <div className="hh-service-feature-actions">
+                    <button onClick={openBookingModal} className="btn btn-primary">
+                      Book a {heroFeatured.title.split(' ')[0].toLowerCase()} visit
+                      <ArrowRight size={14} />
+                    </button>
+                    <Link to={`/service/${heroFeatured.id}`} className="underline-grow" style={{ color: 'var(--forest-deep)' }}>
+                      Read more →
+                    </Link>
+                  </div>
                 </div>
               </Reveal>
             )}
 
-            {restServices.map((s, i) => (
-              <Reveal as="div" key={s.id} delay={80 * i} className="hh-service-card card-lift">
-                <div className="hh-service-icon" aria-hidden>
-                  {renderServiceIcon(s.iconName, 22)}
-                </div>
-                <div className="editorial-num hh-service-num">0{i + 2}</div>
-                <span className="small-label hh-service-tagline">{s.tagline}</span>
-                <h3 className="font-display hh-service-title">{s.title}</h3>
-                <p className="hh-service-desc-sm">{s.description}</p>
-                <div className="hh-service-foot">
-                  <div className="small-label">{s.expect}</div>
-                  <button onClick={openBookingModal} className="hh-service-link">
-                    Book →
-                  </button>
-                </div>
-              </Reveal>
-            ))}
+            <div className="hh-services-row">
+              {restServices.map((s, i) => (
+                <Reveal as="div" key={s.id} delay={80 * i} className="hh-service-card card-lift">
+                  <div className="hh-service-card-head">
+                    <div className="hh-service-icon" aria-hidden>
+                      {renderServiceIcon(s.iconName, 22)}
+                    </div>
+                    <div className="editorial-num hh-service-num">0{i + 2}</div>
+                  </div>
+                  <span className="small-label hh-service-tagline">{s.tagline}</span>
+                  <h3 className="font-display hh-service-title">{s.title}</h3>
+                  <p className="hh-service-desc-sm">{s.description}</p>
+                  <div className="hh-service-foot">
+                    <span className="small-label">{s.expect}</span>
+                    <button onClick={openBookingModal} className="hh-service-link">
+                      Book →
+                    </button>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
           </div>
 
           {/* Cardiac diagnostics spotlight */}
@@ -370,7 +372,7 @@ const Home: React.FC = () => {
               </h3>
               <p className="lead">
                 EKG, Holter monitor, stress test, cardiac ultrasound. Read on-site by your provider
-                before you leave. No second appointment, no mailed-in strip three days later, no
+                before you leave. No second appointment. No mailed-in strip three days later. No
                 waiting to make a plan.
               </p>
               <div className="hh-spotlight-stats">
@@ -463,7 +465,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* ==================== TEAM ==================== */}
-      <section id="team" className="hh-team">
+      <section id="team" className="hh-team hh-section">
         <div className="container">
           <Reveal as="div" className="hh-section-header">
             <span className="eyebrow">{t.team.eyebrow}</span>
@@ -495,7 +497,7 @@ const Home: React.FC = () => {
           </div>
 
           <div className="hh-team-grid">
-            {filteredProviders.map((p, i) => (
+            {filteredProviders.map((p) => (
               <button
                 key={p.id}
                 onClick={() => setOpenProvider(p)}
@@ -526,7 +528,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* ==================== LOCATION + MAP ==================== */}
-      <section id="location" className="hh-location">
+      <section id="location" className="hh-location hh-section">
         <div className="container">
           <Reveal as="div" className="hh-section-header hh-section-header-row">
             <div>
@@ -611,7 +613,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* ==================== TESTIMONIALS ==================== */}
-      <section className="hh-reviews grain">
+      <section className="hh-reviews hh-section grain">
         <div className="container">
           <Reveal as="div" className="hh-section-header hh-section-header-row">
             <div>
@@ -645,7 +647,6 @@ const Home: React.FC = () => {
           </Reveal>
 
           <div className="hh-reviews-grid">
-            {/* Auto-rotating featured quote */}
             <div className="hh-review-feature hh-glass-surface">
               <svg
                 width="48"
@@ -683,26 +684,28 @@ const Home: React.FC = () => {
               </div>
             </div>
 
-            {TESTIMONIALS.slice(1, 4).map((tx) => (
-              <div key={tx.n} className="hh-review-card card-lift">
-                <div className="hh-review-card-row">
-                  <div className="hh-review-stars">{'★★★★★'}</div>
-                  <div className="small-label">{tx.visit}</div>
+            <div className="hh-reviews-col">
+              {TESTIMONIALS.slice(1, 4).map((tx) => (
+                <div key={tx.n} className="hh-review-card card-lift">
+                  <div className="hh-review-card-row">
+                    <div className="hh-review-stars">{'★★★★★'}</div>
+                    <div className="small-label">{tx.visit}</div>
+                  </div>
+                  <p className="font-display hh-review-quote">&ldquo;{tx.q}&rdquo;</p>
+                  <div className="hh-review-meta">
+                    <div className="hh-review-name">{tx.n}</div>
+                    <div className="small-label">{tx.l}</div>
+                  </div>
                 </div>
-                <p className="font-display hh-review-quote">&ldquo;{tx.q}&rdquo;</p>
-                <div className="hh-review-meta">
-                  <div className="hh-review-name">{tx.n}</div>
-                  <div className="small-label">{tx.l}</div>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* ==================== FAQ ==================== */}
-      <section id="faq" className="hh-faq">
-        <div className="container hh-faq-inner">
+      <section id="faq" className="hh-faq hh-section">
+        <div className="container-narrow hh-faq-inner">
           <Reveal as="div" className="hh-section-header hh-section-header-center">
             <span className="eyebrow">{t.faq.eyebrow}</span>
             <h2 className="font-display hh-section-title">
@@ -749,7 +752,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* ==================== FINAL CTA ==================== */}
-      <section className="hh-cta">
+      <section className="hh-cta hh-section-tight">
         <div className="container">
           <div className="hh-cta-card">
             <span className="eyebrow eyebrow-light">{t.cta.eyebrow}</span>
@@ -792,36 +795,35 @@ const Home: React.FC = () => {
         /* ============= HERO ============= */
         .hh-hero {
           position: relative;
-          padding: clamp(3rem, 6vw, 6rem) 0 clamp(4rem, 7vw, 7rem);
+          padding-block: clamp(3.5rem, 6vw, 6rem) clamp(2.5rem, 4vw, 4rem);
           overflow: hidden;
         }
         .hh-hero-bg { position: absolute; inset: 0; pointer-events: none; }
         .hh-hero-orb {
           position: absolute;
           border-radius: 999px;
-          filter: blur(80px);
+          filter: blur(90px);
           opacity: 0.55;
           mix-blend-mode: screen;
         }
-        .hh-orb-a { top: -120px; right: -80px; width: 480px; height: 480px; background: radial-gradient(circle, rgba(56,189,248,0.6), transparent 70%); }
-        .hh-orb-b { bottom: -160px; left: -100px; width: 520px; height: 520px; background: radial-gradient(circle, rgba(125,211,252,0.55), transparent 70%); animation: drift 14s ease-in-out infinite; }
+        .hh-orb-a { top: -160px; right: -120px; width: 560px; height: 560px; background: radial-gradient(circle, rgba(56,189,248,0.55), transparent 70%); }
+        .hh-orb-b { bottom: -180px; left: -120px; width: 600px; height: 600px; background: radial-gradient(circle, rgba(125,211,252,0.5), transparent 70%); animation: drift 16s ease-in-out infinite; }
 
         .hh-hero-grid {
           position: relative;
           display: grid;
-          grid-template-columns: 1.1fr 0.9fr;
-          gap: clamp(2rem, 4vw, 4rem);
+          grid-template-columns: 1.05fr 0.95fr;
+          gap: clamp(2.5rem, 5vw, 5rem);
           align-items: center;
+          padding-block: clamp(1rem, 3vw, 2rem);
         }
-        @media (max-width: 980px) {
-          .hh-hero-grid { grid-template-columns: 1fr; }
-        }
+        @media (max-width: 980px) { .hh-hero-grid { grid-template-columns: 1fr; gap: 2rem; } }
 
-        .hh-hero-copy { display: grid; gap: 1.5rem; max-width: 640px; }
+        .hh-hero-copy { display: grid; gap: clamp(1.4rem, 2.4vw, 2.2rem); max-width: 640px; }
         .hh-hero-headline {
-          font-size: clamp(2.6rem, 7vw, 5.2rem);
-          line-height: 0.95;
-          letter-spacing: -0.022em;
+          font-size: var(--type-hero);
+          line-height: 0.96;
+          letter-spacing: -0.03em;
           color: var(--forest-deep);
           margin: 0;
           font-weight: 400;
@@ -829,41 +831,21 @@ const Home: React.FC = () => {
         .hh-hero-em { color: var(--forest); }
         .hh-hero-place { color: var(--terracotta-deep); }
 
-        .hh-hero-lead { color: var(--ink-soft); max-width: 56ch; }
+        .hh-hero-lead { color: var(--ink-soft); max-width: 52ch; }
 
-        .hh-hero-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
-
-        .hh-hero-stats {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: clamp(1rem, 2vw, 2rem);
-          padding-top: 1.6rem;
-          border-top: 1px solid var(--line);
-          margin-top: 0.5rem;
-        }
-        .hh-hero-stat-num {
-          font-size: clamp(2.2rem, 4vw, 3rem);
-          line-height: 1;
-          color: var(--forest-deep);
-          display: flex;
-          align-items: baseline;
-          gap: 0.1em;
-        }
-        .hh-hero-stats .small-label { margin-top: 0.4rem; color: var(--ink-mute); }
+        .hh-hero-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; }
 
         /* hero right column */
-        .hh-hero-frame { position: relative; display: grid; gap: 1.2rem; }
-        .hh-hero-image-wrap {
+        .hh-hero-frame {
           position: relative;
-          border-radius: 28px;
+          border-radius: var(--radius-2xl);
           overflow: hidden;
-          box-shadow: var(--shadow-strong);
           aspect-ratio: 4 / 5;
           background: var(--ivory-deep);
+          box-shadow: var(--shadow-strong);
         }
-        @media (max-width: 980px) {
-          .hh-hero-image-wrap { aspect-ratio: 16 / 10; }
-        }
+        @media (max-width: 980px) { .hh-hero-frame { aspect-ratio: 16 / 11; } }
+        .hh-hero-image-wrap { position: relative; width: 100%; height: 100%; }
         .hh-hero-image { width: 100%; height: 100%; object-fit: cover; display: block; }
         .hh-hero-frame-overlay {
           position: absolute;
@@ -873,33 +855,75 @@ const Home: React.FC = () => {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: 0.7rem 0.9rem;
-          border-radius: 16px;
+          padding: 0.7rem 0.95rem;
+          border-radius: var(--radius-md);
           background: rgba(255,255,255,0.85);
-          backdrop-filter: blur(12px);
+          backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
           border: 1px solid rgba(255,255,255,0.6);
           color: var(--forest-deep);
         }
         .hh-hero-frame-overlay .small-label { color: var(--ink-mute); }
 
-        .hh-hero-side-card {
-          padding: 1.2rem 1.3rem;
-          border-radius: 24px;
+        /* hero footer band */
+        .hh-hero-footer {
+          margin-top: clamp(2rem, 3.5vw, 3.2rem);
+          padding-top: clamp(1.6rem, 3vw, 2.4rem);
+          border-top: 1px solid var(--line);
           display: grid;
-          gap: 0.75rem;
-        }
-        .hh-hero-side-row {
-          display: flex;
+          grid-template-columns: 1fr auto;
+          gap: clamp(1.4rem, 3vw, 3rem);
           align-items: center;
-          justify-content: space-between;
+        }
+        @media (max-width: 980px) { .hh-hero-footer { grid-template-columns: 1fr; } }
+
+        .hh-hero-stats {
+          display: grid;
+          grid-template-columns: repeat(3, auto);
+          justify-content: start;
+          gap: clamp(2rem, 5vw, 4rem);
+        }
+        @media (max-width: 600px) { .hh-hero-stats { grid-template-columns: repeat(3, 1fr); gap: 1rem; } }
+        .hh-hero-stat-num {
+          font-size: clamp(2rem, 3.6vw, 2.8rem);
+          line-height: 1;
+          color: var(--forest-deep);
+          display: flex;
+          align-items: baseline;
+          gap: 0.1em;
+        }
+        .hh-hero-stats .small-label { margin-top: 0.45rem; color: var(--ink-mute); display: block; }
+
+        .hh-hero-next {
+          display: grid;
+          grid-template-columns: 1fr auto;
+          gap: 1.4rem;
+          align-items: center;
+          padding: 0.95rem 1.2rem;
+          border-radius: var(--radius-lg);
+          min-width: 320px;
+        }
+        @media (max-width: 480px) { .hh-hero-next { grid-template-columns: 1fr; gap: 0.8rem; } }
+        .hh-hero-next-title {
+          font-size: 1.18rem;
+          color: var(--forest-deep);
+          margin: 0.3rem 0 0;
+          line-height: 1.1;
+          display: flex;
+          flex-wrap: wrap;
+          align-items: baseline;
           gap: 0.6rem;
         }
-        .hh-hero-side-title { font-size: 1.2rem; color: var(--forest-deep); line-height: 1; }
-        .hh-hero-side-meta { font-size: 0.8rem; color: var(--ink-mute); margin-top: 0.25rem; }
-        .hh-hero-side-time { color: var(--terracotta-deep); font-size: 0.95rem; text-align: right; line-height: 1.1; }
+        .hh-hero-next-time { color: var(--terracotta-deep); font-size: 0.92rem; }
+        .hh-hero-next-cta { padding: 0.65rem 1.1rem; min-height: 0; }
 
         /* ============= SECTION HEADER ============= */
-        .hh-section-header { display: grid; gap: 0.8rem; margin-bottom: 2.4rem; max-width: 60ch; }
+        .hh-section-header {
+          display: grid;
+          gap: 0.9rem;
+          margin-bottom: clamp(2rem, 3.5vw, 3rem);
+          max-width: 60ch;
+        }
         .hh-section-header-row {
           max-width: none;
           display: flex;
@@ -908,57 +932,57 @@ const Home: React.FC = () => {
           gap: 2rem;
           flex-wrap: wrap;
         }
-        .hh-section-header-row > div { display: grid; gap: 0.7rem; max-width: 60ch; }
+        .hh-section-header-row > div { display: grid; gap: 0.9rem; max-width: 60ch; }
         .hh-section-header-center { text-align: center; margin-left: auto; margin-right: auto; }
         .hh-section-title {
-          font-size: clamp(2rem, 4.5vw, 3.4rem);
-          line-height: 1.02;
-          letter-spacing: -0.02em;
+          font-size: var(--type-h2);
+          line-height: 1.04;
+          letter-spacing: -0.025em;
           color: var(--forest-deep);
           margin: 0;
+          font-weight: 400;
         }
         .hh-em { color: var(--terracotta-deep); font-style: italic; font-weight: 400; }
-        .hh-section-lead { margin-top: 0.4rem; }
+        .hh-section-lead { margin-top: 0.2rem; }
         .hh-section-link { color: var(--forest-deep); align-self: flex-end; }
         .hh-section-meta { color: var(--ink-mute); }
 
         /* ============= INTENT GRID ============= */
-        .hh-intent { padding: clamp(3rem, 6vw, 5rem) 0; }
         .hh-intent-grid {
           display: grid;
           grid-template-columns: repeat(3, minmax(0, 1fr));
-          gap: 1.2rem;
+          gap: clamp(1rem, 1.6vw, 1.4rem);
         }
         @media (max-width: 880px) { .hh-intent-grid { grid-template-columns: 1fr; } }
         .hh-intent-card {
-          padding: 1.6rem;
+          padding: clamp(1.5rem, 2.5vw, 2rem);
           background: rgba(255,255,255,0.6);
           backdrop-filter: blur(18px) saturate(150%);
           border: 1px solid rgba(255,255,255,0.6);
-          border-radius: 22px;
+          border-radius: var(--radius-xl);
           box-shadow: var(--glass-inner), var(--glass-shadow);
           display: grid;
-          gap: 0.8rem;
+          gap: 0.9rem;
           align-content: start;
         }
         .hh-intent-icon {
-          width: 48px;
-          height: 48px;
-          border-radius: 14px;
+          width: 52px;
+          height: 52px;
+          border-radius: var(--radius-md);
           background: rgba(56,189,248,0.18);
           color: var(--forest-deep);
           display: inline-flex;
           align-items: center;
           justify-content: center;
         }
-        .hh-intent-title { font-size: 1.4rem; color: var(--forest-deep); margin: 0; line-height: 1.1; }
-        .hh-intent-desc { color: var(--ink-soft); line-height: 1.6; margin: 0; }
+        .hh-intent-title { font-size: var(--type-h3); color: var(--forest-deep); margin: 0; line-height: 1.1; }
+        .hh-intent-desc { color: var(--ink-soft); line-height: 1.65; margin: 0; }
         .hh-intent-cta {
           margin-top: 0.4rem;
           align-self: flex-start;
           display: inline-flex;
           align-items: center;
-          gap: 0.3rem;
+          gap: 0.4rem;
           padding: 0.5rem 0;
           background: none;
           border: none;
@@ -970,40 +994,24 @@ const Home: React.FC = () => {
         }
 
         /* ============= SERVICES ============= */
-        .hh-services { padding: clamp(3rem, 6vw, 6rem) 0; }
-        .hh-services-grid {
-          display: grid;
-          grid-template-columns: repeat(4, minmax(0, 1fr));
-          grid-auto-rows: minmax(220px, auto);
-          gap: 1rem;
-        }
-        @media (max-width: 1024px) { .hh-services-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 600px)  { .hh-services-grid { grid-template-columns: 1fr; } }
-
-        .hh-service-card {
-          position: relative;
-          border-radius: 22px;
-          background: rgba(255,255,255,0.7);
-          backdrop-filter: blur(16px);
-          border: 1px solid rgba(255,255,255,0.65);
-          padding: 1.2rem 1.2rem 1.2rem;
-          display: grid;
-          align-content: start;
-          gap: 0.4rem;
-        }
+        .hh-services-stack { display: grid; gap: clamp(1rem, 2vw, 1.4rem); }
         .hh-service-feature {
-          grid-column: span 2;
-          grid-row: span 2;
-          padding: 0;
+          display: grid;
+          grid-template-columns: 1.1fr 1fr;
+          background: rgba(255,255,255,0.78);
+          backdrop-filter: blur(14px);
+          border: 1px solid rgba(255,255,255,0.65);
+          border-radius: var(--radius-2xl);
           overflow: hidden;
+          box-shadow: var(--shadow-card);
         }
-        @media (max-width: 1024px) { .hh-service-feature { grid-column: span 2; grid-row: auto; } }
-        @media (max-width: 600px)  { .hh-service-feature { grid-column: span 1; } }
-        .hh-service-feature-image { position: relative; aspect-ratio: 16/10; overflow: hidden; }
+        @media (max-width: 880px) { .hh-service-feature { grid-template-columns: 1fr; } }
+        .hh-service-feature-image { position: relative; aspect-ratio: 4/3; overflow: hidden; }
+        @media (max-width: 880px) { .hh-service-feature-image { aspect-ratio: 16/10; } }
         .hh-service-feature-image img { width: 100%; height: 100%; object-fit: cover; }
         .hh-service-feature-tag {
           position: absolute; top: 1rem; left: 1rem;
-          padding: 0.35rem 0.75rem;
+          padding: 0.35rem 0.8rem;
           border-radius: 999px;
           background: var(--gold);
           color: var(--forest-deep);
@@ -1012,123 +1020,145 @@ const Home: React.FC = () => {
           letter-spacing: 0.16em;
           text-transform: uppercase;
         }
-        .hh-service-feature-body { padding: 1.6rem; display: grid; gap: 0.8rem; }
-        .hh-service-title-lg { font-size: 1.8rem; color: var(--forest-deep); margin: 0; line-height: 1.05; }
-        .hh-service-desc { color: var(--ink-soft); line-height: 1.6; margin: 0; }
-        .hh-service-expect { padding-top: 0.8rem; border-top: 1px solid var(--line); }
-        .hh-service-expect-text { font-size: 0.9rem; color: var(--ink-soft); margin-top: 0.2rem; margin-bottom: 0.7rem; }
+        .hh-service-feature-body {
+          padding: clamp(1.6rem, 3vw, 2.5rem);
+          display: grid;
+          gap: 0.9rem;
+          align-content: center;
+        }
+        .hh-service-title-lg { font-size: clamp(1.6rem, 3vw, 2.2rem); color: var(--forest-deep); margin: 0; line-height: 1.05; letter-spacing: -0.02em; }
+        .hh-service-desc { color: var(--ink-soft); line-height: 1.65; margin: 0; }
+        .hh-service-expect {
+          padding-top: 0.9rem;
+          border-top: 1px solid var(--line);
+          display: grid;
+          gap: 0.3rem;
+        }
+        .hh-service-expect-text { font-size: 0.95rem; color: var(--ink-soft); }
+        .hh-service-feature-actions { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; padding-top: 0.4rem; }
 
+        .hh-services-row {
+          display: grid;
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          gap: clamp(0.8rem, 1.4vw, 1.2rem);
+        }
+        @media (max-width: 1024px) { .hh-services-row { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 520px)  { .hh-services-row { grid-template-columns: 1fr; } }
+
+        .hh-service-card {
+          position: relative;
+          border-radius: var(--radius-xl);
+          background: rgba(255,255,255,0.7);
+          backdrop-filter: blur(16px);
+          border: 1px solid rgba(255,255,255,0.65);
+          padding: clamp(1.2rem, 1.8vw, 1.5rem);
+          display: grid;
+          align-content: start;
+          gap: 0.5rem;
+        }
+        .hh-service-card-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; }
         .hh-service-icon {
-          width: 40px; height: 40px;
-          border-radius: 12px;
+          width: 44px; height: 44px;
+          border-radius: var(--radius-sm);
           background: rgba(56,189,248,0.18);
           color: var(--forest-deep);
           display: inline-flex;
           align-items: center;
           justify-content: center;
         }
-        .hh-service-num {
-          position: absolute;
-          top: 1rem;
-          right: 1.2rem;
-          font-size: 1.2rem;
-          color: var(--sage-light);
-        }
+        .hh-service-num { font-size: 1.3rem; color: var(--sage-light); }
         .hh-service-tagline { color: var(--terracotta-deep); }
-        .hh-service-title { font-size: 1.18rem; color: var(--forest-deep); line-height: 1.1; margin: 0; }
-        .hh-service-desc-sm { font-size: 0.85rem; color: var(--ink-soft); line-height: 1.55; margin: 0; }
-        .hh-service-foot { margin-top: auto; padding-top: 0.7rem; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
-        .hh-service-link {
-          background: none; border: none; padding: 0; font: inherit;
-          color: var(--forest-deep); font-weight: 600; cursor: pointer;
-        }
+        .hh-service-title { font-size: 1.18rem; color: var(--forest-deep); line-height: 1.15; margin: 0; }
+        .hh-service-desc-sm { font-size: 0.9rem; color: var(--ink-soft); line-height: 1.6; margin: 0.2rem 0 0; }
+        .hh-service-foot { margin-top: 0.9rem; padding-top: 0.8rem; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
+        .hh-service-link { background: none; border: none; padding: 0; font: inherit; color: var(--forest-deep); font-weight: 600; cursor: pointer; }
 
         /* ============= SPOTLIGHT ============= */
         .hh-spotlight {
-          margin-top: clamp(3rem, 5vw, 5rem);
+          margin-top: clamp(3.5rem, 6vw, 6rem);
           display: grid;
-          grid-template-columns: 0.9fr 1.1fr;
-          gap: clamp(2rem, 4vw, 4rem);
+          grid-template-columns: 0.85fr 1.15fr;
+          gap: clamp(2.5rem, 5vw, 5rem);
           align-items: center;
         }
-        @media (max-width: 980px) { .hh-spotlight { grid-template-columns: 1fr; } }
-        .hh-spotlight-copy { display: grid; gap: 1.1rem; }
+        @media (max-width: 980px) { .hh-spotlight { grid-template-columns: 1fr; gap: 2rem; } }
+        .hh-spotlight-copy { display: grid; gap: 1.2rem; }
         .hh-spotlight-title {
-          font-size: clamp(1.8rem, 4vw, 2.6rem);
-          line-height: 1.05;
-          letter-spacing: -0.02em;
+          font-size: var(--type-h2);
+          line-height: 1.04;
+          letter-spacing: -0.025em;
           color: var(--forest-deep);
           margin: 0;
         }
-        .hh-spotlight-stats { display: grid; gap: 0.6rem; margin: 0.6rem 0 0.4rem; }
+        .hh-spotlight-stats { display: grid; gap: 0.7rem; margin: 0.4rem 0 0.6rem; }
         .hh-spotlight-stat {
           display: flex;
           align-items: baseline;
-          gap: 1rem;
-          padding-bottom: 0.7rem;
+          gap: 1.2rem;
+          padding-bottom: 0.85rem;
           border-bottom: 1px solid var(--line);
           color: var(--ink-soft);
         }
-        .hh-spotlight-num { font-size: clamp(1.4rem, 3vw, 2rem); color: var(--terracotta-deep); flex-shrink: 0; min-width: 8ch; }
-        .hh-spotlight-caption { text-align: center; margin-top: 0.6rem; }
+        .hh-spotlight-num { font-size: clamp(1.4rem, 2.6vw, 1.9rem); color: var(--terracotta-deep); flex-shrink: 0; min-width: 9ch; }
+        .hh-spotlight-caption { text-align: center; margin-top: 0.7rem; }
 
         /* ============= MISSION ============= */
         .hh-mission {
-          padding: clamp(4rem, 7vw, 7rem) 0;
+          padding-block: clamp(5rem, 8vw, 8rem);
           background: linear-gradient(170deg, #07172d 0%, #0b2747 60%, #134075 100%);
           color: var(--bone);
           position: relative;
         }
         .hh-mission-inner { position: relative; }
-        .hh-mission-head { display: grid; gap: 0.8rem; max-width: 30ch; }
+        .hh-mission-head { display: grid; gap: 1rem; max-width: 30ch; }
         .hh-mission-title {
-          font-size: clamp(2.2rem, 5vw, 4rem);
+          font-size: clamp(2.4rem, 5.5vw, 4.4rem);
           line-height: 1.04;
           color: var(--bone);
           margin: 0;
-          letter-spacing: -0.022em;
+          letter-spacing: -0.025em;
           font-weight: 400;
         }
         .hh-mission-em { color: var(--terracotta-pale); font-style: italic; }
-        .hh-mission-letter { margin-top: 1.6rem; max-width: 60ch; }
-        .hh-mission-letter-body { color: var(--sage-light); font-size: 1.08rem; line-height: 1.7; margin: 0 0 0.6rem; }
+        .hh-mission-letter { margin-top: 1.8rem; max-width: 60ch; }
+        .hh-mission-letter-body { color: var(--sage-light); font-size: 1.08rem; line-height: 1.75; margin: 0 0 0.7rem; }
         .hh-mission-sig { color: var(--terracotta-pale); }
 
-        .hh-mission-rule { margin: 2.4rem 0; opacity: 0.5; }
+        .hh-mission-rule { margin: clamp(2.4rem, 4vw, 3.4rem) 0; opacity: 0.5; }
         .hh-mission-stats {
           display: grid;
           grid-template-columns: repeat(4, minmax(0, 1fr));
-          gap: 1.6rem;
+          gap: clamp(1.4rem, 2.5vw, 2.4rem);
         }
-        @media (max-width: 720px) { .hh-mission-stats { grid-template-columns: repeat(2, 1fr); gap: 1.2rem; } }
+        @media (max-width: 720px) { .hh-mission-stats { grid-template-columns: repeat(2, 1fr); gap: 1.6rem; } }
         .hh-mission-stat-num {
-          font-size: clamp(2.6rem, 5vw, 4.4rem);
+          font-size: clamp(2.8rem, 5.5vw, 5rem);
           line-height: 1;
           color: var(--bone);
+          letter-spacing: -0.02em;
         }
-        .hh-mission-stat-label { color: var(--terracotta-pale); margin: 0.6rem 0 0.2rem; }
-        .hh-mission-stat-sub { color: var(--sage-light); font-size: 0.85rem; line-height: 1.5; }
+        .hh-mission-stat-label { color: var(--terracotta-pale); margin: 0.7rem 0 0.25rem; }
+        .hh-mission-stat-sub { color: var(--sage-light); font-size: 0.9rem; line-height: 1.55; }
 
         .hh-mission-foot {
           text-align: center;
-          margin: 2rem auto 0;
-          max-width: 50ch;
+          margin: clamp(2rem, 3.5vw, 3rem) auto 0;
+          max-width: 56ch;
           color: var(--sage-light);
-          font-size: 0.95rem;
+          font-size: 0.96rem;
         }
-        .hh-mission-foot .small-label { color: var(--terracotta-pale); margin-bottom: 0.6rem; display: block; }
+        .hh-mission-foot .small-label { color: var(--terracotta-pale); margin-bottom: 0.7rem; display: block; }
 
         /* ============= TEAM ============= */
         .hh-team {
-          padding: clamp(3rem, 6vw, 6rem) 0;
           background: linear-gradient(180deg, var(--ivory-deep), var(--sand-soft));
         }
         .hh-team-filters {
           display: flex;
           flex-wrap: wrap;
           gap: 0.5rem;
-          margin-bottom: 2rem;
-          padding-bottom: 0.8rem;
+          margin: 0 0 clamp(2rem, 3vw, 2.6rem);
+          padding-bottom: 1rem;
           border-bottom: 1px solid var(--line);
         }
         .hh-team-filter {
@@ -1141,24 +1171,26 @@ const Home: React.FC = () => {
           font: inherit;
           font-size: 0.9rem;
           cursor: pointer;
+          transition: 200ms ease;
         }
+        .hh-team-filter:hover { border-color: var(--forest); color: var(--forest-deep); }
         .hh-team-filter.is-active { background: var(--forest); color: var(--bone); border-color: var(--forest); }
         .hh-team-filter-count { margin-left: 0.5rem; opacity: 0.7; font-size: 0.8rem; }
 
         .hh-team-grid {
           display: grid;
-          grid-template-columns: repeat(4, minmax(0, 1fr));
-          gap: 1rem;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: clamp(1rem, 1.6vw, 1.4rem);
         }
         @media (max-width: 1024px) { .hh-team-grid { grid-template-columns: repeat(3, 1fr); } }
-        @media (max-width: 720px)  { .hh-team-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 800px)  { .hh-team-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 480px)  { .hh-team-grid { grid-template-columns: 1fr; } }
 
         .hh-provider {
-          background: rgba(255,255,255,0.7);
+          background: rgba(255,255,255,0.72);
           backdrop-filter: blur(12px);
           border: 1px solid rgba(255,255,255,0.62);
-          border-radius: 24px;
+          border-radius: var(--radius-xl);
           padding: 0;
           text-align: left;
           font: inherit;
@@ -1168,12 +1200,7 @@ const Home: React.FC = () => {
           display: grid;
           align-content: start;
         }
-        .hh-provider-portrait {
-          position: relative;
-          aspect-ratio: 4/5;
-          background: var(--ivory-deep);
-          overflow: hidden;
-        }
+        .hh-provider-portrait { position: relative; aspect-ratio: 4/5; background: var(--ivory-deep); overflow: hidden; }
         .hh-provider-portrait img { width: 100%; height: 100%; object-fit: cover; transition: 600ms ease; }
         .hh-provider:hover .hh-provider-portrait img { transform: scale(1.04); }
         .hh-provider-initials {
@@ -1181,138 +1208,127 @@ const Home: React.FC = () => {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          font-size: clamp(2.5rem, 5vw, 4rem);
+          font-size: clamp(3rem, 6vw, 5rem);
           color: var(--forest-deep);
           background: linear-gradient(135deg, var(--ivory-deep), var(--sage-pale));
         }
         .hh-provider-badge {
-          position: absolute; top: 0.7rem; left: 0.7rem;
+          position: absolute; top: 0.85rem; left: 0.85rem;
           background: rgba(255,255,255,0.95);
           color: var(--forest-deep);
           font-family: 'JetBrains Mono', monospace;
           font-size: 0.65rem;
           letter-spacing: 0.18em;
           text-transform: uppercase;
-          padding: 0.25rem 0.55rem;
+          padding: 0.3rem 0.65rem;
           border-radius: 999px;
           font-weight: 700;
         }
         .hh-provider-badge-gold { background: var(--gold); color: var(--bone); }
-        .hh-provider-meta { padding: 1rem 1.1rem 1.2rem; }
-        .hh-provider-name { font-size: 1.05rem; color: var(--forest-deep); margin: 0; line-height: 1.2; }
-        .hh-provider-role { color: var(--terracotta-deep); margin-top: 0.45rem; }
-        .hh-provider-specialty { color: var(--ink-soft); font-size: 0.85rem; font-style: italic; margin-top: 0.5rem; }
+        .hh-provider-meta { padding: 1.15rem 1.3rem 1.4rem; }
+        .hh-provider-name { font-size: 1.1rem; color: var(--forest-deep); margin: 0; line-height: 1.2; }
+        .hh-provider-role { color: var(--terracotta-deep); margin-top: 0.5rem; }
+        .hh-provider-specialty { color: var(--ink-soft); font-size: 0.88rem; font-style: italic; margin-top: 0.55rem; }
 
         /* ============= LOCATION ============= */
-        .hh-location { padding: clamp(3rem, 6vw, 6rem) 0; }
         .hh-location-grid {
           display: grid;
-          grid-template-columns: 0.9fr 1.3fr;
-          gap: 1.4rem;
+          grid-template-columns: 1fr 1.15fr;
+          gap: clamp(1.2rem, 2vw, 1.6rem);
         }
         @media (max-width: 980px) { .hh-location-grid { grid-template-columns: 1fr; } }
 
         .hh-location-card {
-          padding: 1.6rem 1.6rem 1.4rem;
-          border-radius: 28px;
-          display: grid;
-          gap: 1rem;
-          align-content: start;
-        }
-        .hh-location-card-row { display: flex; justify-content: space-between; align-items: center; }
-        .hh-location-title { font-size: clamp(1.6rem, 3.4vw, 2.2rem); color: var(--forest-deep); margin: 0; line-height: 1; }
-
-        .hh-location-meta { display: grid; gap: 0.7rem; }
-        .hh-location-meta > div { display: grid; gap: 0.15rem; font-size: 0.94rem; color: var(--ink-soft); }
-        .hh-location-meta a { color: var(--forest-deep); }
-
-        .hh-location-services-list {
-          display: flex; flex-wrap: wrap; gap: 0.4rem;
-          margin-top: 0.4rem;
-        }
-        .hh-location-chip {
-          padding: 0.3rem 0.7rem;
-          border-radius: 999px;
-          background: rgba(56,189,248,0.16);
-          color: var(--forest-deep);
-          font-size: 0.78rem;
-        }
-
-        .hh-location-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-        .hh-location-actions .btn { flex: 1; min-width: 140px; }
-
-        /* ============= REVIEWS ============= */
-        .hh-reviews {
-          padding: clamp(3rem, 6vw, 6rem) 0;
-          background: linear-gradient(165deg, var(--ivory-deep), var(--sand-soft));
-        }
-        .hh-reviews-summary { display: flex; gap: 1.2rem; align-items: end; }
-        .hh-reviews-summary > div { display: grid; gap: 0.2rem; }
-        .hh-reviews-num { font-size: 2.6rem; line-height: 1; color: var(--forest-deep); }
-        .hh-reviews-stars { color: var(--terracotta-deep); letter-spacing: 0.05em; }
-        .hh-reviews-source { font-size: 0.92rem; color: var(--forest-deep); font-weight: 600; }
-
-        .hh-reviews-grid {
-          display: grid;
-          grid-template-columns: 1.4fr 1fr 1fr;
-          gap: 1rem;
-        }
-        @media (max-width: 980px) {
-          .hh-reviews-grid { grid-template-columns: 1fr; }
-        }
-
-        .hh-review-feature {
-          padding: 2rem;
-          border-radius: 28px;
+          padding: clamp(1.6rem, 2.5vw, 2.2rem);
+          border-radius: var(--radius-2xl);
           display: grid;
           gap: 1.2rem;
           align-content: start;
-          grid-row: span 2;
         }
-        @media (max-width: 980px) { .hh-review-feature { grid-row: auto; } }
-        .hh-review-feature-quote { font-size: clamp(1.2rem, 2.4vw, 1.6rem); line-height: 1.35; color: var(--forest-deep); margin: 0; }
-        .hh-review-feature-meta { display: flex; justify-content: space-between; align-items: end; padding-top: 0.8rem; border-top: 1px solid var(--line); }
-        .hh-review-feature-name { font-size: 1.05rem; color: var(--forest-deep); margin: 0; }
+        .hh-location-card-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
+        .hh-location-title {
+          font-size: clamp(1.6rem, 3.4vw, 2.2rem);
+          color: var(--forest-deep);
+          margin: 0;
+          line-height: 1;
+          letter-spacing: -0.02em;
+        }
+        .hh-location-meta { display: grid; gap: 0.85rem; }
+        .hh-location-meta > div { display: grid; gap: 0.2rem; font-size: 0.95rem; color: var(--ink-soft); }
+        .hh-location-meta a { color: var(--forest-deep); }
+        .hh-location-services-list { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 0.5rem; }
+        .hh-location-chip { padding: 0.32rem 0.75rem; border-radius: 999px; background: rgba(56,189,248,0.16); color: var(--forest-deep); font-size: 0.78rem; }
+        .hh-location-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+        .hh-location-actions .btn { flex: 1; min-width: 140px; }
+
+        /* ============= REVIEWS ============= */
+        .hh-reviews { background: linear-gradient(165deg, var(--ivory-deep), var(--sand-soft)); }
+        .hh-reviews-summary { display: flex; gap: 1.4rem; align-items: end; }
+        .hh-reviews-summary > div { display: grid; gap: 0.25rem; }
+        .hh-reviews-num { font-size: 2.8rem; line-height: 1; color: var(--forest-deep); }
+        .hh-reviews-stars { color: var(--terracotta-deep); letter-spacing: 0.05em; }
+        .hh-reviews-source { font-size: 0.95rem; color: var(--forest-deep); font-weight: 600; }
+
+        .hh-reviews-grid {
+          display: grid;
+          grid-template-columns: 1.4fr 1fr;
+          gap: clamp(1rem, 1.8vw, 1.4rem);
+          align-items: stretch;
+        }
+        @media (max-width: 980px) { .hh-reviews-grid { grid-template-columns: 1fr; } }
+
+        .hh-review-feature {
+          padding: clamp(1.8rem, 3vw, 2.6rem);
+          border-radius: var(--radius-2xl);
+          display: grid;
+          gap: 1.4rem;
+          align-content: space-between;
+        }
+        .hh-review-feature-quote { font-size: clamp(1.25rem, 2.4vw, 1.7rem); line-height: 1.35; color: var(--forest-deep); margin: 0; letter-spacing: -0.01em; }
+        .hh-review-feature-meta { display: flex; justify-content: space-between; align-items: end; padding-top: 1rem; border-top: 1px solid var(--line); }
+        .hh-review-feature-name { font-size: 1.08rem; color: var(--forest-deep); margin: 0; }
         .hh-review-stars { color: var(--terracotta-deep); letter-spacing: 0.04em; }
-        .hh-review-feature-dots { display: flex; gap: 0.4rem; margin-top: 0.6rem; }
+        .hh-review-feature-dots { display: flex; gap: 0.45rem; margin-top: 0.4rem; }
         .hh-review-dot {
           width: 8px; height: 8px; border-radius: 999px;
           background: var(--line-strong);
           border: none; padding: 0; cursor: pointer;
+          transition: 200ms ease;
         }
-        .hh-review-dot.is-active { background: var(--forest); }
+        .hh-review-dot.is-active { background: var(--forest); transform: scale(1.2); }
 
+        .hh-reviews-col { display: grid; gap: 1rem; }
         .hh-review-card {
-          padding: 1.4rem 1.4rem 1.2rem;
-          border-radius: 22px;
+          padding: clamp(1.2rem, 1.8vw, 1.6rem);
+          border-radius: var(--radius-lg);
           background: rgba(255,255,255,0.78);
           border: 1px solid var(--line);
           display: grid;
-          gap: 0.8rem;
+          gap: 0.7rem;
         }
         .hh-review-card-row { display: flex; justify-content: space-between; align-items: center; }
-        .hh-review-quote { font-size: 1rem; line-height: 1.45; color: var(--forest-deep); margin: 0; }
+        .hh-review-quote { font-size: 1rem; line-height: 1.5; color: var(--forest-deep); margin: 0; }
         .hh-review-name { font-size: 0.94rem; font-weight: 600; color: var(--forest-deep); }
 
         /* ============= FAQ ============= */
-        .hh-faq { padding: clamp(3rem, 6vw, 6rem) 0; }
-        .hh-faq-inner { max-width: 880px; }
-        .hh-faq-list { display: grid; gap: 0.6rem; }
+        .hh-faq-list { display: grid; gap: 0.5rem; }
         .hh-faq-item {
           background: rgba(255,255,255,0.62);
           backdrop-filter: blur(14px);
           border: 1px solid var(--line);
-          border-radius: 18px;
+          border-radius: var(--radius-md);
           overflow: hidden;
+          transition: 200ms ease;
         }
-        .hh-faq-item.is-open { border-color: var(--forest); background: rgba(255,255,255,0.85); }
+        .hh-faq-item:hover { background: rgba(255,255,255,0.78); }
+        .hh-faq-item.is-open { border-color: var(--forest); background: rgba(255,255,255,0.9); }
         .hh-faq-q {
           width: 100%;
           display: grid;
           grid-template-columns: auto 1fr auto;
           align-items: start;
           gap: 1rem;
-          padding: 1.1rem 1.2rem;
+          padding: 1.2rem 1.4rem;
           background: none;
           border: none;
           text-align: left;
@@ -1322,34 +1338,33 @@ const Home: React.FC = () => {
         }
         .hh-faq-num { color: var(--sage-light); font-size: 1.4rem; }
         .hh-faq-item.is-open .hh-faq-num { color: var(--terracotta-deep); }
-        .hh-faq-q-text { font-size: 1.05rem; color: var(--forest-deep); padding-top: 0.15rem; }
+        .hh-faq-q-text { font-size: 1.05rem; color: var(--forest-deep); padding-top: 0.15rem; line-height: 1.4; }
         .hh-faq-toggle {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          width: 32px;
-          height: 32px;
+          width: 36px;
+          height: 36px;
           border-radius: 999px;
           background: var(--ivory-deep);
           color: var(--forest);
         }
         .hh-faq-item.is-open .hh-faq-toggle { background: var(--forest); color: var(--bone); }
         .hh-faq-a {
-          padding: 0 1.2rem 1.2rem 4rem;
+          padding: 0 1.4rem 1.4rem 4.6rem;
           color: var(--ink-soft);
-          line-height: 1.6;
+          line-height: 1.65;
           font-size: 0.96rem;
         }
-        @media (max-width: 600px) { .hh-faq-a { padding-left: 1.2rem; } }
-        .hh-faq-foot { text-align: center; margin-top: 1.6rem; color: var(--ink-soft); }
-        .hh-faq-call { display: inline-block; margin-top: 0.5rem; font-size: 1.4rem; color: var(--forest-deep); }
+        @media (max-width: 600px) { .hh-faq-a { padding-left: 1.4rem; } }
+        .hh-faq-foot { text-align: center; margin-top: 2rem; color: var(--ink-soft); }
+        .hh-faq-call { display: inline-block; margin-top: 0.5rem; font-size: 1.5rem; color: var(--forest-deep); }
 
         /* ============= FINAL CTA ============= */
-        .hh-cta { padding: clamp(3rem, 6vw, 6rem) 0; }
         .hh-cta-card {
           position: relative;
-          padding: clamp(2.4rem, 5vw, 4rem);
-          border-radius: 36px;
+          padding: clamp(2.4rem, 5vw, 4.5rem);
+          border-radius: var(--radius-2xl);
           background:
             radial-gradient(120% 80% at 80% 0%, rgba(56,189,248,0.35), transparent 60%),
             linear-gradient(160deg, #07172d 0%, #0b2747 50%, #1565c9 100%);
@@ -1371,14 +1386,14 @@ const Home: React.FC = () => {
           font-size: clamp(2rem, 5vw, 3.6rem);
           line-height: 1.05;
           margin: 0;
-          letter-spacing: -0.022em;
+          letter-spacing: -0.025em;
           color: var(--bone);
           font-weight: 400;
           position: relative;
         }
         .hh-cta-em { color: var(--terracotta-pale); font-style: italic; }
-        .hh-cta-lead { max-width: 60ch; color: var(--sage-light); font-size: 1.05rem; line-height: 1.65; margin: 0; position: relative; }
-        .hh-cta-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; position: relative; }
+        .hh-cta-lead { max-width: 60ch; color: var(--sage-light); font-size: 1.08rem; line-height: 1.7; margin: 0; position: relative; }
+        .hh-cta-actions { display: flex; gap: 0.8rem; flex-wrap: wrap; position: relative; }
         .hh-cta-trust { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--sage-light); position: relative; }
       `}</style>
     </>

@@ -7,6 +7,36 @@
    ================================================================== */
 
 :root {
+  /* Spacing scale — fluid section rhythm */
+  --space-section:        clamp(4.5rem, 8vw, 8rem);
+  --space-section-tight:  clamp(2.75rem, 5vw, 4.25rem);
+  --space-section-loose:  clamp(6rem, 10vw, 10rem);
+  --space-stack:          clamp(0.75rem, 1.5vw, 1.25rem);
+  --space-block:          clamp(2rem, 3.5vw, 3.25rem);
+
+  /* Container widths */
+  --container:            min(1240px, calc(100% - 2.4rem));
+  --container-wide:       min(1440px, calc(100% - 2.4rem));
+  --container-narrow:     min(960px, calc(100% - 2.4rem));
+
+  /* Radius scale */
+  --radius-xs:            8px;
+  --radius-sm:            12px;
+  --radius-md:            18px;
+  --radius-lg:            24px;
+  --radius-xl:            28px;
+  --radius-2xl:           36px;
+
+  /* Typography scale (fluid) */
+  --type-hero:            clamp(2.6rem, 7.5vw, 5.6rem);
+  --type-h1:              clamp(2.4rem, 6vw, 4.8rem);
+  --type-h2:              clamp(1.9rem, 4.5vw, 3.2rem);
+  --type-h3:              clamp(1.35rem, 2.5vw, 1.7rem);
+  --type-body-lg:         clamp(1.05rem, 1.2vw, 1.18rem);
+  --type-body:            clamp(0.98rem, 1.05vw, 1.05rem);
+  --type-small:           0.85rem;
+  --type-mono:            0.72rem;
+
   /* Cool neutrals — icy clinic backdrop */
   --ivory: #ecf4fb;
   --ivory-deep: #dfeaf7;
@@ -73,17 +103,19 @@ body,
   margin: 0;
   padding: 0;
   min-height: 100%;
-  background: radial-gradient(
-      120% 80% at 10% -10%,
-      rgba(186, 230, 253, 0.55) 0%,
-      transparent 45%
-    ),
+  background:
+    radial-gradient(120% 80% at 10% -10%, rgba(186, 230, 253, 0.55) 0%, transparent 45%),
     linear-gradient(165deg, var(--ivory) 0%, var(--ivory-deep) 55%, #cbdcee 100%);
+  background-attachment: fixed;
   color: var(--ink);
   font-family: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: var(--type-body);
+  line-height: 1.55;
   scroll-behavior: smooth;
   overflow-x: hidden;
 }
+
+p { line-height: 1.65; }
 
 ::selection { background: var(--terracotta); color: var(--bone); }
 
@@ -588,12 +620,21 @@ select:focus-visible {
 }
 
 /* ---------- Container helpers ---------- */
-.container,
-.container-wide {
-  width: min(1280px, calc(100% - 2.4rem));
-  margin: 0 auto;
-}
-.container-wide { width: min(1480px, calc(100% - 2.4rem)); }
+.container        { width: var(--container);        margin: 0 auto; }
+.container-wide   { width: var(--container-wide);   margin: 0 auto; }
+.container-narrow { width: var(--container-narrow); margin: 0 auto; }
+
+/* ---------- Section rhythm helpers ---------- */
+.hh-section        { padding-block: var(--space-section); }
+.hh-section-tight  { padding-block: var(--space-section-tight); }
+.hh-section-loose  { padding-block: var(--space-section-loose); }
+.hh-section-top    { padding-top: var(--space-section); }
+.hh-section-bottom { padding-bottom: var(--space-section); }
+
+/* Stack — vertical rhythm inside content blocks */
+.hh-stack > * + * { margin-top: var(--space-stack); }
+.hh-stack-lg > * + * { margin-top: clamp(1rem, 2vw, 1.6rem); }
+.hh-stack-tight > * + * { margin-top: 0.4rem; }
 
 /* ---------- Modal backdrop helper ---------- */
 .modal-backdrop {

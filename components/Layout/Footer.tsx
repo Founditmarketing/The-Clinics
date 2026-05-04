@@ -47,21 +47,12 @@ const Footer: React.FC = () => {
         <div className="hh-footer-grid">
           <div className="hh-footer-brand">
             <div className="hh-footer-logo">
-              <svg width="44" height="44" viewBox="0 0 40 40" fill="none">
-                <circle cx="20" cy="20" r="19" stroke="var(--bone)" strokeWidth="1.5" />
-                <path
-                  d="M13 14v12M27 14v12M13 20h14"
-                  stroke="var(--bone)"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-                <circle cx="20" cy="20" r="2.8" fill="var(--terracotta)" />
-              </svg>
+              <img src="/logo.png" alt="theCLINICS" className="hh-footer-logo-img" />
               <div>
-                <div id="footer-title" className="font-display hh-footer-name">
-                  theCLINICS
+                <div id="footer-title" className="small-label" style={{ color: 'var(--terracotta-pale)' }}>
+                  Cenla
                 </div>
-                <div className="small-label">Cenla · Modern healthcare</div>
+                <div className="font-display hh-footer-name">Modern healthcare.</div>
               </div>
             </div>
             <p className="hh-footer-blurb">
@@ -204,7 +195,7 @@ const Footer: React.FC = () => {
       <style>{`
         .hh-footer {
           position: relative;
-          padding: 5rem 0 2.4rem;
+          padding-block: clamp(4.5rem, 7vw, 7rem) 2.6rem;
           background: linear-gradient(170deg, #07172d 0%, #0b2747 60%, #134075 100%);
           color: var(--bone);
           overflow: hidden;
@@ -222,50 +213,60 @@ const Footer: React.FC = () => {
           display: grid;
           grid-template-columns: repeat(4, minmax(0, 1fr));
           gap: 2rem;
-          padding-bottom: 3rem;
-          margin-bottom: 3rem;
+          padding-bottom: clamp(2.4rem, 4vw, 3.4rem);
+          margin-bottom: clamp(2.4rem, 4vw, 3.4rem);
           border-bottom: 1px solid rgba(184,146,74,0.3);
         }
         @media (max-width: 720px) {
-          .hh-footer-stats { grid-template-columns: repeat(2, 1fr); gap: 1.4rem; }
+          .hh-footer-stats { grid-template-columns: repeat(2, 1fr); gap: 1.6rem; }
         }
         .hh-footer-stat-num {
-          font-size: clamp(2.6rem, 5vw, 4.2rem);
+          font-size: clamp(2.8rem, 5vw, 4.6rem);
           line-height: 1;
           color: var(--terracotta-pale);
+          letter-spacing: -0.02em;
         }
-        .hh-footer-stat-num + .small-label { margin-top: 0.6rem; color: var(--sage-light); }
+        .hh-footer-stat-num + .small-label { margin-top: 0.7rem; color: var(--sage-light); }
 
         .hh-footer-affiliations {
-          padding-bottom: 2.6rem;
-          margin-bottom: 2.6rem;
+          padding-bottom: clamp(2.4rem, 4vw, 3rem);
+          margin-bottom: clamp(2.4rem, 4vw, 3rem);
           border-bottom: 1px solid rgba(255,255,255,0.1);
         }
-        .hh-footer-affiliations .small-label { color: var(--terracotta-pale); margin-bottom: 1.2rem; }
+        .hh-footer-affiliations .small-label { color: var(--terracotta-pale); margin-bottom: 1.4rem; }
         .hh-affiliations-grid {
           display: grid;
           grid-template-columns: repeat(6, minmax(0, 1fr));
-          gap: 1.4rem;
+          gap: 1.6rem;
         }
         @media (max-width: 880px) { .hh-affiliations-grid { grid-template-columns: repeat(3, 1fr); } }
         @media (max-width: 480px) { .hh-affiliations-grid { grid-template-columns: repeat(2, 1fr); } }
         .hh-affiliation { text-align: center; }
-        .hh-affiliation-name { font-size: 1.05rem; line-height: 1.1; color: var(--bone); }
-        .hh-affiliation .small-label { color: var(--sage-light); margin-top: 0.3rem; }
+        .hh-affiliation-name { font-size: 1.08rem; line-height: 1.15; color: var(--bone); }
+        .hh-affiliation .small-label { color: var(--sage-light); margin-top: 0.4rem; }
 
         .hh-footer-grid {
           display: grid;
           grid-template-columns: 1.2fr 1.1fr 0.9fr;
-          gap: 3rem;
-          padding-bottom: 2.4rem;
+          gap: clamp(2rem, 4vw, 3.4rem);
+          padding-bottom: clamp(2.4rem, 4vw, 3rem);
           border-bottom: 1px solid rgba(255,255,255,0.1);
         }
         @media (max-width: 880px) {
-          .hh-footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+          .hh-footer-grid { grid-template-columns: 1fr; gap: 2.4rem; }
         }
 
-        .hh-footer-logo { display: inline-flex; align-items: center; gap: 0.8rem; margin-bottom: 1rem; }
-        .hh-footer-name { font-size: 1.4rem; }
+        .hh-footer-logo { display: inline-flex; align-items: center; gap: 1rem; margin-bottom: 1.2rem; }
+        .hh-footer-logo-img {
+          height: 54px;
+          width: auto;
+          object-fit: contain;
+          background: var(--bone);
+          padding: 0.4rem 0.55rem;
+          border-radius: var(--radius-sm);
+          box-shadow: 0 8px 20px -10px rgba(7,46,88,0.5);
+        }
+        .hh-footer-name { font-size: 1.35rem; line-height: 1.05; color: var(--bone); margin-top: 0.25rem; letter-spacing: -0.01em; }
         .hh-footer-blurb { color: var(--sage-light); font-size: 0.95rem; line-height: 1.65; max-width: 38ch; margin: 0 0 1.2rem; }
 
         .hh-newsletter {

@@ -70,24 +70,24 @@ const SymptomChecker: React.FC<SymptomCheckerProps> = ({ onOpenProvider, onBook,
     : [];
 
   return (
-    <section id="symptom" className="py-24 lg:py-32 relative">
-      <div className="max-w-6xl mx-auto px-6 lg:px-10">
-        <div className="grid lg:grid-cols-12 gap-12 items-start">
+    <section id="symptom" className="hh-section relative">
+      <div className="container">
+        <div className="grid lg:grid-cols-12 gap-x-12 gap-y-10 items-start">
           <div className="lg:col-span-4 lg:sticky lg:top-32">
-            <div className="small-whisper mb-4" style={{ color: 'var(--terracotta)' }}>
+            <div className="eyebrow" style={{ marginBottom: '1.4rem' }}>
               AI symptom guide
             </div>
             <h2
-              className="font-display leading-[0.95] tracking-tight"
-              style={{ color: 'var(--forest)', fontSize: 'clamp(2.25rem, 4.5vw, 3.5rem)' }}
+              className="font-display"
+              style={{ color: 'var(--forest-deep)', fontSize: 'var(--type-h2)', lineHeight: 1.04, letterSpacing: '-0.025em', margin: 0 }}
             >
-              Tell us what's <br />
+              Tell us what&rsquo;s <br />
               going on. <br />
-              <span className="italic font-light">We'll guide you.</span>
+              <span className="hh-em">We&rsquo;ll guide you.</span>
             </h2>
-            <p className="mt-6 text-base leading-relaxed text-balance" style={{ color: 'var(--ink-soft)' }}>
-              Describe what's bringing you in. Our care guide will recommend the right kind of visit and connect you
-              with a provider on our team.
+            <p className="lead" style={{ marginTop: '1.4rem', color: 'var(--ink-soft)' }}>
+              Describe what&rsquo;s bringing you in. Our care guide will recommend the right kind
+              of visit and connect you with a provider on our team.
             </p>
             <div className="mt-8 space-y-2 text-xs" style={{ color: 'var(--ink-mute)' }}>
               <div className="flex items-center gap-2">
