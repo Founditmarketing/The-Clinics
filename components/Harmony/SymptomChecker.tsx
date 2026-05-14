@@ -4,10 +4,9 @@ import { CLINIC, DOCTORS } from '../../data/clinicData';
 import { Doctor, TriageRecommendation, TriageService } from '../../types';
 
 const SERVICE_LABEL: Record<TriageService, string> = {
-  primary: 'Primary Care',
+  primary: 'Family Practice',
   urgent: 'Same-day Visit',
   pediatrics: 'Pediatric Visit',
-  cardiac: 'Cardiac Diagnostics',
   gastro: 'Gastroenterology',
   podiatry: 'Podiatry',
   imaging: 'Lab & Imaging',
@@ -18,8 +17,7 @@ const SERVICE_TAG: Record<TriageService, string> = {
   primary: 'primary',
   urgent: 'urgent',
   pediatrics: 'pediatrics',
-  cardiac: 'cardiac',
-  gastro: 'primary', // GI handled by primary in our team for now
+  gastro: 'primary',
   podiatry: 'primary',
   imaging: 'primary',
   emergency: 'primary',
@@ -29,7 +27,7 @@ const EXAMPLES = [
   'Annual physical',
   'Sore throat & fever',
   'Pediatric checkup',
-  'Chest tightness',
+  'Refill request',
   'Heel pain when walking',
 ];
 

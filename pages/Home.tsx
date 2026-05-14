@@ -26,6 +26,8 @@ import { useUI } from '../context/UIContext';
 import {
   CLINIC,
   DOCTORS,
+  LOCATIONS,
+  PROVIDER_COUNT,
   SERVICES,
   FAQS,
   TESTIMONIALS,
@@ -34,7 +36,6 @@ import {
 import { Doctor, ServiceItem } from '../types';
 
 import StatCounter from '../components/Harmony/StatCounter';
-import BeforeAfterSlider from '../components/Harmony/BeforeAfterSlider';
 import DoctorModal from '../components/Harmony/DoctorModal';
 import MobileBottomBar from '../components/Harmony/MobileBottomBar';
 import LocationsMap from '../components/Harmony/LocationsMap';
@@ -108,9 +109,9 @@ const Home: React.FC = () => {
   const restServices = SERVICES.filter((s) => !s.feature).slice(0, 4);
 
   const intentCards = [
-    { key: 'sick',     copy: t.intent.sick,     icon: <Zap size={26} strokeWidth={1.5} /> },
-    { key: 'primary',  copy: t.intent.primary,  icon: <Stethoscope size={26} strokeWidth={1.5} /> },
-    { key: 'cardiac',  copy: t.intent.cardiac,  icon: <Heart size={26} strokeWidth={1.5} /> },
+    { key: 'primary',     copy: t.intent.primary,     icon: <Stethoscope size={26} strokeWidth={1.5} /> },
+    { key: 'sick',        copy: t.intent.sick,        icon: <Zap size={26} strokeWidth={1.5} /> },
+    { key: 'pediatrics',  copy: t.intent.pediatrics,  icon: <Baby size={26} strokeWidth={1.5} /> },
   ];
 
   return (
@@ -130,15 +131,14 @@ const Home: React.FC = () => {
             </Reveal>
 
             <h1 className="font-display hh-hero-headline">
-              <span className="word-rise-stage"><span style={{ animationDelay: '0.05s' }}>Same-day</span></span>{' '}
-              <span className="word-rise-stage"><span style={{ animationDelay: '0.18s' }}>care.</span></span>
+              <span className="word-rise-stage"><span style={{ animationDelay: '0.05s' }}>Family</span></span>{' '}
+              <span className="word-rise-stage"><span className="hh-hero-em" style={{ animationDelay: '0.18s' }}>practice,</span></span>
               <br />
-              <span className="word-rise-stage"><span className="hh-hero-em" style={{ animationDelay: '0.32s' }}>Same-roof</span></span>{' '}
-              <span className="word-rise-stage"><span className="hh-hero-em" style={{ animationDelay: '0.46s' }}>answers.</span></span>
+              <span className="word-rise-stage"><span style={{ animationDelay: '0.32s' }}>first.</span></span>
               <br />
-              <span className="word-rise-stage"><span style={{ animationDelay: '0.62s' }}>Built for</span></span>{' '}
+              <span className="word-rise-stage"><span style={{ animationDelay: '0.48s' }}>Built for</span></span>{' '}
               <span className="word-rise-stage hh-hero-place">
-                <span style={{ animationDelay: '0.78s' }}>Cenla.</span>
+                <span style={{ animationDelay: '0.62s' }}>Cenla.</span>
               </span>
             </h1>
 
@@ -162,7 +162,7 @@ const Home: React.FC = () => {
             <div className="hh-hero-image-wrap">
               <img
                 src="/largeclinicshospitalpic.jpeg"
-                alt="theCLINICS exterior on N Bolton Avenue, Alexandria, LA"
+                alt="theCLINICS in Cenla, Louisiana"
                 className="hh-hero-image"
                 onError={(e) => {
                   (e.currentTarget as HTMLImageElement).src =
@@ -181,20 +181,20 @@ const Home: React.FC = () => {
           </Reveal>
         </div>
 
-        {/* Hero footer band — stats + next slot */}
+        {/* Hero footer band — stats + portal CTA */}
         <div className="container hh-hero-footer">
           <div className="hh-hero-stats">
             <div>
               <div className="hh-hero-stat-num font-display">
-                <StatCounter target={DOCTORS.length} trigger={heroVisible} />
+                <StatCounter target={PROVIDER_COUNT} trigger={heroVisible} />
               </div>
               <div className="small-label">{t.hero.stats_providers}</div>
             </div>
             <div>
               <div className="hh-hero-stat-num font-display">
-                <StatCounter target={20} suffix="K+" trigger={heroVisible} />
+                <StatCounter target={LOCATIONS.length} trigger={heroVisible} />
               </div>
-              <div className="small-label">visits / year</div>
+              <div className="small-label">{t.hero.stats_locations}</div>
             </div>
             <div>
               <div className="hh-hero-stat-num font-display">
@@ -209,12 +209,12 @@ const Home: React.FC = () => {
             <div>
               <div className="small-label">{t.hero.proof_title}</div>
               <div className="font-display hh-hero-next-title">
-                {t.hero.proof_loc}, LA
-                <span className="hh-hero-next-time font-mono">Today 3:30p</span>
+                {t.hero.proof_loc}
+                <span className="hh-hero-next-time font-mono">{t.hero.proof_time}</span>
               </div>
             </div>
             <button onClick={openBookingModal} className="btn btn-primary hh-hero-next-cta">
-              Reserve <ArrowRight size={14} />
+              Request <ArrowRight size={14} />
             </button>
           </div>
         </div>
@@ -291,7 +291,7 @@ const Home: React.FC = () => {
                   </div>
                   <div className="hh-service-feature-actions">
                     <button onClick={openBookingModal} className="btn btn-primary">
-                      Book a {heroFeatured.title.split(' ')[0].toLowerCase()} visit
+                      Request a family-practice visit
                       <ArrowRight size={14} />
                     </button>
                     <Link to={`/service/${heroFeatured.id}`} className="underline-grow" style={{ color: 'var(--forest-deep)' }}>
@@ -325,23 +325,23 @@ const Home: React.FC = () => {
             </div>
           </div>
 
-          {/* Cardiac diagnostics spotlight */}
+          {/* Family practice spotlight */}
           <div className="hh-spotlight">
             <Reveal as="div" className="hh-spotlight-copy">
-              <span className="eyebrow">Spotlight · Cardiac diagnostics</span>
+              <span className="eyebrow">Spotlight · Family practice</span>
               <h3 className="font-display hh-spotlight-title">
-                Answers in <span className="hh-em">the same visit.</span>
+                The bulk of what we do, <span className="hh-em">by design.</span>
               </h3>
               <p className="lead">
-                EKG, Holter monitor, stress test, cardiac ultrasound. Read on-site by your provider
-                before you leave. No second appointment. No mailed-in strip three days later. No
-                waiting to make a plan.
+                Roughly nine out of ten visits at theCLINICS are family practice — physicals,
+                pediatrics, women&rsquo;s health, refills, chronic disease, and the everyday
+                sick visit. One provider who knows your story, across both clinics.
               </p>
               <div className="hh-spotlight-stats">
                 {[
-                  { num: 'Same-visit', label: 'EKG read by your provider' },
-                  { num: '24–48h', label: 'Holter rhythm capture' },
-                  { num: '0', label: 'Hospital trips for routine cardiac diagnostics' },
+                  { num: '~90%', label: 'of visits are family practice' },
+                  { num: 'All ages', label: 'pediatrics through geriatrics' },
+                  { num: 'Both sites', label: 'same standard of care' },
                 ].map((s) => (
                   <div key={s.label} className="hh-spotlight-stat">
                     <div className="font-display hh-spotlight-num">{s.num}</div>
@@ -350,14 +350,27 @@ const Home: React.FC = () => {
                 ))}
               </div>
               <button onClick={openBookingModal} className="btn btn-primary">
-                Book a cardiac visit <ArrowRight size={14} />
+                Request a family-practice visit <ArrowRight size={14} />
               </button>
             </Reveal>
-            <Reveal as="div" delay={120}>
-              <BeforeAfterSlider />
-              <div className="small-label hh-spotlight-caption">
-                Illustrated representation. Diagnostic clarity will vary by case.
+            <Reveal as="div" delay={120} className="hh-spotlight-figure" aria-hidden>
+              <div className="hh-spotlight-figure-ring">
+                <div className="hh-spotlight-figure-num font-display">90<span>%</span></div>
+                <div className="small-label">family practice</div>
               </div>
+              <ul className="hh-spotlight-figure-list">
+                {[
+                  'Annual physicals',
+                  'Pediatrics & school physicals',
+                  'Women\u2019s health',
+                  'Chronic conditions & refills',
+                  'Same-day sick visits',
+                ].map((item) => (
+                  <li key={item}>
+                    <span className="hh-spotlight-figure-dot" /> {item}
+                  </li>
+                ))}
+              </ul>
             </Reveal>
           </div>
         </div>
@@ -370,7 +383,7 @@ const Home: React.FC = () => {
             <Reveal as="div" className="hh-team-strip-copy">
               <span className="eyebrow">{t.team.eyebrow}</span>
               <h2 className="font-display hh-team-strip-title">
-                {DOCTORS.length} providers, <span className="hh-em">one phone call.</span>
+                {PROVIDER_COUNT} providers, <span className="hh-em">two clinics in Cenla.</span>
               </h2>
               <p className="hh-team-strip-lead">{t.team.lead}</p>
               <Link to="/about" className="btn btn-ghost hh-team-strip-cta">
@@ -397,9 +410,9 @@ const Home: React.FC = () => {
                     )}
                   </button>
                 ))}
-                {DOCTORS.length > 5 && (
+                {PROVIDER_COUNT > 5 && (
                   <Link to="/about" className="hh-avatar hh-avatar-more font-display">
-                    +{DOCTORS.length - 5}
+                    +{PROVIDER_COUNT - 5}
                   </Link>
                 )}
               </div>
@@ -432,67 +445,64 @@ const Home: React.FC = () => {
           </Reveal>
 
           <div className="hh-location-grid">
-            <div className="hh-location-card hh-glass-surface">
-              <div className="hh-location-card-row">
-                <span className={`tag ${isOpenNow ? 'tag-live' : 'tag-closed'}`}>
-                  {isOpenNow ? t.locations.open_now : t.locations.closed_now}
-                </span>
-                <span className="small-label">~14 min wait</span>
-              </div>
-              <h3 className="font-display hh-location-title">
-                {CLINIC.city}, {CLINIC.state}
-              </h3>
-              <div className="hh-location-meta">
-                <div>
-                  <div className="small-label">Address</div>
-                  <div>{CLINIC.address}</div>
-                </div>
-                <div>
-                  <div className="small-label">Phone</div>
-                  <a href={`tel:${CLINIC.tel}`} className="font-mono">
-                    {CLINIC.phone}
-                  </a>
-                </div>
-                <div>
-                  <div className="small-label">Hours</div>
-                  <div>{CLINIC.hoursLabel}</div>
-                </div>
-              </div>
-
-              <div className="hh-location-services">
-                <div className="small-label">Services on-site</div>
-                <div className="hh-location-services-list">
-                  {CLINIC.services.map((s) => (
-                    <span key={s} className="hh-location-chip">
-                      {s}
+            <div className="hh-location-cards">
+              {LOCATIONS.map((loc, i) => (
+                <Reveal as="div" key={loc.key} delay={i * 100} className="hh-location-card hh-glass-surface">
+                  <div className="hh-location-card-row">
+                    <span className={`tag ${isOpenNow ? 'tag-live' : 'tag-closed'}`}>
+                      {isOpenNow ? t.locations.open_now : t.locations.closed_now}
                     </span>
-                  ))}
-                </div>
-              </div>
+                    {loc.flagship && (
+                      <span className="small-label">Flagship</span>
+                    )}
+                  </div>
+                  <h3 className="font-display hh-location-title">
+                    {loc.city}, {loc.state}
+                  </h3>
+                  <div className="hh-location-meta">
+                    <div>
+                      <div className="small-label">Address</div>
+                      <div>{loc.address}</div>
+                    </div>
+                    <div>
+                      <div className="small-label">Phone</div>
+                      <a href={`tel:${loc.tel}`} className="font-mono">
+                        {loc.phone}
+                      </a>
+                    </div>
+                    <div>
+                      <div className="small-label">Hours</div>
+                      <div>{loc.hoursLabel}</div>
+                    </div>
+                  </div>
 
-              <div className="hh-location-actions">
-                <a
-                  href={CLINIC.mapsUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn btn-ghost"
-                >
-                  <MapPin size={16} strokeWidth={1.8} /> {t.locations.directions}
-                </a>
-                <a href={`tel:${CLINIC.tel}`} className="btn btn-primary">
-                  <Phone size={16} strokeWidth={1.8} /> {t.locations.call}
-                </a>
-              </div>
+                  <div className="hh-location-actions">
+                    <a
+                      href={loc.mapsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-ghost"
+                    >
+                      <MapPin size={16} strokeWidth={1.8} /> {t.locations.directions}
+                    </a>
+                    <a href={`tel:${loc.tel}`} className="btn btn-primary">
+                      <Phone size={16} strokeWidth={1.8} /> {t.locations.call}
+                    </a>
+                  </div>
+                </Reveal>
+              ))}
             </div>
 
             <div className="hh-location-map">
               <LocationsMap
-                locations={[
-                  { key: 'alexandria', name: CLINIC.city, coords: CLINIC.coords },
-                ]}
-                activeKey="alexandria"
-                center={[CLINIC.coords.lng, CLINIC.coords.lat]}
-                zoom={11.5}
+                locations={LOCATIONS.map((l) => ({
+                  key: l.key,
+                  name: l.city,
+                  coords: l.coords,
+                }))}
+                activeKey={LOCATIONS[0]?.key}
+                center={[LOCATIONS[0]?.coords.lng ?? -92.4693, LOCATIONS[0]?.coords.lat ?? 31.3146]}
+                zoom={10.5}
               />
             </div>
           </div>
@@ -518,7 +528,7 @@ const Home: React.FC = () => {
               <div>
                 <div className="small-label">Average across</div>
                 <div className="hh-reviews-source">
-                  {CLINIC.reviewCount}+ verified Google reviews
+                  Verified Google reviews
                 </div>
                 <a
                   href={CLINIC.googleReviewsUrl}
@@ -990,6 +1000,69 @@ const Home: React.FC = () => {
         .hh-spotlight-num { font-size: clamp(1.4rem, 2.6vw, 1.9rem); color: var(--terracotta-deep); flex-shrink: 0; min-width: 9ch; }
         .hh-spotlight-caption { text-align: center; margin-top: 0.7rem; }
 
+        .hh-spotlight-figure {
+          padding: clamp(1.8rem, 3vw, 2.8rem);
+          border-radius: var(--radius-2xl);
+          background:
+            radial-gradient(120% 80% at 85% 0%, rgba(225, 27, 27, 0.18), transparent 58%),
+            linear-gradient(160deg, rgba(255, 255, 255, 0.72), rgba(237, 225, 200, 0.45));
+          backdrop-filter: blur(18px);
+          border: 1px solid rgba(255, 255, 255, 0.62);
+          box-shadow: var(--glass-inner), var(--shadow-card);
+          display: grid;
+          gap: 1.4rem;
+          justify-items: center;
+          align-content: center;
+        }
+        .hh-spotlight-figure-ring {
+          width: clamp(180px, 22vw, 240px);
+          height: clamp(180px, 22vw, 240px);
+          border-radius: 999px;
+          background:
+            conic-gradient(var(--terracotta-deep) 0% 90%, rgba(31, 58, 91, 0.10) 90% 100%);
+          display: grid;
+          place-items: center;
+          position: relative;
+          padding: 14px;
+        }
+        .hh-spotlight-figure-ring::before {
+          content: '';
+          position: absolute;
+          inset: 14px;
+          border-radius: 999px;
+          background: var(--ivory-deep);
+        }
+        .hh-spotlight-figure-num {
+          position: relative;
+          font-size: clamp(2.6rem, 5vw, 3.6rem);
+          color: var(--forest-deep);
+          line-height: 1;
+          letter-spacing: -0.025em;
+        }
+        .hh-spotlight-figure-num span { font-size: 0.55em; color: var(--terracotta-deep); margin-left: 0.05em; }
+        .hh-spotlight-figure-ring .small-label {
+          position: relative;
+          margin-top: 0.4rem;
+          color: var(--ink-mute);
+        }
+        .hh-spotlight-figure-list {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+          display: grid;
+          gap: 0.5rem;
+          color: var(--ink-soft);
+          font-size: 0.95rem;
+          width: 100%;
+          max-width: 320px;
+        }
+        .hh-spotlight-figure-list li { display: flex; align-items: center; gap: 0.7rem; }
+        .hh-spotlight-figure-dot {
+          width: 6px; height: 6px; border-radius: 999px;
+          background: var(--terracotta-deep);
+          flex-shrink: 0;
+        }
+
         /* ============= TEAM (compact strip on home) ============= */
         .hh-team {
           background: linear-gradient(180deg, var(--ivory-deep), var(--sand-soft));
@@ -1095,11 +1168,17 @@ const Home: React.FC = () => {
         }
         @media (max-width: 980px) { .hh-location-grid { grid-template-columns: 1fr; } }
 
+        .hh-location-cards {
+          display: grid;
+          gap: clamp(0.8rem, 1.4vw, 1.1rem);
+          align-content: start;
+        }
+
         .hh-location-card {
-          padding: clamp(1.6rem, 2.5vw, 2.2rem);
+          padding: clamp(1.4rem, 2.2vw, 1.9rem);
           border-radius: var(--radius-2xl);
           display: grid;
-          gap: 1.2rem;
+          gap: 1rem;
           align-content: start;
         }
         .hh-location-card-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; }

@@ -89,7 +89,6 @@ export type TriageService =
   | 'primary'
   | 'urgent'
   | 'pediatrics'
-  | 'cardiac'
   | 'gastro'
   | 'podiatry'
   | 'imaging'

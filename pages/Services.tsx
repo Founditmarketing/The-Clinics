@@ -59,13 +59,13 @@ const Services: React.FC = () => {
           <Reveal as="div" className="hh-section-header">
             <span className="eyebrow">{t.services.eyebrow}</span>
             <h1 className="font-display hh-page-title">
-              Twelve services. <br />
-              <span className="hh-em">One Bolton Avenue.</span> <br />
-              No referrals to drive across town.
+              Family practice <span className="hh-em">first.</span> <br />
+              The rest, on the same chart.
             </h1>
             <p className="lead lead-lg">
-              From annual physicals to cardiac diagnostics, in-house labs, and X-ray. Same provider,
-              same visit, same answers.
+              About 90% of what we do is family medicine — physicals, pediatrics,
+              women&rsquo;s health, chronic-condition care, and same-day sick visits. Gastro,
+              podiatry, and on-site labs fill in the rest, across both Cenla clinics.
             </p>
           </Reveal>
         </div>
@@ -112,7 +112,7 @@ const Services: React.FC = () => {
                       <p className="hh-service-row-desc">{s.description}</p>
                       <div className="hh-service-row-actions">
                         <button onClick={openBookingModal} className="btn btn-primary">
-                          Book {s.title.toLowerCase()} <ArrowRight size={14} />
+                          Request a {s.title.toLowerCase()} visit <ArrowRight size={14} />
                         </button>
                         <a href={`tel:${CLINIC.tel}`} className="btn btn-ghost">
                           <Phone size={16} strokeWidth={1.8} /> Call to ask

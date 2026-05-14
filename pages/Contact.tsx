@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Mail, MapPin, Phone, Clock, ArrowRight } from 'lucide-react';
-import { CLINIC } from '../data/clinicData';
+import { CLINIC, LOCATIONS } from '../data/clinicData';
 import LocationsMap from '../components/Harmony/LocationsMap';
 import { Reveal, useLocale } from '../components/Harmony/i18n';
 import { useClinicStatus } from '../components/Harmony/useClinicStatus';
@@ -12,11 +12,13 @@ const Contact: React.FC = () => {
   const { isOpenNow, closeLabel } = useClinicStatus();
   const { openBookingModal } = useUI();
 
+  const [activeLocation, setActiveLocation] = useState<string>(LOCATIONS[0]?.key ?? 'alexandria');
+
   const [form, setForm] = useState({
     name: '',
     email: '',
     phone: '',
-    department: 'Primary Care',
+    department: 'Family Practice',
     message: '',
   });
   const [submitted, setSubmitted] = useState(false);
@@ -38,10 +40,10 @@ const Contact: React.FC = () => {
           <Reveal as="div" className="hh-section-header">
             <span className="eyebrow">{t.locations.eyebrow}</span>
             <h1 className="font-display hh-page-title">
-              One roof in <span className="hh-em">Cenla.</span>
+              Two clinics in <span className="hh-em">Cenla.</span>
             </h1>
             <p className="lead lead-lg">
-              1587 N Bolton Avenue. Ample parking. Wheelchair accessible. Open status updated live.
+              Alexandria and Pineville. Ample parking. Wheelchair accessible. Open status updated live.
             </p>
           </Reveal>
         </div>
@@ -50,90 +52,108 @@ const Contact: React.FC = () => {
       <section className="hh-contact">
         <div className="container hh-contact-grid">
           <Reveal as="div" className="hh-contact-info">
-            <div className="hh-glass-surface hh-contact-card">
-              <div className="hh-contact-card-row">
-                <span className={`tag ${isOpenNow ? 'tag-live' : 'tag-closed'}`}>
-                  {isOpenNow ? `${t.locations.open_now}, closing in ${closeLabel}` : `${t.locations.closed_now}, opens ${closeLabel}`}
-                </span>
-                <span className="small-label">~14 min wait</span>
-              </div>
-
-              <div className="hh-contact-list">
-                <div className="hh-contact-item">
-                  <MapPin size={20} strokeWidth={1.6} />
-                  <div>
-                    <div className="small-label">Address</div>
-                    <div>{CLINIC.address}</div>
-                    <a
-                      href={CLINIC.mapsUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline-grow hh-contact-link"
-                    >
-                      Get directions ↗
-                    </a>
-                  </div>
-                </div>
-                <div className="hh-contact-item">
-                  <Phone size={20} strokeWidth={1.6} />
-                  <div>
-                    <div className="small-label">Phone</div>
-                    <a href={`tel:${CLINIC.tel}`} className="font-mono">
-                      {CLINIC.phone}
-                    </a>
-                  </div>
-                </div>
-                <div className="hh-contact-item">
-                  <Mail size={20} strokeWidth={1.6} />
-                  <div>
-                    <div className="small-label">Email</div>
-                    <a href={`mailto:${CLINIC.email}`} className="underline-grow">
-                      {CLINIC.email}
-                    </a>
-                  </div>
-                </div>
-                <div className="hh-contact-item">
-                  <Clock size={20} strokeWidth={1.6} />
-                  <div>
-                    <div className="small-label">Hours</div>
-                    <ul className="hh-contact-hours">
-                      <li><span>Mon – Thu</span><span className="font-mono">7:45a – 5:00p</span></li>
-                      <li><span>Friday</span><span className="font-mono">7:45a – 12:00p</span></li>
-                      <li><span>Sat – Sun</span><span className="font-mono">Closed</span></li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-
-              <div className="hh-contact-actions">
-                <a href={`tel:${CLINIC.tel}`} className="btn btn-primary">
-                  <Phone size={16} strokeWidth={1.8} /> Call clinic
-                </a>
-                <button onClick={openBookingModal} className="btn btn-terracotta">
-                  Book a visit <ArrowRight size={14} />
+            <div className="hh-contact-tabs" role="tablist" aria-label="Choose a clinic">
+              {LOCATIONS.map((loc) => (
+                <button
+                  key={loc.key}
+                  type="button"
+                  role="tab"
+                  aria-selected={activeLocation === loc.key}
+                  onClick={() => setActiveLocation(loc.key)}
+                  className={`hh-contact-tab ${activeLocation === loc.key ? 'is-active' : ''}`}
+                >
+                  {loc.city}
                 </button>
-              </div>
+              ))}
             </div>
 
+            {LOCATIONS.filter((l) => l.key === activeLocation).map((loc) => (
+              <div key={loc.key} className="hh-glass-surface hh-contact-card">
+                <div className="hh-contact-card-row">
+                  <span className={`tag ${isOpenNow ? 'tag-live' : 'tag-closed'}`}>
+                    {isOpenNow ? `${t.locations.open_now}, closing in ${closeLabel}` : `${t.locations.closed_now}, opens ${closeLabel}`}
+                  </span>
+                  {loc.flagship && <span className="small-label">Flagship</span>}
+                </div>
+
+                <div className="hh-contact-list">
+                  <div className="hh-contact-item">
+                    <MapPin size={20} strokeWidth={1.6} />
+                    <div>
+                      <div className="small-label">Address</div>
+                      <div>{loc.address}</div>
+                      <a
+                        href={loc.mapsUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline-grow hh-contact-link"
+                      >
+                        Get directions ↗
+                      </a>
+                    </div>
+                  </div>
+                  <div className="hh-contact-item">
+                    <Phone size={20} strokeWidth={1.6} />
+                    <div>
+                      <div className="small-label">Phone</div>
+                      <a href={`tel:${loc.tel}`} className="font-mono">
+                        {loc.phone}
+                      </a>
+                    </div>
+                  </div>
+                  <div className="hh-contact-item">
+                    <Mail size={20} strokeWidth={1.6} />
+                    <div>
+                      <div className="small-label">Email</div>
+                      <a href={`mailto:${loc.email}`} className="underline-grow">
+                        {loc.email}
+                      </a>
+                    </div>
+                  </div>
+                  <div className="hh-contact-item">
+                    <Clock size={20} strokeWidth={1.6} />
+                    <div>
+                      <div className="small-label">Hours</div>
+                      <ul className="hh-contact-hours">
+                        <li><span>Mon – Thu</span><span className="font-mono">7:45a – 5:00p</span></li>
+                        <li><span>Friday</span><span className="font-mono">7:45a – 12:00p</span></li>
+                        <li><span>Sat – Sun</span><span className="font-mono">Closed</span></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="hh-contact-actions">
+                  <a href={`tel:${loc.tel}`} className="btn btn-primary">
+                    <Phone size={16} strokeWidth={1.8} /> Call {loc.city}
+                  </a>
+                  <button onClick={openBookingModal} className="btn btn-terracotta">
+                    Request a visit <ArrowRight size={14} />
+                  </button>
+                </div>
+              </div>
+            ))}
+
             <div className="hh-contact-drive">
-              <div className="small-label">Drive times to {CLINIC.city}</div>
-              <ul className="hh-contact-drive-list">
-                <li><span>Pineville</span><span className="font-mono">8 min</span></li>
-                <li><span>Ball</span><span className="font-mono">14 min</span></li>
-                <li><span>Tioga</span><span className="font-mono">12 min</span></li>
-                <li><span>Boyce</span><span className="font-mono">22 min</span></li>
-              </ul>
+              <div className="small-label">Not sure which to pick?</div>
+              <p style={{ margin: '0.4rem 0 0', color: 'var(--ink-soft)', fontSize: '0.92rem' }}>
+                Both clinics share the same providers, hours, and standard of care. Choose the
+                one closer to you, or call and we will route you.
+              </p>
             </div>
           </Reveal>
 
           <Reveal as="div" delay={150} className="hh-contact-map">
             <LocationsMap
-              locations={[
-                { key: 'alexandria', name: CLINIC.city, coords: CLINIC.coords },
-              ]}
-              activeKey="alexandria"
-              center={[CLINIC.coords.lng, CLINIC.coords.lat]}
-              zoom={13}
+              locations={LOCATIONS.map((l) => ({
+                key: l.key,
+                name: l.city,
+                coords: l.coords,
+              }))}
+              activeKey={activeLocation}
+              onPick={(key) => setActiveLocation(key)}
+              center={[LOCATIONS[0]?.coords.lng ?? -92.4693, LOCATIONS[0]?.coords.lat ?? 31.3146]}
+              zoom={11}
             />
           </Reveal>
         </div>
@@ -211,8 +231,9 @@ const Contact: React.FC = () => {
                   <label>
                     <span>Department</span>
                     <select name="department" value={form.department} onChange={handleChange}>
-                      <option>Primary Care</option>
-                      <option>Cardiac Diagnostics</option>
+                      <option>Family Practice</option>
+                      <option>Pediatrics</option>
+                      <option>Women&rsquo;s Health</option>
                       <option>Gastroenterology</option>
                       <option>Podiatry</option>
                       <option>Lab &amp; Imaging</option>
@@ -260,6 +281,37 @@ const Contact: React.FC = () => {
           gap: 1.4rem;
         }
         @media (max-width: 980px) { .hh-contact-grid { grid-template-columns: 1fr; } }
+
+        .hh-contact-tabs {
+          display: inline-flex;
+          padding: 0.25rem;
+          gap: 0.2rem;
+          background: rgba(255, 255, 255, 0.55);
+          border: 1px solid var(--line);
+          border-radius: 999px;
+          margin-bottom: 1rem;
+          backdrop-filter: blur(10px);
+          align-self: flex-start;
+          width: fit-content;
+        }
+        .hh-contact-tab {
+          padding: 0.45rem 1.1rem;
+          border-radius: 999px;
+          border: none;
+          background: transparent;
+          color: var(--ink-soft);
+          font: inherit;
+          font-size: 0.9rem;
+          font-weight: 500;
+          cursor: pointer;
+          transition: 180ms ease;
+        }
+        .hh-contact-tab:hover { color: var(--forest-deep); }
+        .hh-contact-tab.is-active {
+          background: var(--forest);
+          color: var(--bone);
+          box-shadow: 0 6px 18px -8px rgba(7, 23, 45, 0.4);
+        }
 
         .hh-contact-card {
           border-radius: 28px;

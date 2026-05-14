@@ -14,9 +14,13 @@ const Header: React.FC = () => {
 
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, logout, openBookingModal } = useUI();
+  const { user, logout } = useUI();
   const { isOpenNow, closeLabel } = useClinicStatus();
   const { locale, setLocale, t } = useLocale();
+
+  const openPortal = () => {
+    window.open(CLINIC.patientPortalUrl, '_blank', 'noopener,noreferrer');
+  };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 32);
@@ -144,7 +148,7 @@ const Header: React.FC = () => {
               <Phone size={16} strokeWidth={1.8} />
               <span className="hidden md:inline">Call</span>
             </a>
-            <button onClick={openBookingModal} className="btn btn-terracotta hh-book-btn">
+            <button onClick={openPortal} className="btn btn-terracotta hh-book-btn">
               {t.nav.book}
             </button>
             <button
@@ -197,7 +201,7 @@ const Header: React.FC = () => {
               <button
                 onClick={() => {
                   setMenuOpen(false);
-                  openBookingModal();
+                  openPortal();
                 }}
                 className="btn btn-terracotta"
                 style={{ width: '100%' }}

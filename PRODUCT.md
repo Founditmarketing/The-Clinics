@@ -2,9 +2,9 @@
 
 ## What it is
 
-A multi-specialty primary care clinic in Alexandria, Louisiana. One physical location at **1587 N Bolton Ave**. Seven providers (5 MDs, 2 NPs). Family medicine plus on-site cardiac diagnostics (EKG, Holter, stress test, cardiac ultrasound), gastroenterology, podiatry, lab work, X-ray, bone density, and pulmonary function. Same-day visits for established patients via Access2Day.
+A family-practice-first clinic group serving Central Louisiana ("Cenla") for decades. **Two clinics** — flagship in Alexandria at 1587 N Bolton Ave and a second clinic in Pineville. **18 providers** across both sites (mix of MDs and NPs). About **90% of visits are family practice** — annual physicals, pediatrics, women's health, chronic-condition care, refills, and same-day sick visits via Access2Day. We also offer gastroenterology, podiatry, lab work, X-ray, bone density, and pulmonary function. **We do not have a cardiologist on staff.**
 
-Founded inside Cenla Family Medicine Associates, serving Central Louisiana ("Cenla") for decades.
+Founded inside Cenla Family Medicine Associates.
 
 ## Register
 
@@ -12,7 +12,7 @@ Founded inside Cenla Family Medicine Associates, serving Central Louisiana ("Cen
 
 ## Users
 
-**Primary — adult Cenla resident, 35–70.** Comparing local clinics on Google. Currently inconvenienced by long drives to Alexandria for routine cardiac diagnostics or specialist referrals. Often researching on behalf of an aging parent or a child. Reads on phone first, sometimes returns on desktop. Frustrated by clinics that feel either corporate-cold or chaotically homemade.
+**Primary — adult Cenla resident, 25–70.** Comparing local clinics on Google. Looking for a family-practice home — annual physical, kids' visits, refills, the occasional sick day — without a long drive or a long wait. Often researching on behalf of an aging parent or a child. Reads on phone first, sometimes returns on desktop. Frustrated by clinics that feel either corporate-cold or chaotically homemade.
 
 **Secondary — referring patient.** Already established. Visiting to grab the phone number, log into the patient portal, or send the link to a friend.
 
@@ -28,7 +28,7 @@ The site's job is to make the answer obvious within ten seconds: yes, yes, yes, 
 
 1. **Hometown gravity.** Cenla is a real place with real geography (Red River, Pineville, Ball, Tioga, Boyce). The brand doesn't whisper about "the community" in the abstract. It names the towns. It holds the dirt.
 
-2. **Same-roof answers.** The differentiator vs. corporate medicine is that the EKG, the lab, and the imaging happen in the same hour by the same person who knows the patient. The site must make that legible.
+2. **Family practice, done well.** The differentiator vs. corporate medicine is continuity — the same provider, who knows your story, manages roughly 90% of your visits. Pediatrics through geriatrics. The site must make that legible.
 
 3. **Provider-led trust.** Trust transfers from a face, not a logo. Faces and bios are central. We do not hide behind brand abstraction.
 
@@ -50,14 +50,14 @@ The site's job is to make the answer obvious within ten seconds: yes, yes, yes, 
 
 ## Voice samples
 
-- "Same-day care. Same-roof answers. Built for Cenla."
-- "EKG read by your provider before you leave. Not mailed in three days late."
+- "Family practice, first. Built for Cenla."
+- "About 90% of what we do is family medicine. The other 10% fits on the same chart."
 - "Open until 5p Monday through Thursday. 7:45a Friday morning if you want first chair."
-- "Seven providers. One Bolton Avenue. Twelve services. No referrals to drive across town."
+- "18 providers, two clinics in Cenla, one phone call."
 
 ## Out of scope (intentionally)
 
 - Telehealth marketing. We don't lead with virtual care.
 - HIPAA-compliant in-app messaging. Lives on the patient portal.
-- E-commerce. No bookings transact on this site; the booking modal collects a request and routes to the team.
-- Multi-location chrome (header location switcher, etc.). We have one location and that's the strength.
+- E-commerce. No bookings transact on this site. **Visit requests go to the patient portal**, which already has a proven visit-request flow.
+- Cardiology. We do not have a cardiologist on staff and do not advertise cardiac diagnostics.

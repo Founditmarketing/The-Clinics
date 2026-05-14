@@ -8,7 +8,6 @@ import Contact from './pages/Contact';
 import About from './pages/About';
 import Dashboard from './pages/Dashboard';
 import ChatWidget from './components/AI/ChatWidget';
-import BookingModal from './components/Booking/BookingModal';
 import LoginModal from './components/Auth/LoginModal';
 import { UIProvider } from './context/UIContext';
 import { PageRoute } from './types';
@@ -48,7 +47,6 @@ const App: React.FC = () => {
           </main>
           <Footer />
           <ChatWidget />
-          <BookingModal />
           <LoginModal />
         </div>
       </Router>

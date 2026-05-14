@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { CLINIC, AFFILIATIONS, DOCTORS } from '../../data/clinicData';
+import { CLINIC, AFFILIATIONS, LOCATIONS, PROVIDER_COUNT } from '../../data/clinicData';
 import { PageRoute } from '../../types';
 import { useLocale } from '../Harmony/i18n';
 
@@ -13,18 +13,18 @@ const Footer: React.FC = () => {
       <div className="container hh-footer-inner">
         <div className="hh-footer-stats">
           <div>
-            <div className="hh-footer-stat-num font-display">01</div>
-            <div className="small-label">Location · Cenla</div>
+            <div className="hh-footer-stat-num font-display">
+              {String(LOCATIONS.length).padStart(2, '0')}
+            </div>
+            <div className="small-label">Locations · Cenla</div>
           </div>
           <div>
-            <div className="hh-footer-stat-num font-display">
-              {String(DOCTORS.length).padStart(2, '0')}
-            </div>
+            <div className="hh-footer-stat-num font-display">{PROVIDER_COUNT}</div>
             <div className="small-label">Providers</div>
           </div>
           <div>
-            <div className="hh-footer-stat-num font-display">{CLINIC.annualVisits}</div>
-            <div className="small-label">Annual visits</div>
+            <div className="hh-footer-stat-num font-display">90%</div>
+            <div className="small-label">Family practice visits</div>
           </div>
           <div>
             <div className="hh-footer-stat-num font-display">{CLINIC.rating}★</div>
@@ -56,8 +56,8 @@ const Footer: React.FC = () => {
               </div>
             </div>
             <p className="hh-footer-blurb">
-              Modern primary care, on-site cardiac diagnostics, gastro, podiatry, and labs in
-              Central Louisiana. Built for Cenla. Welcoming all.
+              Family practice first — about 90% of what we do — plus gastro, podiatry, and
+              on-site labs. Two clinics in Central Louisiana. Built for Cenla. Welcoming all.
             </p>
             <form
               onSubmit={(e) => e.preventDefault()}
@@ -81,16 +81,29 @@ const Footer: React.FC = () => {
 
           <div className="hh-footer-col">
             <div className="hh-footer-col-title font-display">Visit us</div>
-            <div className="hh-footer-text">
-              {CLINIC.address}
-              <br />
-              <a href={`tel:${CLINIC.tel}`} className="font-mono underline-grow">
-                {CLINIC.phone}
-              </a>
-              <br />
-              <a href={`mailto:${CLINIC.email}`} className="underline-grow">
-                {CLINIC.email}
-              </a>
+            <div className="hh-footer-locations">
+              {LOCATIONS.map((loc) => (
+                <div key={loc.key} className="hh-footer-location">
+                  <div className="small-label" style={{ color: 'var(--terracotta-pale)' }}>
+                    {loc.city}{loc.flagship ? ' · Flagship' : ''}
+                  </div>
+                  <div className="hh-footer-text">
+                    {loc.address}
+                    <br />
+                    <a href={`tel:${loc.tel}`} className="font-mono underline-grow">
+                      {loc.phone}
+                    </a>
+                  </div>
+                  <a
+                    href={loc.mapsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline-grow hh-footer-link"
+                  >
+                    Get directions ↗
+                  </a>
+                </div>
+              ))}
             </div>
             <div className="hh-footer-hours">
               <div>
@@ -110,14 +123,6 @@ const Footer: React.FC = () => {
                 <div className="font-mono">Same-day for established</div>
               </div>
             </div>
-            <a
-              href={CLINIC.mapsUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline-grow hh-footer-link"
-            >
-              Get directions ↗
-            </a>
           </div>
 
           <div className="hh-footer-col">
@@ -296,6 +301,10 @@ const Footer: React.FC = () => {
         .hh-footer-col-title { font-size: 1.05rem; margin-bottom: 0.9rem; color: var(--bone); }
         .hh-footer-text { color: var(--sage-light); font-size: 0.92rem; line-height: 1.7; }
         .hh-footer-text a { color: var(--bone); }
+
+        .hh-footer-locations { display: grid; gap: 1rem; margin-bottom: 0.5rem; }
+        .hh-footer-location { display: grid; gap: 0.25rem; }
+        .hh-footer-location .small-label { margin-bottom: 0.1rem; }
 
         .hh-footer-hours {
           display: grid;

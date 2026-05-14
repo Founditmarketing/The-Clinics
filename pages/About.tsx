@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CLINIC, DOCTORS, AFFILIATIONS, PROVIDER_FILTER_TABS } from '../data/clinicData';
+import { DOCTORS, AFFILIATIONS, PROVIDER_FILTER_TABS, PROVIDER_COUNT } from '../data/clinicData';
 import { Doctor } from '../types';
 import { Reveal, useLocale } from '../components/Harmony/i18n';
 import DoctorModal from '../components/Harmony/DoctorModal';
@@ -37,10 +37,11 @@ const About: React.FC = () => {
               deserved better.
             </h1>
             <p className="lead lead-lg">
-              For decades, getting good medical care in Central Louisiana meant a long drive, a
-              longer wait, and an even longer bill. theCLINICS was built so your neighbors get
-              same-day primary care, on-site cardiac diagnostics, gastro, podiatry, and labs,
-              coordinated by a provider who actually knows you.
+              For decades, getting good medical care in Central Louisiana meant a long drive,
+              a longer wait, and an even longer bill. theCLINICS was built so your neighbors
+              get great family practice — physicals, pediatrics, women&rsquo;s health, chronic
+              care — plus gastro, podiatry, and on-site labs, across two clinics, coordinated
+              by a provider who actually knows you.
             </p>
           </Reveal>
           <Reveal as="div" delay={120} className="hh-about-hero-image-wrap">
@@ -62,13 +63,13 @@ const About: React.FC = () => {
           {[
             {
               num: '01',
-              title: 'Same-roof answers',
-              body: 'EKG, Holter, stress test, ultrasound, lab work, and X-ray are read on-site by your provider. Most visits start and end in the same hour.',
+              title: 'Family practice, mostly',
+              body: 'About 90% of what we do is family medicine — physicals, pediatrics, women\u2019s health, chronic-condition care, refills, and same-day sick visits. The bread and butter, done well.',
             },
             {
               num: '02',
-              title: 'Provider continuity',
-              body: 'Seven providers who live here. You will see the same person again, who will remember your story, your meds, and your kid&rsquo;s name.',
+              title: 'Two clinics, one team',
+              body: `${PROVIDER_COUNT} providers across our Alexandria and Pineville clinics. The same standard of care, the same charts, the same warm front desk. Pick whichever is closer.`,
             },
             {
               num: '03',

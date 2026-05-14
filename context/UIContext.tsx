@@ -1,17 +1,20 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { User, Appointment } from '../types';
+import { CLINIC } from '../data/clinicData';
 
 interface UIContextType {
-  // Modal State
+  // Modal State (kept for back-compat; the in-app modal is no longer used —
+  // visit requests are routed to the patient portal, which has a proven
+  // visit-request flow).
   isBookingModalOpen: boolean;
   openBookingModal: () => void;
   closeBookingModal: () => void;
-  
+
   isLoginModalOpen: boolean;
   openLoginModal: () => void;
   closeLoginModal: () => void;
 
-  // Booking Context
+  // Booking Context (kept for back-compat; routes to portal).
   preselectedServiceId: string | null;
   preselectedDoctorId: string | null;
   openBookingWithService: (serviceId: string) => void;
@@ -21,7 +24,7 @@ interface UIContextType {
   user: User | null;
   login: (name: string, email: string) => void;
   logout: () => void;
-  
+
   // Appointment Data
   appointments: Appointment[];
   addAppointment: (appt: Appointment) => void;
@@ -29,12 +32,17 @@ interface UIContextType {
 
 const UIContext = createContext<UIContextType | undefined>(undefined);
 
+/**
+ * Open the patient portal's visit-request flow in a new tab.
+ * This is the single source of truth for "Book a visit" in the app.
+ */
+const openPatientPortal = () => {
+  if (typeof window === 'undefined') return;
+  window.open(CLINIC.patientPortalUrl, '_blank', 'noopener,noreferrer');
+};
+
 export const UIProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  
-  const [preselectedServiceId, setPreselectedServiceId] = useState<string | null>(null);
-  const [preselectedDoctorId, setPreselectedDoctorId] = useState<string | null>(null);
 
   // Mock User State
   const [user, setUser] = useState<User | null>(null);
@@ -43,18 +51,18 @@ export const UIProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     {
       id: 'prev-1',
       doctorName: 'Dr. Sarah Mitchell',
-      serviceName: 'Primary Care',
+      serviceName: 'Family Practice',
       date: 'Oct 12',
       time: '10:00 AM',
-      status: 'Completed'
-    }
+      status: 'Completed',
+    },
   ]);
 
   const login = (name: string, email: string) => {
     setUser({
       name,
       email,
-      avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80'
+      avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80',
     });
     setIsLoginModalOpen(false);
   };
@@ -64,54 +72,37 @@ export const UIProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   };
 
   const addAppointment = (appt: Appointment) => {
-    setAppointments(prev => [appt, ...prev]);
+    setAppointments((prev) => [appt, ...prev]);
   };
 
-  const resetSelections = () => {
-    setPreselectedServiceId(null);
-    setPreselectedDoctorId(null);
-  };
-
-  const openBookingModal = () => {
-    resetSelections();
-    setIsBookingModalOpen(true);
-  };
-
-  const openBookingWithService = (serviceId: string) => {
-    resetSelections();
-    setPreselectedServiceId(serviceId);
-    setIsBookingModalOpen(true);
-  };
-
-  const openBookingWithDoctor = (doctorId: string) => {
-    resetSelections();
-    setPreselectedDoctorId(doctorId);
-    setIsBookingModalOpen(true);
-  };
-
+  // Booking actions all route to the patient portal in a new tab.
+  const openBookingModal = () => openPatientPortal();
+  const openBookingWithService = (_serviceId: string) => openPatientPortal();
+  const openBookingWithDoctor = (_doctorId: string) => openPatientPortal();
   const closeBookingModal = () => {
-    setIsBookingModalOpen(false);
-    setTimeout(() => resetSelections(), 300);
+    /* noop — modal is never shown */
   };
 
   return (
-    <UIContext.Provider value={{ 
-      isBookingModalOpen, 
-      openBookingModal, 
-      closeBookingModal,
-      isLoginModalOpen,
-      openLoginModal: () => setIsLoginModalOpen(true),
-      closeLoginModal: () => setIsLoginModalOpen(false),
-      preselectedServiceId,
-      preselectedDoctorId,
-      openBookingWithService,
-      openBookingWithDoctor,
-      user,
-      login,
-      logout,
-      appointments,
-      addAppointment
-    }}>
+    <UIContext.Provider
+      value={{
+        isBookingModalOpen: false,
+        openBookingModal,
+        closeBookingModal,
+        isLoginModalOpen,
+        openLoginModal: () => setIsLoginModalOpen(true),
+        closeLoginModal: () => setIsLoginModalOpen(false),
+        preselectedServiceId: null,
+        preselectedDoctorId: null,
+        openBookingWithService,
+        openBookingWithDoctor,
+        user,
+        login,
+        logout,
+        appointments,
+        addAppointment,
+      }}
+    >
       {children}
     </UIContext.Provider>
   );

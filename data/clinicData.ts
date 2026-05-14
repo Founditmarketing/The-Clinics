@@ -6,17 +6,20 @@ import { Doctor, ServiceItem } from '../types';
    ------------------------------------------------------------------ */
 
 const COMMON_HOURS = ['Mon–Thu: 7:45am – 5:00pm', 'Friday: 7:45am – 12:00pm'];
-const COMMON_LOCATION = '1587 N Bolton Ave, Alexandria, LA 71303';
+const COMMON_LOCATION = 'Alexandria & Pineville · Cenla';
 const COMMON_PHONE = '(318) 445-9823';
+
+/** Total provider headcount across the practice (MDs + NPs across both locations). */
+export const PROVIDER_COUNT = 18;
 
 export const DOCTORS: Doctor[] = [
   {
     id: 'michael-buck',
     name: 'Dr. Michael G. Buck, MD',
-    role: 'Primary Care · Family Medicine',
+    role: 'Family Medicine',
     specialty: 'Internal & preventative medicine',
     image: '/Dr. Michael G. Buck.jpg',
-    bio: "Dr. Buck builds the medical support system around the patient — listening first, identifying needs, and coordinating high-quality care across primary, cardiac, and on-site diagnostics. Known for taking the time to explain test results in plain English.",
+    bio: "Dr. Buck builds the medical support system around the patient — listening first, identifying needs, and coordinating high-quality family medicine care across both clinics. Known for taking the time to explain test results in plain English.",
     location: COMMON_LOCATION,
     phone: COMMON_PHONE,
     officeHours: COMMON_HOURS,
@@ -25,12 +28,12 @@ export const DOCTORS: Doctor[] = [
     lives: 'Alexandria, LA',
     accepting: true,
     featured: true,
-    tags: ['primary', 'cardiac'],
+    tags: ['primary'],
   },
   {
     id: 'william-mcbride',
     name: 'Dr. William M. McBride, MD',
-    role: 'Primary Care · Family Medicine',
+    role: 'Family Medicine',
     specialty: 'Diversity-centered family practice',
     image: '/Dr. William M. MCBride.jpg',
     bio: "Dr. McBride values the uniqueness and diversity of every individual in the Cenla community. His practice spans annual physicals, chronic-condition management, and same-day visits for established patients.",
@@ -46,10 +49,10 @@ export const DOCTORS: Doctor[] = [
   {
     id: 'michael-screpetis',
     name: 'Dr. Michael Screpetis, MD',
-    role: 'Primary Care · Family Medicine',
+    role: 'Family Medicine',
     specialty: 'Patient-centered health management',
     image: '',
-    bio: "Dr. Screpetis provides comprehensive primary care with a focus on shared decision-making — building treatment plans around your lifestyle, family, and goals.",
+    bio: "Dr. Screpetis provides comprehensive family medicine with a focus on shared decision-making — building treatment plans around your lifestyle, family, and goals.",
     location: COMMON_LOCATION,
     phone: COMMON_PHONE,
     officeHours: COMMON_HOURS,
@@ -62,10 +65,10 @@ export const DOCTORS: Doctor[] = [
   {
     id: 'jonathan-hunter',
     name: 'Dr. Jonathan Hunter, MD',
-    role: 'Primary Care · Family Medicine',
+    role: 'Family Medicine',
     specialty: 'Wellness & community health',
     image: '',
-    bio: "Dr. Hunter is dedicated to high-quality medical care and promoting wellness within the Cenla community. Comfortable with everything from new-patient onboarding to long-running chronic disease management.",
+    bio: "Dr. Hunter is dedicated to high-quality family medicine and promoting wellness within the Cenla community. Comfortable with everything from new-patient onboarding to long-running chronic disease management.",
     location: COMMON_LOCATION,
     phone: COMMON_PHONE,
     officeHours: COMMON_HOURS,
@@ -78,10 +81,10 @@ export const DOCTORS: Doctor[] = [
   {
     id: 'michelle-beurlot',
     name: 'Dr. Beurlot, MD',
-    role: 'Primary Care · Family Medicine',
+    role: 'Family Medicine',
     specialty: "Compassionate, accessible care",
     image: '/Dr. Beurlot .png',
-    bio: "Dr. Beurlot is committed to improving the health and well-being of patients through compassionate, accessible care. Particularly experienced with women's health and pediatric primary care.",
+    bio: "Dr. Beurlot is committed to improving the health and well-being of patients through compassionate family medicine. Particularly experienced with women's health and pediatric primary care.",
     location: COMMON_LOCATION,
     phone: COMMON_PHONE,
     officeHours: COMMON_HOURS,
@@ -94,10 +97,10 @@ export const DOCTORS: Doctor[] = [
   {
     id: 'dana-homer',
     name: 'Dana Homer, NP',
-    role: 'Nurse Practitioner · Primary Care',
+    role: 'Family Medicine NP',
     specialty: 'Family practice across all ages',
     image: '',
-    bio: "An experienced nurse practitioner providing a wide range of primary care services for patients of all ages. Skilled in same-day visits, screenings, and care plan follow-up.",
+    bio: "An experienced nurse practitioner providing a wide range of family medicine services for patients of all ages. Skilled in same-day visits, screenings, and care plan follow-up.",
     location: COMMON_LOCATION,
     phone: COMMON_PHONE,
     officeHours: COMMON_HOURS,
@@ -110,7 +113,7 @@ export const DOCTORS: Doctor[] = [
   {
     id: 'frances-turregano',
     name: 'Frances Turregano, NP',
-    role: 'Nurse Practitioner · Primary Care',
+    role: 'Family Medicine NP',
     specialty: 'Prevention & patient education',
     image: '',
     bio: "Focused on health promotion, disease prevention, and patient education for adults, teens, and children. Loves helping families build durable wellness habits between visits.",
@@ -126,19 +129,28 @@ export const DOCTORS: Doctor[] = [
 ];
 
 /* ------------------------------------------------------------------
-   Services — Harmony-style editorial copy on real Clinics services
+   Services — family practice first, plus the rest of what we offer
    ------------------------------------------------------------------ */
 
 export const SERVICES: ServiceItem[] = [
   {
     id: 's1',
-    title: 'Primary Care / Family Medicine',
-    tagline: 'Your medical home',
+    title: 'Family Practice',
+    tagline: 'About 90% of what we do',
     description:
-      'Comprehensive health management for individuals and families — annual physicals, chronic-condition management, and preventative screenings, coordinated by a provider who knows you over time.',
+      'Family medicine is the heart of theCLINICS. Annual physicals, chronic-condition management, pediatric and adult primary care, women\u2019s health, preventative screenings, refills, and same-day sick visits for established patients — coordinated by a provider who knows you over time.',
     expect: '30–45 min · Insurance billed · Same-day prescriptions',
     iconName: 'Stethoscope',
     feature: true,
+  },
+  {
+    id: 's4',
+    title: 'Access2Day Health',
+    tagline: 'Same-day access',
+    description:
+      'Convenient access to healthcare services so you get the care you need, when you need it. No appointment required for established patients.',
+    expect: 'Walk-in welcome · Mon–Fri',
+    iconName: 'Clock',
   },
   {
     id: 's2',
@@ -159,15 +171,6 @@ export const SERVICES: ServiceItem[] = [
     iconName: 'Activity',
   },
   {
-    id: 's4',
-    title: 'Access2Day Health',
-    tagline: 'Same-day access',
-    description:
-      'Convenient access to healthcare services so you get the care you need, when you need it. No appointment required for established patients.',
-    expect: 'Walk-in welcome · Mon–Fri',
-    iconName: 'Clock',
-  },
-  {
     id: 's5',
     title: 'Bone Density',
     tagline: 'Osteoporosis screening',
@@ -175,33 +178,6 @@ export const SERVICES: ServiceItem[] = [
       'Advanced imaging to measure bone strength and assess risk for osteoporosis and fractures — quick, painless, and covered by most plans after age 50.',
     expect: '15 min scan · Results in 24h',
     iconName: 'Bone',
-  },
-  {
-    id: 's6',
-    title: 'Holter Monitors',
-    tagline: 'Continuous heart rhythm',
-    description:
-      "Continuous heart rhythm monitoring to detect irregularities over 24–48 hours, worn comfortably under your clothes during everyday life.",
-    expect: '24–48h wear · Detailed report',
-    iconName: 'Monitor',
-  },
-  {
-    id: 's7',
-    title: 'Electrocardiogram (EKG)',
-    tagline: 'Heart electrical signals',
-    description:
-      'Quick and painless test to record the electrical signals in your heart — used for everything from chest-pain workups to pre-op clearance.',
-    expect: '5–10 min · Read same day',
-    iconName: 'Zap',
-  },
-  {
-    id: 's8',
-    title: 'Stress Test',
-    tagline: 'Cardiac fitness',
-    description:
-      'Evaluation of heart function and blood flow during physical exertion — the gold standard for early detection of coronary artery disease.',
-    expect: '45 min · Comfortable shoes recommended',
-    iconName: 'Activity',
   },
   {
     id: 's9',
@@ -222,15 +198,6 @@ export const SERVICES: ServiceItem[] = [
     iconName: 'Lab',
   },
   {
-    id: 's11',
-    title: 'Cardiac Ultrasound',
-    tagline: 'Heart imaging',
-    description:
-      'Non-invasive imaging to visualize heart structure and function in real time — high-detail, no radiation, no recovery time.',
-    expect: '30 min · No prep · Same-day read',
-    iconName: 'Heart',
-  },
-  {
     id: 's12',
     title: 'X-ray Services',
     tagline: 'Digital radiography',
@@ -242,40 +209,109 @@ export const SERVICES: ServiceItem[] = [
 ];
 
 /* ------------------------------------------------------------------
-   Single-clinic location panel data
+   Locations — Alexandria + Pineville
    ------------------------------------------------------------------ */
 
+export interface ClinicLocation {
+  key: string;
+  name: string;
+  city: string;
+  state: string;
+  region: string;
+  flagship?: boolean;
+  address: string;
+  phone: string;
+  tel: string;
+  email: string;
+  coords: { lat: number; lng: number };
+  hoursLabel: string;
+  hours: Record<'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun', { open: number; close: number } | null>;
+  services: string[];
+  mapsUrl: string;
+}
+
+const STANDARD_HOURS = {
+  mon: { open: 7.75, close: 17 },
+  tue: { open: 7.75, close: 17 },
+  wed: { open: 7.75, close: 17 },
+  thu: { open: 7.75, close: 17 },
+  fri: { open: 7.75, close: 12 },
+  sat: null,
+  sun: null,
+} as Record<'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun', { open: number; close: number } | null>;
+
+const FAMILY_PRACTICE_SERVICES = [
+  'Family Practice',
+  'Same-day visits',
+  'Gastroenterology',
+  'Podiatry',
+  'Lab & Imaging',
+];
+
+export const LOCATIONS: ClinicLocation[] = [
+  {
+    key: 'alexandria',
+    name: 'theCLINICS · Alexandria',
+    city: 'Alexandria',
+    state: 'LA',
+    region: 'Central Louisiana',
+    flagship: true,
+    address: '1587 N Bolton Ave, Alexandria, LA 71303',
+    phone: '(318) 445-9823',
+    tel: '3184459823',
+    email: 'info@theclinics.us',
+    coords: { lat: 31.3146, lng: -92.4693 },
+    hoursLabel: 'Mon–Thu · 7:45a–5p · Friday · 7:45a–12p',
+    hours: STANDARD_HOURS,
+    services: FAMILY_PRACTICE_SERVICES,
+    mapsUrl:
+      'https://www.google.com/maps/place/The+Clinics/@31.314633,-92.4693039,17z/data=!3m1!4b1!4m6!3m5!1s0x86254b45d31c8a13:0x6670722edf39a203!8m2!3d31.314633!4d-92.4693039!16s%2Fg%2F1tdnfmbj',
+  },
+  {
+    key: 'pineville',
+    name: 'theCLINICS · Pineville',
+    city: 'Pineville',
+    state: 'LA',
+    region: 'Central Louisiana',
+    address: 'Pineville, LA · call for address',
+    phone: '(318) 445-9823',
+    tel: '3184459823',
+    email: 'info@theclinics.us',
+    coords: { lat: 31.3224, lng: -92.4346 },
+    hoursLabel: 'Mon–Thu · 7:45a–5p · Friday · 7:45a–12p',
+    hours: STANDARD_HOURS,
+    services: FAMILY_PRACTICE_SERVICES,
+    mapsUrl: 'https://www.google.com/maps/search/the+clinics+pineville+la',
+  },
+];
+
+/* ------------------------------------------------------------------
+   Shared clinic info (back-compat for components that import CLINIC)
+   Defaults to the flagship Alexandria location.
+   ------------------------------------------------------------------ */
+
+const FLAGSHIP = LOCATIONS.find((l) => l.flagship) || LOCATIONS[0];
+
 export const CLINIC = {
-  name: 'theCLINICS · Alexandria',
-  city: 'Alexandria',
-  state: 'LA',
-  region: 'Central Louisiana',
-  flagship: true,
-  address: '1587 N Bolton Ave, Alexandria, LA 71303',
-  phone: '(318) 445-9823',
-  tel: '3184459823',
-  email: 'info@theclinics.us',
-  coords: { lat: 31.3146, lng: -92.4693 },
-  hoursLabel: 'Mon–Thu · 7:45a–5p · Friday · 7:45a–12p',
-  hours: {
-    mon: { open: 7.75, close: 17 },
-    tue: { open: 7.75, close: 17 },
-    wed: { open: 7.75, close: 17 },
-    thu: { open: 7.75, close: 17 },
-    fri: { open: 7.75, close: 12 },
-    sat: null,
-    sun: null,
-  } as Record<'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun', { open: number; close: number } | null>,
-  services: ['Primary Care', 'Cardiac Diagnostics', 'Gastroenterology', 'Podiatry', 'Lab & Imaging'],
+  name: FLAGSHIP.name,
+  city: FLAGSHIP.city,
+  state: FLAGSHIP.state,
+  region: FLAGSHIP.region,
+  flagship: FLAGSHIP.flagship,
+  address: FLAGSHIP.address,
+  phone: FLAGSHIP.phone,
+  tel: FLAGSHIP.tel,
+  email: FLAGSHIP.email,
+  coords: FLAGSHIP.coords,
+  hoursLabel: FLAGSHIP.hoursLabel,
+  hours: FLAGSHIP.hours,
+  services: FLAGSHIP.services,
   patientPortalUrl: 'https://mycw11.eclinicalweb.com/portal351/jsp/100mp/login_otp.jsp',
   facebookUrl: 'https://www.facebook.com/cenlafamilymedicineassociates',
-  mapsUrl:
-    'https://www.google.com/maps/place/The+Clinics/@31.314633,-92.4693039,17z/data=!3m1!4b1!4m6!3m5!1s0x86254b45d31c8a13:0x6670722edf39a203!8m2!3d31.314633!4d-92.4693039!16s%2Fg%2F1tdnfmbj',
+  mapsUrl: FLAGSHIP.mapsUrl,
   googleReviewsUrl: 'https://www.google.com/search?q=The+Clinics+Alexandria+LA+reviews',
   rating: 4.8,
-  reviewCount: 312,
   foundedYear: 1998,
-  annualVisits: '20K+',
 } as const;
 
 /* ------------------------------------------------------------------
@@ -326,7 +362,7 @@ export const INSURANCE_CARRIERS = INSURANCE_PLANS.filter(
 export const FAQS = [
   {
     q: 'Do I need an appointment to be seen?',
-    a: 'For new patients we ask you to schedule ahead so we can review records and pull together the right team. Established patients can use Access2Day for same-day visits — call us or walk in.',
+    a: 'For new patients we ask you to schedule ahead so we can review records and pull together the right team. Established patients can use Access2Day for same-day visits — call us or walk in to either location.',
   },
   {
     q: 'What insurance do you accept?',
@@ -334,19 +370,23 @@ export const FAQS = [
   },
   {
     q: 'How fast can a new patient be seen?',
-    a: 'Most new-patient appointments are available within 5–7 days. For urgent needs, established patients can use Access2Day Mon–Fri.',
+    a: 'Most new-patient family-practice appointments are available within a week. For urgent needs, established patients can use Access2Day Mon–Fri.',
   },
   {
     q: 'Do you treat children?',
     a: 'Yes. Several providers — including Dr. Beurlot and NP Frances Turregano — see pediatric patients for well-child visits, sick visits, and school physicals.',
   },
   {
-    q: 'What happens if I need a specialist?',
-    a: 'Your provider will coordinate the referral, share your records, and follow up. We work closely with regional centers across Louisiana.',
+    q: 'How do I request a visit?',
+    a: 'Use the patient portal — it has a proven visit-request feature where your message goes straight to the right team. You can also call us at (318) 445-9823 during business hours.',
+  },
+  {
+    q: 'Where are your locations?',
+    a: 'We have two clinics in Cenla — our flagship in Alexandria on N Bolton Ave, and a second location in Pineville. Call us if you are unsure which one is closer to you.',
   },
   {
     q: 'Is there a patient portal?',
-    a: 'Yes — through eClinicalWorks you can message your provider, view records, see lab results, request refills, and schedule visits.',
+    a: 'Yes — through eClinicalWorks you can message your provider, view records, see lab results, request refills, and request visits.',
   },
 ];
 
@@ -359,7 +399,7 @@ export const TESTIMONIALS = [
     q: "First visit and overall it was a great experience. The staff was so friendly and extremely knowledgeable. I felt very comfortable and am so thankful my friend referred me.",
     n: 'Kasey M.',
     l: 'Alexandria, LA',
-    visit: 'Primary care',
+    visit: 'Family practice',
     featured: true,
   },
   { q: 'The team are experienced and caring individuals.', n: 'Grace W.', l: 'Pineville, LA', visit: 'Annual physical' },
@@ -370,16 +410,16 @@ export const TESTIMONIALS = [
     visit: 'Pediatric visit',
   },
   {
-    q: "Got me in same day for an EKG and lab work — out the door in under an hour with answers.",
-    n: 'James T.',
-    l: 'Ball, LA',
-    visit: 'Cardiac diagnostics',
-  },
-  {
     q: 'Dr. Buck takes time. He listens. He answers. I haven\'t felt this seen by a doctor in years.',
     n: 'Rebecca H.',
     l: 'Alexandria, LA',
-    visit: 'Primary care',
+    visit: 'Family practice',
+  },
+  {
+    q: 'Same-day appointment, in and out before lunch, and they actually called back the next day to check on me.',
+    n: 'James T.',
+    l: 'Ball, LA',
+    visit: 'Same-day visit',
   },
 ];
 
@@ -402,9 +442,8 @@ export const AFFILIATIONS = [
 
 export const PROVIDER_FILTER_TABS = [
   { id: 'all', label: 'All' },
-  { id: 'primary', label: 'Primary care' },
+  { id: 'primary', label: 'Family practice' },
   { id: 'pediatrics', label: 'Pediatrics' },
   { id: 'womens', label: 'Women\u2019s health' },
-  { id: 'cardiac', label: 'Cardiac' },
   { id: 'urgent', label: 'Same-day' },
 ];
