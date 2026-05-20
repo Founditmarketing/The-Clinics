@@ -34,7 +34,7 @@ export const DOCTORS: Doctor[] = [
     id: 'william-mcbride',
     name: 'Dr. William M. McBride, MD',
     role: 'Family Medicine',
-    specialty: 'Diversity-centered family practice',
+    specialty: 'Diversity-centered primary care',
     image: '/Dr. William M. MCBride.jpg',
     bio: "Dr. McBride values the uniqueness and diversity of every individual in the Cenla community. His practice spans annual physicals, chronic-condition management, and same-day visits for established patients.",
     location: COMMON_LOCATION,
@@ -98,7 +98,7 @@ export const DOCTORS: Doctor[] = [
     id: 'dana-homer',
     name: 'Dana Homer, NP',
     role: 'Family Medicine NP',
-    specialty: 'Family practice across all ages',
+    specialty: 'Primary care across all ages',
     image: '',
     bio: "An experienced nurse practitioner providing a wide range of family medicine services for patients of all ages. Skilled in same-day visits, screenings, and care plan follow-up.",
     location: COMMON_LOCATION,
@@ -129,13 +129,13 @@ export const DOCTORS: Doctor[] = [
 ];
 
 /* ------------------------------------------------------------------
-   Services — family practice first, plus the rest of what we offer
+   Services — comprehensive care first, plus the rest of what we offer
    ------------------------------------------------------------------ */
 
 export const SERVICES: ServiceItem[] = [
   {
     id: 's1',
-    title: 'Family Practice',
+    title: 'Primary Care',
     tagline: 'About 90% of what we do',
     description:
       'Family medicine is the heart of theCLINICS. Annual physicals, chronic-condition management, pediatric and adult primary care, women\u2019s health, preventative screenings, refills, and same-day sick visits for established patients — coordinated by a provider who knows you over time.',
@@ -241,7 +241,7 @@ const STANDARD_HOURS = {
 } as Record<'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun', { open: number; close: number } | null>;
 
 const FAMILY_PRACTICE_SERVICES = [
-  'Family Practice',
+  'Primary Care',
   'Same-day visits',
   'Gastroenterology',
   'Podiatry',
@@ -399,7 +399,7 @@ export const TESTIMONIALS = [
     q: "First visit and overall it was a great experience. The staff was so friendly and extremely knowledgeable. I felt very comfortable and am so thankful my friend referred me.",
     n: 'Kasey M.',
     l: 'Alexandria, LA',
-    visit: 'Family practice',
+    visit: 'Primary care',
     featured: true,
   },
   { q: 'The team are experienced and caring individuals.', n: 'Grace W.', l: 'Pineville, LA', visit: 'Annual physical' },
@@ -413,7 +413,7 @@ export const TESTIMONIALS = [
     q: 'Dr. Buck takes time. He listens. He answers. I haven\'t felt this seen by a doctor in years.',
     n: 'Rebecca H.',
     l: 'Alexandria, LA',
-    visit: 'Family practice',
+    visit: 'Primary care',
   },
   {
     q: 'Same-day appointment, in and out before lunch, and they actually called back the next day to check on me.',
@@ -442,7 +442,7 @@ export const AFFILIATIONS = [
 
 export const PROVIDER_FILTER_TABS = [
   { id: 'all', label: 'All' },
-  { id: 'primary', label: 'Family practice' },
+  { id: 'primary', label: 'Primary care' },
   { id: 'pediatrics', label: 'Pediatrics' },
   { id: 'womens', label: 'Women\u2019s health' },
   { id: 'urgent', label: 'Same-day' },

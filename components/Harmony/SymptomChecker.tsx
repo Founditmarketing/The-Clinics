@@ -4,7 +4,7 @@ import { CLINIC, DOCTORS } from '../../data/clinicData';
 import { Doctor, TriageRecommendation, TriageService } from '../../types';
 
 const SERVICE_LABEL: Record<TriageService, string> = {
-  primary: 'Family Practice',
+  primary: 'Primary Care',
   urgent: 'Same-day Visit',
   pediatrics: 'Pediatric Visit',
   gastro: 'Gastroenterology',

@@ -18,7 +18,7 @@ const Contact: React.FC = () => {
     name: '',
     email: '',
     phone: '',
-    department: 'Family Practice',
+    department: 'Primary Care',
     message: '',
   });
   const [submitted, setSubmitted] = useState(false);
@@ -231,7 +231,7 @@ const Contact: React.FC = () => {
                   <label>
                     <span>Department</span>
                     <select name="department" value={form.department} onChange={handleChange}>
-                      <option>Family Practice</option>
+                      <option>Primary Care</option>
                       <option>Pediatrics</option>
                       <option>Women&rsquo;s Health</option>
                       <option>Gastroenterology</option>

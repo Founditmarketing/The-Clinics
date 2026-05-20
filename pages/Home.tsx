@@ -131,10 +131,8 @@ const Home: React.FC = () => {
             </Reveal>
 
             <h1 className="font-display hh-hero-headline">
-              <span className="word-rise-stage"><span style={{ animationDelay: '0.05s' }}>Family</span></span>{' '}
-              <span className="word-rise-stage"><span className="hh-hero-em" style={{ animationDelay: '0.18s' }}>practice,</span></span>
-              <br />
-              <span className="word-rise-stage"><span style={{ animationDelay: '0.32s' }}>first.</span></span>
+              <span className="word-rise-stage"><span style={{ animationDelay: '0.05s' }}>Comprehensive</span></span>{' '}
+              <span className="word-rise-stage"><span className="hh-hero-em" style={{ animationDelay: '0.18s' }}>care.</span></span>
               <br />
               <span className="word-rise-stage"><span style={{ animationDelay: '0.48s' }}>Built for</span></span>{' '}
               <span className="word-rise-stage hh-hero-place">
@@ -291,7 +289,7 @@ const Home: React.FC = () => {
                   </div>
                   <div className="hh-service-feature-actions">
                     <button onClick={openBookingModal} className="btn btn-primary">
-                      Request a family-practice visit
+                      Request a primary care visit
                       <ArrowRight size={14} />
                     </button>
                     <Link to={`/service/${heroFeatured.id}`} className="underline-grow" style={{ color: 'var(--forest-deep)' }}>
@@ -325,54 +323,7 @@ const Home: React.FC = () => {
             </div>
           </div>
 
-          {/* Family practice spotlight */}
-          <div className="hh-spotlight">
-            <Reveal as="div" className="hh-spotlight-copy">
-              <span className="eyebrow">Spotlight · Family practice</span>
-              <h3 className="font-display hh-spotlight-title">
-                The bulk of what we do, <span className="hh-em">by design.</span>
-              </h3>
-              <p className="lead">
-                Roughly nine out of ten visits at theCLINICS are family practice — physicals,
-                pediatrics, women&rsquo;s health, refills, chronic disease, and the everyday
-                sick visit. One provider who knows your story, across both clinics.
-              </p>
-              <div className="hh-spotlight-stats">
-                {[
-                  { num: '~90%', label: 'of visits are family practice' },
-                  { num: 'All ages', label: 'pediatrics through geriatrics' },
-                  { num: 'Both sites', label: 'same standard of care' },
-                ].map((s) => (
-                  <div key={s.label} className="hh-spotlight-stat">
-                    <div className="font-display hh-spotlight-num">{s.num}</div>
-                    <div>{s.label}</div>
-                  </div>
-                ))}
-              </div>
-              <button onClick={openBookingModal} className="btn btn-primary">
-                Request a family-practice visit <ArrowRight size={14} />
-              </button>
-            </Reveal>
-            <Reveal as="div" delay={120} className="hh-spotlight-figure" aria-hidden>
-              <div className="hh-spotlight-figure-ring">
-                <div className="hh-spotlight-figure-num font-display">90<span>%</span></div>
-                <div className="small-label">family practice</div>
-              </div>
-              <ul className="hh-spotlight-figure-list">
-                {[
-                  'Annual physicals',
-                  'Pediatrics & school physicals',
-                  'Women\u2019s health',
-                  'Chronic conditions & refills',
-                  'Same-day sick visits',
-                ].map((item) => (
-                  <li key={item}>
-                    <span className="hh-spotlight-figure-dot" /> {item}
-                  </li>
-                ))}
-              </ul>
-            </Reveal>
-          </div>
+
         </div>
       </section>
 

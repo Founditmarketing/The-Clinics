@@ -51,7 +51,7 @@ export const UIProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     {
       id: 'prev-1',
       doctorName: 'Dr. Sarah Mitchell',
-      serviceName: 'Family Practice',
+      serviceName: 'Primary Care',
       date: 'Oct 12',
       time: '10:00 AM',
       status: 'Completed',

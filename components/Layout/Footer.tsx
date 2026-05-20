@@ -24,7 +24,7 @@ const Footer: React.FC = () => {
           </div>
           <div>
             <div className="hh-footer-stat-num font-display">90%</div>
-            <div className="small-label">Family practice visits</div>
+            <div className="small-label">Primary care visits</div>
           </div>
           <div>
             <div className="hh-footer-stat-num font-display">{CLINIC.rating}★</div>
@@ -56,7 +56,7 @@ const Footer: React.FC = () => {
               </div>
             </div>
             <p className="hh-footer-blurb">
-              Family practice first — about 90% of what we do — plus gastro, podiatry, and
+              Comprehensive care first — plus gastro, podiatry, and
               on-site labs. Two clinics in Central Louisiana. Built for Cenla. Welcoming all.
             </p>
             <form

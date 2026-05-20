@@ -28,7 +28,7 @@ const STRINGS = {
       mobile_hl_2_em: 'healthcare',
       mobile_hl_2_after: ' again',
       lead:
-        'Family practice is about 90% of what we do — annual physicals, sick visits, pediatrics, women\u2019s health, chronic-condition care — plus gastro, podiatry, and on-site labs, delivered by clinicians who live in Cenla too.',
+        'We provide comprehensive care — annual physicals, sick visits, pediatrics, women\u2019s health, chronic-condition care — plus gastro, podiatry, and on-site labs, delivered by clinicians who live in Cenla too.',
       cta_primary: 'Request a visit',
       cta_secondary: 'Explore services',
       cta_tertiary: 'Same-day care',
@@ -42,19 +42,19 @@ const STRINGS = {
       stats_locations: 'locations',
       stats_providers: 'providers',
       stats_years: 'years in Cenla',
-      stats_pcmh: 'Family practice first',
+      stats_pcmh: 'Comprehensive care first',
     },
     intent: {
       eyebrow: 'Where to start',
       title: 'What brings you in today?',
       sick: {
         t: 'I am sick today',
-        d: 'Same-day family-practice visits for established patients via Access2Day.',
+        d: 'Same-day visits for established patients via Access2Day.',
         cta: 'Request a same-day slot',
       },
       primary: {
-        t: 'I need a family doctor',
-        d: 'Match with a family-practice provider who takes your insurance and your pace.',
+        t: 'I need a primary care doctor',
+        d: 'Match with a primary care provider who takes your insurance and your pace.',
         cta: 'Find my doctor',
       },
       pediatrics: {
@@ -75,11 +75,11 @@ const STRINGS = {
     },
     services: {
       eyebrow: 'Services',
-      title_a: 'Family practice first,',
+      title_a: 'Comprehensive care,',
       title_em: 'plus the rest',
       title_b: '.',
       lead:
-        'About 90% of what we do is family medicine — annual physicals, pediatrics, women\u2019s health, chronic-condition care. Gastro, podiatry, labs, and X-ray fill in the rest.',
+        'We offer a wide range of services — annual physicals, pediatrics, women\u2019s health, chronic-condition care. Gastro, podiatry, labs, and X-ray fill in the rest.',
       all: 'View all services',
     },
     urgent: {
@@ -127,7 +127,7 @@ const STRINGS = {
       lead:
         'Board-certified physicians and nurse practitioners who chose to live and serve in Central Louisiana.',
       filters_all: 'All providers',
-      filters_primary: 'Family practice',
+      filters_primary: 'Primary care',
       filters_pediatrics: 'Pediatrics',
       filters_urgent: 'Same-day',
       filters_womens: 'Women health',
@@ -179,7 +179,7 @@ const STRINGS = {
       title_em: 'you are',
       title_b: '.',
       lead:
-        'Family practice, pediatrics, same-day care — request your visit through the patient portal and our team replies within one business hour.',
+        'Comprehensive care, pediatrics, same-day care — request your visit through the patient portal and our team replies within one business hour.',
       btn_a: 'Request a visit',
       btn_b: 'Open patient portal',
     },
@@ -193,7 +193,7 @@ const STRINGS = {
       sub_location: 'Which clinic works best?',
       sub_provider: 'Pick a provider, or skip for next available.',
       sub_time: 'Choose a time that fits your week.',
-      reason_primary: 'Family practice',
+      reason_primary: 'Primary care',
       reason_urgent: 'Same-day visit',
       reason_pediatrics: 'Pediatric visit',
       reason_womens: 'Women health',
@@ -251,7 +251,7 @@ const STRINGS = {
       mobile_hl_2_em: 'cuidado de salud',
       mobile_hl_2_after: '',
       lead:
-        'Medicina familiar es alrededor del 90% de lo que hacemos — exámenes anuales, pediatría, salud de la mujer, manejo de enfermedades crónicas — más gastroenterología, podiatría y laboratorio en sitio, con clínicos que también viven en Cenla.',
+        'Brindamos atención integral — exámenes anuales, pediatría, salud de la mujer, manejo de enfermedades crónicas — más gastroenterología, podiatría y laboratorio en sitio, con clínicos que también viven en Cenla.',
       cta_primary: 'Solicitar visita',
       cta_secondary: 'Ver servicios',
       cta_tertiary: 'Atención el mismo día',
@@ -265,19 +265,19 @@ const STRINGS = {
       stats_locations: 'sedes',
       stats_providers: 'proveedores',
       stats_years: 'años en Cenla',
-      stats_pcmh: 'Medicina familiar primero',
+      stats_pcmh: 'Atención integral primero',
     },
     intent: {
       eyebrow: 'Por dónde empezar',
       title: '¿Qué le trae hoy?',
       sick: {
         t: 'Estoy enfermo hoy',
-        d: 'Visitas de medicina familiar el mismo día para pacientes establecidos vía Access2Day.',
+        d: 'Visitas el mismo día para pacientes establecidos vía Access2Day.',
         cta: 'Solicitar el mismo día',
       },
       primary: {
-        t: 'Necesito médico familiar',
-        d: 'Encuentre un médico de familia que acepte su seguro y su ritmo.',
+        t: 'Necesito médico de atención primaria',
+        d: 'Encuentre un médico de atención primaria que acepte su seguro y su ritmo.',
         cta: 'Encontrar médico',
       },
       pediatrics: {
@@ -298,11 +298,11 @@ const STRINGS = {
     },
     services: {
       eyebrow: 'Servicios',
-      title_a: 'Medicina familiar primero,',
+      title_a: 'Atención integral,',
       title_em: 'más lo demás',
       title_b: '.',
       lead:
-        'Cerca del 90% de lo que hacemos es medicina familiar — exámenes anuales, pediatría, salud de la mujer, enfermedades crónicas. Gastro, podiatría, laboratorio y rayos X completan el resto.',
+        'Ofrecemos una amplia gama de servicios — exámenes anuales, pediatría, salud de la mujer, enfermedades crónicas. Gastro, podiatría, laboratorio y rayos X completan el resto.',
       all: 'Ver todos los servicios',
     },
     urgent: {
@@ -350,7 +350,7 @@ const STRINGS = {
       lead:
         'Médicos certificados y enfermeros que decidieron vivir y servir en el centro de Louisiana.',
       filters_all: 'Todos',
-      filters_primary: 'Medicina familiar',
+      filters_primary: 'Atención primaria',
       filters_pediatrics: 'Pediatría',
       filters_urgent: 'Mismo día',
       filters_womens: 'Salud mujer',
@@ -401,7 +401,7 @@ const STRINGS = {
       title_em: 'usted lo esté',
       title_b: '.',
       lead:
-        'Medicina familiar, pediatría, atención el mismo día — solicite su visita a través del portal y respondemos en una hora hábil.',
+        'Atención integral, pediatría, atención el mismo día — solicite su visita a través del portal y respondemos en una hora hábil.',
       btn_a: 'Solicitar visita',
       btn_b: 'Abrir portal del paciente',
     },
@@ -415,7 +415,7 @@ const STRINGS = {
       sub_location: '¿Cuál clínica le conviene más?',
       sub_provider: 'Elija un proveedor, o pase para próximo disponible.',
       sub_time: 'Elija una hora que le funcione.',
-      reason_primary: 'Medicina familiar',
+      reason_primary: 'Atención primaria',
       reason_urgent: 'Mismo día',
       reason_pediatrics: 'Visita pediátrica',
       reason_womens: 'Salud de la mujer',

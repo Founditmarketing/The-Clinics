@@ -59,7 +59,7 @@ const Services: React.FC = () => {
           <Reveal as="div" className="hh-section-header">
             <span className="eyebrow">{t.services.eyebrow}</span>
             <h1 className="font-display hh-page-title">
-              Family practice <span className="hh-em">first.</span> <br />
+              Comprehensive care <span className="hh-em">first.</span> <br />
               The rest, on the same chart.
             </h1>
             <p className="lead lead-lg">

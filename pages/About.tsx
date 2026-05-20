@@ -39,7 +39,7 @@ const About: React.FC = () => {
             <p className="lead lead-lg">
               For decades, getting good medical care in Central Louisiana meant a long drive,
               a longer wait, and an even longer bill. theCLINICS was built so your neighbors
-              get great family practice — physicals, pediatrics, women&rsquo;s health, chronic
+              get great primary care — physicals, pediatrics, women&rsquo;s health, chronic
               care — plus gastro, podiatry, and on-site labs, across two clinics, coordinated
               by a provider who actually knows you.
             </p>
@@ -63,7 +63,7 @@ const About: React.FC = () => {
           {[
             {
               num: '01',
-              title: 'Family practice, mostly',
+              title: 'Comprehensive care',
               body: 'About 90% of what we do is family medicine — physicals, pediatrics, women\u2019s health, chronic-condition care, refills, and same-day sick visits. The bread and butter, done well.',
             },
             {
