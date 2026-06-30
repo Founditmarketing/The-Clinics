@@ -1,6 +1,3 @@
-import { GoogleGenAI } from '@google/genai';
-import { DOCTORS, SERVICES, CLINIC } from '../data/clinicData';
-
 /*
  * Server-side Gemini proxy.
  *
@@ -8,16 +5,47 @@ import { DOCTORS, SERVICES, CLINIC } from '../data/clinicData';
  * the browser. The front-end (services/geminiService.ts) POSTs to this route.
  *
  * Runs as a Vercel serverless function in production, and via the dev
- * middleware in vite.config.ts when running `npm run dev`. Written against the
- * raw Node req/res API so it works in both environments without extra deps.
+ * middleware in vite.config.ts when running `npm run dev`.
+ *
+ * Self-contained on purpose: no imports outside /api and no SDK. Reaching out
+ * to ../data or pulling in @google/genai made the bundled Vercel function
+ * crash at load time (FUNCTION_INVOCATION_FAILED). We call Google's REST API
+ * directly with the runtime's global fetch instead. The clinic context below
+ * mirrors data/clinicData.ts — keep them in sync if providers/services change.
  */
 
 // Stable, current model. (gemini-2.0-flash and the -exp variants were retired
 // by Google — generateContent returns 404 "no longer available" for them.)
 const MODEL = 'gemini-2.5-flash';
 
-const doctorsList = DOCTORS.map((d) => `${d.name} (${d.specialty})`).join(', ');
-const servicesList = SERVICES.map((s) => s.title).join(', ');
+const CLINIC = {
+  city: 'Alexandria',
+  state: 'LA',
+  address: '1587 N Bolton Ave, Alexandria, LA 71303',
+  phone: '(318) 445-9823',
+  hoursLabel: 'Mon–Thu · 7:45a–5p · Friday · 7:45a–12p',
+};
+
+const doctorsList = [
+  'Dr. Michael G. Buck, MD (Internal & preventative medicine)',
+  'Dr. William M. McBride, MD (Diversity-centered primary care)',
+  'Dr. Michael Screpetis, MD (Patient-centered health management)',
+  'Dr. Jonathan Hunter, MD (Wellness & community health)',
+  'Dr. Beurlot, MD (Compassionate, accessible care)',
+  'Dana Homer, NP (Primary care across all ages)',
+  'Frances Turregano, NP (Prevention & patient education)',
+].join(', ');
+
+const servicesList = [
+  'Primary Care',
+  'Access2Day Health',
+  'Gastroenterology (AGA)',
+  'Podiatry',
+  'Bone Density',
+  'Pulmonary Function',
+  'Lab Work',
+  'X-ray Services',
+].join(', ');
 
 const CHAT_PROMPT = `You are 'Clara', the AI Health Assistant for theCLINICS in ${CLINIC.city}, ${CLINIC.state}.
 
@@ -70,6 +98,7 @@ Be warm but concise.`;
 // content; the Vite dev middleware does not, so fall back to the raw stream.
 async function readJsonBody(req: any): Promise<any> {
   if (req.body && typeof req.body === 'object') return req.body;
+  if (typeof req.body === 'string') return req.body ? JSON.parse(req.body) : {};
   const chunks: Buffer[] = [];
   for await (const chunk of req) {
     chunks.push(typeof chunk === 'string' ? Buffer.from(chunk) : chunk);
@@ -82,6 +111,34 @@ function send(res: any, status: number, payload: unknown): void {
   res.statusCode = status;
   res.setHeader('Content-Type', 'application/json');
   res.end(JSON.stringify(payload));
+}
+
+async function callGemini(
+  apiKey: string,
+  systemInstruction: string,
+  userText: string,
+  jsonOutput: boolean,
+): Promise<string> {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${apiKey}`;
+  const body: any = {
+    systemInstruction: { parts: [{ text: systemInstruction }] },
+    contents: [{ parts: [{ text: userText }] }],
+  };
+  if (jsonOutput) body.generationConfig = { responseMimeType: 'application/json' };
+
+  const resp = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+
+  if (!resp.ok) {
+    const detail = await resp.text();
+    throw new Error(`Gemini ${resp.status}: ${detail.slice(0, 500)}`);
+  }
+
+  const data: any = await resp.json();
+  return data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
 }
 
 export default async function handler(req: any, res: any): Promise<void> {
@@ -102,25 +159,15 @@ export default async function handler(req: any, res: any): Promise<void> {
     return send(res, 400, { error: 'Invalid request body.' });
   }
 
-  const ai = new GoogleGenAI({ apiKey });
-
   try {
     if (body.mode === 'triage') {
-      const response = await ai.models.generateContent({
-        model: MODEL,
-        contents: String(body.symptom || ''),
-        config: { systemInstruction: TRIAGE_PROMPT, responseMimeType: 'application/json' },
-      });
-      return send(res, 200, { text: response.text || '' });
+      const text = await callGemini(apiKey, TRIAGE_PROMPT, String(body.symptom || ''), true);
+      return send(res, 200, { text });
     }
 
     // Default: conversational chat (Clara)
-    const response = await ai.models.generateContent({
-      model: MODEL,
-      contents: String(body.message || ''),
-      config: { systemInstruction: CHAT_PROMPT },
-    });
-    return send(res, 200, { text: response.text || '' });
+    const text = await callGemini(apiKey, CHAT_PROMPT, String(body.message || ''), false);
+    return send(res, 200, { text });
   } catch (error) {
     console.error('Gemini API error:', error);
     return send(res, 502, { error: 'Upstream AI error.' });
