@@ -12,8 +12,9 @@ import { DOCTORS, SERVICES, CLINIC } from '../data/clinicData';
  * raw Node req/res API so it works in both environments without extra deps.
  */
 
-// Stable model — gemini-2.0-flash-exp is experimental and gets retired.
-const MODEL = 'gemini-2.0-flash';
+// Stable, current model. (gemini-2.0-flash and the -exp variants were retired
+// by Google — generateContent returns 404 "no longer available" for them.)
+const MODEL = 'gemini-2.5-flash';
 
 const doctorsList = DOCTORS.map((d) => `${d.name} (${d.specialty})`).join(', ');
 const servicesList = SERVICES.map((s) => s.title).join(', ');
