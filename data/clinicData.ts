@@ -326,18 +326,39 @@ export interface InsurancePlan {
 }
 
 export const INSURANCE_PLANS: InsurancePlan[] = [
-  { name: 'Blue Cross Blue Shield Louisiana', accepted: true },
+  // Primary insurances
   { name: 'Aetna', accepted: true },
-  { name: 'UnitedHealthcare', accepted: true },
+  { name: 'Aetna (Medicare)', accepted: true },
+  { name: 'Blue Cross Blue Shield', accepted: true },
+  { name: 'Blue Cross Blue Shield (Medicare)', accepted: true },
+  { name: 'Bestcare PPO', accepted: true },
+  { name: 'Coventry PPO', accepted: true },
+  { name: 'First Health PPO', accepted: true },
   { name: 'Cigna', accepted: true },
+  { name: 'Dignity', accepted: true, note: 'Medicare-only plan (I-SNP).' },
+  { name: 'Gilsbar', accepted: true },
   { name: 'Humana', accepted: true },
-  { name: 'Medicare', accepted: true },
-  { name: 'Medicaid (Louisiana)', accepted: true },
-  { name: 'TRICARE', accepted: true },
-  { name: 'Vantage Health Plan', accepted: true },
+  { name: 'Humana (Medicare)', accepted: true },
+  { name: 'Rail Road Medicare', accepted: true },
+  { name: 'Claritev (Multiplan PPO)', accepted: true },
   { name: 'Peoples Health (Medicare Advantage)', accepted: true },
-  { name: 'Ambetter', accepted: true },
-  { name: 'Healthy Blue Louisiana', accepted: true },
+  { name: 'PHCS PPO', accepted: true },
+  { name: 'PPO Plus (Zelis)', accepted: true },
+  { name: 'United Health Care', accepted: true },
+  { name: 'United Health Care (Medicare)', accepted: true },
+  { name: 'Verity PPO', accepted: true },
+  { name: 'Trinity', accepted: true, note: 'Accepted for Gastroenterology and Podiatry only.' },
+  { name: 'Medicare', accepted: true },
+  { name: 'Medicare Advantage', accepted: true },
+
+  // Secondary insurances
+  { name: 'Medicare (Primary) & Medicaid (Secondary)', accepted: true },
+  { name: 'Medicare Advantage (Primary) & Medicaid (Secondary)', accepted: true },
+  { name: 'Medicare (Primary) & Tricare (Secondary)', accepted: true },
+  { name: 'Medicare Advantage (Primary) & Tricare (Secondary)', accepted: true },
+  { name: 'Medicare (Primary) & Champva (Secondary)', accepted: true },
+  { name: 'Medicare Advantage (Primary) & Champva (Secondary)', accepted: true },
+
   {
     name: 'Self-pay (cash)',
     accepted: true,
@@ -362,31 +383,27 @@ export const INSURANCE_CARRIERS = INSURANCE_PLANS.filter(
 export const FAQS = [
   {
     q: 'Do I need an appointment to be seen?',
-    a: 'For new patients we ask you to schedule ahead so we can review records and pull together the right team. Established patients can use Access2Day for same-day visits — call us or walk in to either location.',
+    a: 'For new patients we ask you to call ahead so we can review your information and records to put you with the right team. Established patients can use Access2Day for same-day visits, call to set up appointments, or use the patient portal.',
   },
   {
     q: 'What insurance do you accept?',
-    a: "We're in-network with Blue Cross Blue Shield, Aetna, UnitedHealthcare, Cigna, Humana, Tricare, Medicare, and Medicaid. Don't see yours? Call us — we likely take it.",
+    a: "We're in network with many insurances! Such as Blue Cross Blue Shield, Medicare, Peoples Health, and Aetna. Don't see you? Call us - we likely take it!",
   },
   {
     q: 'How fast can a new patient be seen?',
     a: 'Most new-patient family-practice appointments are available within a week. For urgent needs, established patients can use Access2Day Mon–Fri.',
   },
   {
-    q: 'Do you treat children?',
-    a: 'Yes. Several providers — including Dr. Beurlot and NP Frances Turregano — see pediatric patients for well-child visits, sick visits, and school physicals.',
-  },
-  {
     q: 'How do I request a visit?',
-    a: 'Use the patient portal — it has a proven visit-request feature where your message goes straight to the right team. You can also call us at (318) 445-9823 during business hours.',
+    a: 'Use the patient portal — it has a proven visit-request feature where your message goes straight to the right team. You can also call us at the Alexandria location at (318) 445-9823 or Marksville (318)409-4073 during business hours.',
   },
   {
     q: 'Where are your locations?',
-    a: 'We have two clinics in Cenla — our flagship in Alexandria on N Bolton Ave, and a second location in Pineville. Call us if you are unsure which one is closer to you.',
+    a: 'We have two clinics in Cenla — our flagship in Alexandria on N Bolton Ave, and a second Access2Day in Marksville on Hwy 1192.',
   },
   {
     q: 'Is there a patient portal?',
-    a: 'Yes — through eClinicalWorks you can message your provider, view records, see lab results, request refills, and request visits.',
+    a: 'Yes — through the Healow patient portal you can message your provider, view records, see lab results, request refills, and request visits.',
   },
 ];
 

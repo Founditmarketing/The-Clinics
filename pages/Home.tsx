@@ -6,7 +6,6 @@ import {
   Baby,
   Bone,
   Brain,
-  ChevronDown,
   Clock,
   Eye,
   FlaskConical,
@@ -29,9 +28,7 @@ import {
   LOCATIONS,
   PROVIDER_COUNT,
   SERVICES,
-  FAQS,
   TESTIMONIALS,
-  INSURANCE_PLANS,
 } from '../data/clinicData';
 import { Doctor, ServiceItem } from '../types';
 
@@ -39,7 +36,6 @@ import StatCounter from '../components/Harmony/StatCounter';
 import DoctorModal from '../components/Harmony/DoctorModal';
 import MobileBottomBar from '../components/Harmony/MobileBottomBar';
 import LocationsMap from '../components/Harmony/LocationsMap';
-import InsuranceChecker from '../components/Harmony/InsuranceChecker';
 import { useClinicStatus } from '../components/Harmony/useClinicStatus';
 import { useLocale, Reveal } from '../components/Harmony/i18n';
 
@@ -80,7 +76,6 @@ const Home: React.FC = () => {
   const heroRef = useRef<HTMLElement | null>(null);
 
   const [openProvider, setOpenProvider] = useState<Doctor | null>(null);
-  const [openFaq, setOpenFaq] = useState<number>(0);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   const [heroVisible, setHeroVisible] = useState(false);
 
@@ -242,9 +237,6 @@ const Home: React.FC = () => {
           </div>
         </div>
       </section>
-
-      {/* ==================== INSURANCE CHECKER ==================== */}
-      <InsuranceChecker t={t} plans={INSURANCE_PLANS as any} callTel={CLINIC.tel} />
 
       {/* ==================== SERVICES ==================== */}
       <section id="services" className="hh-section">
@@ -547,54 +539,6 @@ const Home: React.FC = () => {
                 </div>
               ))}
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ==================== FAQ ==================== */}
-      <section id="faq" className="hh-faq hh-section">
-        <div className="container-narrow hh-faq-inner">
-          <Reveal as="div" className="hh-section-header hh-section-header-center">
-            <span className="eyebrow">{t.faq.eyebrow}</span>
-            <h2 className="font-display hh-section-title">
-              {t.faq.title_a} <span className="hh-em">{t.faq.title_em}</span>
-              {t.faq.title_b}
-            </h2>
-            <p className="lead hh-section-lead">{t.faq.lead}</p>
-          </Reveal>
-
-          <div className="hh-faq-list">
-            {FAQS.map((faq, i) => (
-              <div key={i} className={`hh-faq-item ${openFaq === i ? 'is-open' : ''}`}>
-                <button
-                  onClick={() => setOpenFaq(openFaq === i ? -1 : i)}
-                  className="hh-faq-q"
-                  aria-expanded={openFaq === i}
-                >
-                  <span className="editorial-num hh-faq-num">0{i + 1}</span>
-                  <span className="font-display hh-faq-q-text">{faq.q}</span>
-                  <span className="hh-faq-toggle" aria-hidden>
-                    <ChevronDown
-                      size={18}
-                      style={{
-                        transform: openFaq === i ? 'rotate(180deg)' : 'rotate(0deg)',
-                        transition: 'transform 240ms ease',
-                      }}
-                    />
-                  </span>
-                </button>
-                {openFaq === i && (
-                  <div className="hh-faq-a fade-in">{faq.a}</div>
-                )}
-              </div>
-            ))}
-          </div>
-
-          <div className="hh-faq-foot">
-            <p>Still have questions?</p>
-            <a href={`tel:${CLINIC.tel}`} className="font-display hh-faq-call underline-static">
-              Call us at {CLINIC.phone}
-            </a>
           </div>
         </div>
       </section>
@@ -1196,56 +1140,6 @@ const Home: React.FC = () => {
         .hh-review-card-row { display: flex; justify-content: space-between; align-items: center; }
         .hh-review-quote { font-size: 1rem; line-height: 1.5; color: var(--forest-deep); margin: 0; }
         .hh-review-name { font-size: 0.94rem; font-weight: 600; color: var(--forest-deep); }
-
-        /* ============= FAQ ============= */
-        .hh-faq-list { display: grid; gap: 0.5rem; }
-        .hh-faq-item {
-          background: rgba(255,255,255,0.62);
-          backdrop-filter: blur(14px);
-          border: 1px solid var(--line);
-          border-radius: var(--radius-md);
-          overflow: hidden;
-          transition: 200ms ease;
-        }
-        .hh-faq-item:hover { background: rgba(255,255,255,0.78); }
-        .hh-faq-item.is-open { border-color: var(--forest); background: rgba(255,255,255,0.9); }
-        .hh-faq-q {
-          width: 100%;
-          display: grid;
-          grid-template-columns: auto 1fr auto;
-          align-items: start;
-          gap: 1rem;
-          padding: 1.2rem 1.4rem;
-          background: none;
-          border: none;
-          text-align: left;
-          font: inherit;
-          color: inherit;
-          cursor: pointer;
-        }
-        .hh-faq-num { color: var(--sage-light); font-size: 1.4rem; }
-        .hh-faq-item.is-open .hh-faq-num { color: var(--terracotta-deep); }
-        .hh-faq-q-text { font-size: 1.05rem; color: var(--forest-deep); padding-top: 0.15rem; line-height: 1.4; }
-        .hh-faq-toggle {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          width: 36px;
-          height: 36px;
-          border-radius: 999px;
-          background: var(--ivory-deep);
-          color: var(--forest);
-        }
-        .hh-faq-item.is-open .hh-faq-toggle { background: var(--forest); color: var(--bone); }
-        .hh-faq-a {
-          padding: 0 1.4rem 1.4rem 4.6rem;
-          color: var(--ink-soft);
-          line-height: 1.65;
-          font-size: 0.96rem;
-        }
-        @media (max-width: 600px) { .hh-faq-a { padding-left: 1.4rem; } }
-        .hh-faq-foot { text-align: center; margin-top: 2rem; color: var(--ink-soft); }
-        .hh-faq-call { display: inline-block; margin-top: 0.5rem; font-size: 1.5rem; color: var(--forest-deep); }
 
         /* ============= FINAL CTA ============= */
         .hh-cta-card {

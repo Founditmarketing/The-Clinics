@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   ArrowRight,
+  ChevronDown,
   CreditCard,
   Download,
   ExternalLink,
@@ -9,10 +10,11 @@ import {
   Shield,
   User,
 } from 'lucide-react';
-import { CLINIC } from '../data/clinicData';
+import { CLINIC, FAQS, INSURANCE_PLANS } from '../data/clinicData';
 import { Reveal, useLocale } from '../components/Harmony/i18n';
 import { useUI } from '../context/UIContext';
 import MobileBottomBar from '../components/Harmony/MobileBottomBar';
+import InsuranceChecker from '../components/Harmony/InsuranceChecker';
 
 const FORM_GROUPS = [
   {
@@ -59,6 +61,7 @@ const FORM_GROUPS = [
 const PatientResources: React.FC = () => {
   const { t } = useLocale();
   const { openBookingModal } = useUI();
+  const [openFaq, setOpenFaq] = useState<number>(0);
 
   return (
     <>
@@ -177,6 +180,57 @@ const PatientResources: React.FC = () => {
         </div>
       </section>
 
+      {/* ==================== INSURANCE CHECKER ==================== */}
+      <InsuranceChecker t={t} plans={INSURANCE_PLANS as any} callTel={CLINIC.tel} />
+
+      {/* ==================== FAQ ==================== */}
+      <section id="faq" className="hh-faq hh-section">
+        <div className="container-narrow hh-faq-inner">
+          <Reveal as="div" className="hh-section-header hh-section-header-center">
+            <span className="eyebrow">{t.faq.eyebrow}</span>
+            <h2 className="font-display hh-section-title">
+              {t.faq.title_a} <span className="hh-em">{t.faq.title_em}</span>
+              {t.faq.title_b}
+            </h2>
+            <p className="lead hh-section-lead">{t.faq.lead}</p>
+          </Reveal>
+
+          <div className="hh-faq-list">
+            {FAQS.map((faq, i) => (
+              <div key={i} className={`hh-faq-item ${openFaq === i ? 'is-open' : ''}`}>
+                <button
+                  onClick={() => setOpenFaq(openFaq === i ? -1 : i)}
+                  className="hh-faq-q"
+                  aria-expanded={openFaq === i}
+                >
+                  <span className="editorial-num hh-faq-num">0{i + 1}</span>
+                  <span className="font-display hh-faq-q-text">{faq.q}</span>
+                  <span className="hh-faq-toggle" aria-hidden>
+                    <ChevronDown
+                      size={18}
+                      style={{
+                        transform: openFaq === i ? 'rotate(180deg)' : 'rotate(0deg)',
+                        transition: 'transform 240ms ease',
+                      }}
+                    />
+                  </span>
+                </button>
+                {openFaq === i && (
+                  <div className="hh-faq-a fade-in">{faq.a}</div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <div className="hh-faq-foot">
+            <p>Still have questions?</p>
+            <a href={`tel:${CLINIC.tel}`} className="font-display hh-faq-call underline-static">
+              Call us at {CLINIC.phone}
+            </a>
+          </div>
+        </div>
+      </section>
+
       <section className="hh-resources-cta">
         <div className="container hh-resources-cta-card">
           <Shield size={28} strokeWidth={1.6} />
@@ -201,7 +255,9 @@ const PatientResources: React.FC = () => {
         .hh-page-title { font-size: clamp(2.4rem, 6vw, 4.4rem); line-height: 1.02; letter-spacing: -0.022em; color: var(--forest-deep); margin: 0; font-weight: 400; }
         .hh-em { color: var(--terracotta-deep); font-style: italic; }
         .hh-section-header { display: grid; gap: 0.8rem; max-width: 60ch; }
+        .hh-section-header-center { text-align: center; margin-left: auto; margin-right: auto; }
         .hh-section-title { font-size: clamp(2rem, 4.5vw, 3.2rem); line-height: 1.05; color: var(--forest-deep); margin: 0; font-weight: 400; }
+        .hh-section-lead { margin-top: 0.2rem; }
 
         .hh-resources-actions { padding: 1rem 0 clamp(2rem, 4vw, 3rem); }
         .hh-resources-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
@@ -239,6 +295,56 @@ const PatientResources: React.FC = () => {
         .hh-resources-form-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.4rem; }
         .hh-resources-form-link { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--forest-deep); font-weight: 500; padding: 0.4rem 0; }
         .hh-resources-form-link:hover { color: var(--terracotta-deep); }
+
+        /* ============= FAQ ============= */
+        .hh-faq-list { display: grid; gap: 0.5rem; }
+        .hh-faq-item {
+          background: rgba(255,255,255,0.62);
+          backdrop-filter: blur(14px);
+          border: 1px solid var(--line);
+          border-radius: var(--radius-md);
+          overflow: hidden;
+          transition: 200ms ease;
+        }
+        .hh-faq-item:hover { background: rgba(255,255,255,0.78); }
+        .hh-faq-item.is-open { border-color: var(--forest); background: rgba(255,255,255,0.9); }
+        .hh-faq-q {
+          width: 100%;
+          display: grid;
+          grid-template-columns: auto 1fr auto;
+          align-items: start;
+          gap: 1rem;
+          padding: 1.2rem 1.4rem;
+          background: none;
+          border: none;
+          text-align: left;
+          font: inherit;
+          color: inherit;
+          cursor: pointer;
+        }
+        .hh-faq-num { color: var(--sage-light); font-size: 1.4rem; }
+        .hh-faq-item.is-open .hh-faq-num { color: var(--terracotta-deep); }
+        .hh-faq-q-text { font-size: 1.05rem; color: var(--forest-deep); padding-top: 0.15rem; line-height: 1.4; }
+        .hh-faq-toggle {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 36px;
+          height: 36px;
+          border-radius: 999px;
+          background: var(--ivory-deep);
+          color: var(--forest);
+        }
+        .hh-faq-item.is-open .hh-faq-toggle { background: var(--forest); color: var(--bone); }
+        .hh-faq-a {
+          padding: 0 1.4rem 1.4rem 4.6rem;
+          color: var(--ink-soft);
+          line-height: 1.65;
+          font-size: 0.96rem;
+        }
+        @media (max-width: 600px) { .hh-faq-a { padding-left: 1.4rem; } }
+        .hh-faq-foot { text-align: center; margin-top: 2rem; color: var(--ink-soft); }
+        .hh-faq-call { display: inline-block; margin-top: 0.5rem; font-size: 1.5rem; color: var(--forest-deep); }
 
         .hh-resources-cta { padding: clamp(2rem, 4vw, 3rem) 0 clamp(3rem, 5vw, 5rem); }
         .hh-resources-cta-card {
