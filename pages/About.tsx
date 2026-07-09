@@ -39,9 +39,8 @@ const About: React.FC = () => {
             <p className="lead lead-lg">
               For decades, getting good medical care in Central Louisiana meant a long drive,
               a longer wait, and an even longer bill. theCLINICS was built so your neighbors
-              get great primary care — physicals, pediatrics, women&rsquo;s health, chronic
-              care — plus gastro, podiatry, and on-site labs, across two clinics, coordinated
-              by a provider who actually knows you.
+              get great primary care, physicals, chronic care — plus gastroenterology,
+              podiatry, and on-site labs, coordinated by a provider who gets to know you.
             </p>
           </Reveal>
           <Reveal as="div" delay={120} className="hh-about-hero-image-wrap">
@@ -64,17 +63,17 @@ const About: React.FC = () => {
             {
               num: '01',
               title: 'Comprehensive care',
-              body: 'About 90% of what we do is family medicine — physicals, pediatrics, women\u2019s health, chronic-condition care, refills, and same-day sick visits. The bread and butter, done well.',
+              body: 'About 90% of what we do is family medicine — physicals, chronic-condition care, refills, and same-day sick visits. The bread and butter, done well.',
             },
             {
               num: '02',
               title: 'Two clinics, one team',
-              body: `${PROVIDER_COUNT} providers across our Alexandria and Pineville clinics. The same standard of care, the same charts, the same warm front desk. Pick whichever is closer.`,
+              body: `${PROVIDER_COUNT} providers across our Alexandria and Marksville clinics. The same standard of care, the same charts, the same warm front desk.`,
             },
             {
               num: '03',
               title: 'Plain-English bills',
-              body: 'Most insurance accepted. Transparent self-pay pricing if you do not have coverage. Zero phone-tree gymnastics to ask a question.',
+              body: 'Most insurances accepted. Transparent self-pay pricing if you do not have coverage.',
             },
           ].map((p, i) => (
             <Reveal as="div" key={p.num} delay={i * 100} className="hh-about-pillar">

@@ -15,10 +15,10 @@ const SERVICE_LABEL: Record<TriageService, string> = {
 
 const SERVICE_TAG: Record<TriageService, string> = {
   primary: 'primary',
-  urgent: 'urgent',
-  pediatrics: 'pediatrics',
-  gastro: 'primary',
-  podiatry: 'primary',
+  urgent: 'access2day',
+  pediatrics: 'primary',
+  gastro: 'gastro',
+  podiatry: 'podiatry',
   imaging: 'primary',
   emergency: 'primary',
 };
