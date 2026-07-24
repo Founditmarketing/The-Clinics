@@ -59,7 +59,7 @@ export const DOCTORS: Doctor[] = [
     name: 'Dr. William M. McBride, MD',
     role: 'Family Medicine',
     specialty: 'Diversity-centered primary care',
-    image: '/Dr. William M. McBride, MD.JPG',
+    image: '/Dr. William M. McBride, MD.png',
     bio: 'Dr. McBride values the uniqueness and diversity of every individual in the Cenla community. His practice spans annual physicals, chronic-condition management, and same-day visits for established patients.',
     phone: COMMON_PHONE,
     officeHours: COMMON_HOURS,
