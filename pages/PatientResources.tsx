@@ -15,6 +15,8 @@ import { Reveal, useLocale } from '../components/Harmony/i18n';
 import { useUI } from '../context/UIContext';
 import MobileBottomBar from '../components/Harmony/MobileBottomBar';
 import InsuranceChecker from '../components/Harmony/InsuranceChecker';
+import PageSEO from '../components/SEO/PageSEO';
+import { getFAQPageSchema } from '../components/SEO/schema';
 
 const FORM_GROUPS = [
   {
@@ -22,11 +24,11 @@ const FORM_GROUPS = [
     forms: [
       {
         label: 'New Patient Packet',
-        href: 'https://theclinics.us/wp-content/uploads/2024/03/NEW-PT-COMBINED-PAPERWORK.pdf',
+        href: '/NEW-PT-COMBINED-PAPERWORK.pdf',
       },
       {
         label: 'Returning Patient',
-        href: 'https://theclinics.us/wp-content/uploads/2024/03/RET-PT-COMBINED-PAPERWORK.pdf',
+        href: '/RET-PT-COMBINED-PAPERWORK.pdf',
       },
     ],
   },
@@ -35,11 +37,11 @@ const FORM_GROUPS = [
     forms: [
       {
         label: 'New Patient Packet',
-        href: 'https://theclinics.us/wp-content/uploads/2021/05/Podiatry-New-Patient-Packet-2021.pdf',
+        href: '/Podiatry-New-Patient-Packet-2021.pdf',
       },
       {
         label: 'Patient Update Form',
-        href: 'https://theclinics.us/wp-content/uploads/2021/05/Podiatry-Update-Only-2021.pdf',
+        href: '/Podiatry-Update-Only-2021.pdf',
       },
     ],
   },
@@ -48,11 +50,11 @@ const FORM_GROUPS = [
     forms: [
       {
         label: 'New Patient Packet',
-        href: 'https://theclinics.us/wp-content/uploads/2021/09/CFMA-New-Patient-Packet-2021-updated.pdf',
+        href: '/CFMA-New-Patient-Packet-2021-updated.pdf',
       },
       {
         label: 'Update Information',
-        href: 'https://theclinics.us/wp-content/uploads/2021/05/CFMA-Update-Only-2021.pdf',
+        href: '/CFMA-Update-Only-2021.pdf',
       },
     ],
   },
@@ -65,6 +67,13 @@ const PatientResources: React.FC = () => {
 
   return (
     <>
+      <PageSEO
+        title="Patient Resources"
+        description="New-patient forms, insurance information, the patient portal, and answers to frequently asked questions for theCLINICS patients."
+        path="/patient-resources"
+      >
+        <script type="application/ld+json">{JSON.stringify(getFAQPageSchema(FAQS))}</script>
+      </PageSEO>
       <section className="hh-page-hero grain">
         <div className="container">
           <Reveal as="div" className="hh-section-header">

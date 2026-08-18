@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Calendar, Clock, MapPin, Phone, Shield } from 'lucide-react';
 import { CLINIC, DOCTORS } from '../data/clinicData';
 import { useUI } from '../context/UIContext';
 import { Reveal } from '../components/Harmony/i18n';
 import MobileBottomBar from '../components/Harmony/MobileBottomBar';
+import PageSEO, { SITE_URL } from '../components/SEO/PageSEO';
 
 const initialsFor = (name: string) =>
   name
@@ -19,20 +20,19 @@ const DoctorProfile: React.FC = () => {
   const doctor = DOCTORS.find((d) => d.id === id);
   const { openBookingModal, openBookingWithDoctor } = useUI();
 
-  useEffect(() => {
-    if (doctor) document.title = `${doctor.name} — theCLINICS`;
-  }, [doctor]);
-
   if (!doctor) {
     return (
-      <section className="hh-page-hero grain">
-        <div className="container">
-          <h1 className="font-display hh-page-title">Provider not found</h1>
-          <Link to="/about" className="underline-grow" style={{ color: 'var(--forest-deep)' }}>
-            <ArrowLeft size={16} style={{ display: 'inline', marginRight: 4 }} /> Back to the team
-          </Link>
-        </div>
-      </section>
+      <>
+        <PageSEO title="Provider not found" description="This provider could not be found." path={`/doctor/${id ?? ''}`} noIndex />
+        <section className="hh-page-hero grain">
+          <div className="container">
+            <h1 className="font-display hh-page-title">Provider not found</h1>
+            <Link to="/about" className="underline-grow" style={{ color: 'var(--forest-deep)' }}>
+              <ArrowLeft size={16} style={{ display: 'inline', marginRight: 4 }} /> Back to the team
+            </Link>
+          </div>
+        </section>
+      </>
     );
   }
 
@@ -40,6 +40,12 @@ const DoctorProfile: React.FC = () => {
 
   return (
     <>
+      <PageSEO
+        title={`${doctor.name} — ${doctor.specialty || doctor.role}`}
+        description={doctor.bio || `${doctor.name}, ${doctor.role} at theCLINICS in Cenla, LA.`}
+        path={`/doctor/${doctor.id}`}
+        image={doctor.image ? encodeURI(`${SITE_URL}${doctor.image}`) : undefined}
+      />
       <section className="hh-page-hero grain">
         <div className="container">
           <Link to="/about" className="hh-doc-back underline-grow">

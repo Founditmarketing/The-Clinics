@@ -25,6 +25,7 @@ import { Reveal, useLocale } from '../components/Harmony/i18n';
 import { useUI } from '../context/UIContext';
 import InsuranceChecker from '../components/Harmony/InsuranceChecker';
 import MobileBottomBar from '../components/Harmony/MobileBottomBar';
+import PageSEO from '../components/SEO/PageSEO';
 
 const renderIcon = (name: ServiceItem['iconName'], size = 18) => {
   const props = { size, strokeWidth: 1.6 } as const;
@@ -54,6 +55,11 @@ const Services: React.FC = () => {
 
   return (
     <>
+      <PageSEO
+        title="Services"
+        description="Primary care, Access2Day same-day visits, gastroenterology, podiatry, bone density, pulmonary function, lab work, and X-ray services at theCLINICS in Alexandria, LA."
+        path="/services"
+      />
       <section className="hh-page-hero grain">
         <div className="container">
           <Reveal as="div" className="hh-section-header">

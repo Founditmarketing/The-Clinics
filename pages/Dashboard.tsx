@@ -18,6 +18,7 @@ import { CLINIC } from '../data/clinicData';
 import { PageRoute } from '../types';
 import { Reveal } from '../components/Harmony/i18n';
 import MobileBottomBar from '../components/Harmony/MobileBottomBar';
+import PageSEO from '../components/SEO/PageSEO';
 
 const Dashboard: React.FC = () => {
   const { user, appointments, openBookingModal } = useUI();
@@ -29,6 +30,12 @@ const Dashboard: React.FC = () => {
 
   return (
     <>
+      <PageSEO
+        title="Patient Dashboard"
+        description="Your theCLINICS patient dashboard — appointments, prescriptions, and messages."
+        path="/dashboard"
+        noIndex
+      />
       <section className="hh-dash-hero grain">
         <div className="container hh-dash-hero-inner">
           <Reveal as="div" className="hh-dash-hero-row">

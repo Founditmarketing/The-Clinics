@@ -6,6 +6,8 @@ import { Reveal, useLocale } from '../components/Harmony/i18n';
 import { useClinicStatus } from '../components/Harmony/useClinicStatus';
 import MobileBottomBar from '../components/Harmony/MobileBottomBar';
 import { useUI } from '../context/UIContext';
+import PageSEO from '../components/SEO/PageSEO';
+import { getAllLocationSchemas } from '../components/SEO/schema';
 
 const Contact: React.FC = () => {
   const { t } = useLocale();
@@ -35,6 +37,17 @@ const Contact: React.FC = () => {
 
   return (
     <>
+      <PageSEO
+        title="Contact & Locations"
+        description="Contact theCLINICS or find directions, hours, and phone numbers for our Alexandria and Pineville, LA locations."
+        path="/contact"
+      >
+        {getAllLocationSchemas().map((schema, i) => (
+          <script key={i} type="application/ld+json">
+            {JSON.stringify(schema)}
+          </script>
+        ))}
+      </PageSEO>
       <section className="hh-page-hero grain">
         <div className="container">
           <Reveal as="div" className="hh-section-header">

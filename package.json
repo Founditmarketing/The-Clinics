@@ -4,7 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "generate-seo": "tsx scripts/generate-seo-files.ts",
+    "predev": "npm run generate-seo",
     "dev": "vite",
+    "prebuild": "npm run generate-seo",
     "build": "vite build",
     "preview": "vite preview"
   },
@@ -15,6 +18,7 @@
     "maplibre-gl": "^4.7.1",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
+    "react-helmet-async": "^3.0.0",
     "react-router-dom": "^7.13.0"
   },
   "devDependencies": {
@@ -24,6 +28,7 @@
     "autoprefixer": "^10.4.24",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.18",
+    "tsx": "^4.23.12",
     "typescript": "~5.8.2",
     "vite": "^6.2.0"
   }

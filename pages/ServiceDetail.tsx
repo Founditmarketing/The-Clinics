@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import {
   Activity,
@@ -26,6 +26,8 @@ import { ServiceItem } from '../types';
 import { Reveal } from '../components/Harmony/i18n';
 import { useUI } from '../context/UIContext';
 import MobileBottomBar from '../components/Harmony/MobileBottomBar';
+import PageSEO from '../components/SEO/PageSEO';
+import { getServiceSchema } from '../components/SEO/schema';
 
 const renderIcon = (name: ServiceItem['iconName']) => {
   const props = { size: 28, strokeWidth: 1.5 } as const;
@@ -53,20 +55,19 @@ const ServiceDetail: React.FC = () => {
   const service = SERVICES.find((s) => s.id === id);
   const { openBookingModal, openBookingWithService } = useUI();
 
-  useEffect(() => {
-    if (service) document.title = `${service.title} — theCLINICS`;
-  }, [service]);
-
   if (!service) {
     return (
-      <section className="hh-page-hero grain">
-        <div className="container">
-          <h1 className="font-display hh-page-title">Service not found</h1>
-          <Link to="/services" className="underline-grow" style={{ color: 'var(--forest-deep)' }}>
-            <ArrowLeft size={16} style={{ display: 'inline', marginRight: 4 }} /> Back to services
-          </Link>
-        </div>
-      </section>
+      <>
+        <PageSEO title="Service not found" description="This service could not be found." path={`/service/${id ?? ''}`} noIndex />
+        <section className="hh-page-hero grain">
+          <div className="container">
+            <h1 className="font-display hh-page-title">Service not found</h1>
+            <Link to="/services" className="underline-grow" style={{ color: 'var(--forest-deep)' }}>
+              <ArrowLeft size={16} style={{ display: 'inline', marginRight: 4 }} /> Back to services
+            </Link>
+          </div>
+        </section>
+      </>
     );
   }
 
@@ -75,6 +76,13 @@ const ServiceDetail: React.FC = () => {
 
   return (
     <>
+      <PageSEO
+        title={service.title}
+        description={service.description}
+        path={`/service/${service.id}`}
+      >
+        <script type="application/ld+json">{JSON.stringify(getServiceSchema(service))}</script>
+      </PageSEO>
       <section className="hh-page-hero grain">
         <div className="container">
           <Link to="/services" className="hh-doc-back underline-grow">

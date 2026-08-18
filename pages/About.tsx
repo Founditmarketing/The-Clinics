@@ -5,6 +5,7 @@ import { Reveal, useLocale } from '../components/Harmony/i18n';
 import DoctorModal from '../components/Harmony/DoctorModal';
 import MobileBottomBar from '../components/Harmony/MobileBottomBar';
 import { useUI } from '../context/UIContext';
+import PageSEO from '../components/SEO/PageSEO';
 
 const initialsFor = (name: string) =>
   name
@@ -27,6 +28,11 @@ const About: React.FC = () => {
 
   return (
     <>
+      <PageSEO
+        title="About & Our Care Team"
+        description={`Meet the ${PROVIDER_COUNT} physicians and nurse practitioners of theCLINICS, serving Alexandria and Pineville, LA with primary care, gastroenterology, and podiatry.`}
+        path="/about"
+      />
       <section className="hh-page-hero grain">
         <div className="container hh-about-hero-grid">
           <Reveal as="div" className="hh-section-header">

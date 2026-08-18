@@ -409,6 +409,8 @@ export interface ClinicLocation {
   region: string;
   flagship?: boolean;
   address: string;
+  streetAddress: string;
+  zip: string;
   phone: string;
   tel: string;
   email: string;
@@ -446,6 +448,8 @@ export const LOCATIONS: ClinicLocation[] = [
     region: 'Central Louisiana',
     flagship: true,
     address: '1587 N Bolton Ave, Alexandria, LA 71303',
+    streetAddress: '1587 N Bolton Ave',
+    zip: '71303',
     phone: '(318) 445-9823',
     tel: '3184459823',
     email: 'info@theclinics.us',
@@ -462,15 +466,17 @@ export const LOCATIONS: ClinicLocation[] = [
     city: 'Pineville',
     state: 'LA',
     region: 'Central Louisiana',
-    address: 'Pineville, LA · call for address',
+    address: '1135 Expressway Dr, Suite 200, Pineville, LA 71360',
+    streetAddress: '1135 Expressway Dr, Suite 200',
+    zip: '71360',
     phone: '(318) 445-9823',
     tel: '3184459823',
     email: 'info@theclinics.us',
-    coords: { lat: 31.3224, lng: -92.4346 },
+    coords: { lat: 31.322127, lng: -92.423895 },
     hoursLabel: 'Mon–Thu · 7:45a–5p · Friday · 7:45a–12p',
     hours: STANDARD_HOURS,
     services: FAMILY_PRACTICE_SERVICES,
-    mapsUrl: 'https://www.google.com/maps/search/the+clinics+pineville+la',
+    mapsUrl: 'https://www.google.com/maps/search/?api=1&query=theCLINICS+Pineville+1135+Expressway+Dr+Suite+200+Pineville+LA+71360',
   },
 ];
 
@@ -584,11 +590,11 @@ export const FAQS = [
   },
   {
     q: 'How do I request a visit?',
-    a: 'Use the patient portal — it has a proven visit-request feature where your message goes straight to the right team. You can also call us at the Alexandria location at (318) 445-9823 or Marksville (318)409-4073 during business hours.',
+    a: 'Use the patient portal — it has a proven visit-request feature where your message goes straight to the right team. You can also call us at either location at (318) 445-9823 during business hours.',
   },
   {
     q: 'Where are your locations?',
-    a: 'We have two clinics in Cenla — our flagship in Alexandria on N Bolton Ave, and a second Access2Day in Marksville on Hwy 1192.',
+    a: 'We have two clinics in Cenla — our flagship in Alexandria on N Bolton Ave, and a second location in Pineville on Expressway Drive.',
   },
   {
     q: 'Is there a patient portal?',

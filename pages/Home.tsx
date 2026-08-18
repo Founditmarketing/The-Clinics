@@ -38,6 +38,7 @@ import MobileBottomBar from '../components/Harmony/MobileBottomBar';
 import LocationsMap from '../components/Harmony/LocationsMap';
 import { useClinicStatus } from '../components/Harmony/useClinicStatus';
 import { useLocale, Reveal } from '../components/Harmony/i18n';
+import PageSEO from '../components/SEO/PageSEO';
 
 const renderServiceIcon = (name: ServiceItem['iconName'], size = 22) => {
   const props = { size, strokeWidth: 1.5 } as const;
@@ -111,6 +112,11 @@ const Home: React.FC = () => {
 
   return (
     <>
+      <PageSEO
+        title="theCLINICS — Modern healthcare in Cenla"
+        description="Comprehensive primary care, gastroenterology, podiatry, and on-site diagnostics in Alexandria, LA. Same-day visits welcome."
+        path="/"
+      />
       {/* ==================== HERO ==================== */}
       <section ref={heroRef} id="top" className="hh-hero grain">
         <div className="hh-hero-bg" aria-hidden>
