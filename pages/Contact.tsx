@@ -245,7 +245,6 @@ const Contact: React.FC = () => {
                     <span>Department</span>
                     <select name="department" value={form.department} onChange={handleChange}>
                       <option>Primary Care</option>
-                      <option>Pediatrics</option>
                       <option>Women&rsquo;s Health</option>
                       <option>Gastroenterology</option>
                       <option>Podiatry</option>

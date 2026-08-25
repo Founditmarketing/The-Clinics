@@ -88,7 +88,6 @@ export enum PageRoute {
 export type TriageService =
   | 'primary'
   | 'urgent'
-  | 'pediatrics'
   | 'gastro'
   | 'podiatry'
   | 'imaging'

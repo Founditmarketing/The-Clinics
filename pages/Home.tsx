@@ -107,7 +107,7 @@ const Home: React.FC = () => {
   const intentCards = [
     { key: 'primary',     copy: t.intent.primary,     icon: <Stethoscope size={26} strokeWidth={1.5} /> },
     { key: 'sick',        copy: t.intent.sick,        icon: <Zap size={26} strokeWidth={1.5} /> },
-    { key: 'pediatrics',  copy: t.intent.pediatrics,  icon: <Baby size={26} strokeWidth={1.5} /> },
+    { key: 'chronic',     copy: t.intent.chronic,     icon: <Activity size={26} strokeWidth={1.5} /> },
   ];
 
   return (

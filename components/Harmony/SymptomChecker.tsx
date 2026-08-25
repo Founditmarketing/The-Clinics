@@ -6,7 +6,6 @@ import { Doctor, TriageRecommendation, TriageService } from '../../types';
 const SERVICE_LABEL: Record<TriageService, string> = {
   primary: 'Primary Care',
   urgent: 'Same-day Visit',
-  pediatrics: 'Pediatric Visit',
   gastro: 'Gastroenterology',
   podiatry: 'Podiatry',
   imaging: 'Lab & Imaging',
@@ -16,7 +15,6 @@ const SERVICE_LABEL: Record<TriageService, string> = {
 const SERVICE_TAG: Record<TriageService, string> = {
   primary: 'primary',
   urgent: 'access2day',
-  pediatrics: 'primary',
   gastro: 'gastro',
   podiatry: 'podiatry',
   imaging: 'primary',
@@ -26,7 +24,7 @@ const SERVICE_TAG: Record<TriageService, string> = {
 const EXAMPLES = [
   'Annual physical',
   'Sore throat & fever',
-  'Pediatric checkup',
+  'Blood pressure follow-up',
   'Refill request',
   'Heel pain when walking',
 ];

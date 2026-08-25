@@ -51,7 +51,6 @@ const TRIAGE_FALLBACK: TriageRecommendation = {
 const ALLOWED_SERVICES = new Set([
   'primary',
   'urgent',
-  'pediatrics',
   'gastro',
   'podiatry',
   'imaging',

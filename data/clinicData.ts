@@ -195,15 +195,15 @@ export const DOCTORS: Doctor[] = [
   {
     id: 'michelle-beurlot',
     name: 'Dr. Michelle R. Beurlot, MD',
-    role: 'Access2Day',
+    role: 'Family Medicine',
     specialty: 'Compassionate, accessible care',
     image: '/Dr. Michelle R. Beurlot, MD.png',
-    bio: "Dr. Beurlot is committed to improving the health and well-being of patients through compassionate family medicine. Particularly experienced with women's health and pediatric primary care.",
+    bio: "Dr. Beurlot is committed to improving the health and well-being of patients through compassionate family medicine. Particularly experienced with women's health and primary care.",
     phone: COMMON_PHONE,
     officeHours: COMMON_HOURS,
     education: ['Family Medicine Residency', 'Doctor of Medicine'],
     accepting: true,
-    tags: ['access2day'],
+    tags: ['primary'],
   },
   {
     id: 'jeanie-ponthier',
@@ -327,7 +327,7 @@ export const SERVICES: ServiceItem[] = [
     title: 'Primary Care',
     tagline: 'About 90% of what we do',
     description:
-      'Family medicine is the heart of theCLINICS. Annual physicals, chronic-condition management, pediatric and adult primary care, women\u2019s health, preventative screenings, refills, and same-day sick visits for established patients — coordinated by a provider who knows you over time.',
+      'Family medicine is the heart of theCLINICS. Annual physicals, chronic-condition management, primary care for adolescents and adults, women\u2019s health, preventative screenings, refills, and same-day sick visits for established patients — coordinated by a provider who knows you over time.',
     expect: '30–45 min · Insurance billed · Same-day prescriptions',
     iconName: 'Stethoscope',
     feature: true,
@@ -619,7 +619,7 @@ export const TESTIMONIALS = [
     q: "I had an amazing experience taking my son. He has always been afraid of the doctor's office, but the team was so patient.",
     n: 'Ryan P.',
     l: 'Alexandria, LA',
-    visit: 'Pediatric visit',
+    visit: 'Family visit',
   },
   {
     q: 'Dr. Buck takes time. He listens. He answers. I haven\'t felt this seen by a doctor in years.',

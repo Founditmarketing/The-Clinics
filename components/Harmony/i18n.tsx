@@ -28,7 +28,7 @@ const STRINGS = {
       mobile_hl_2_em: 'healthcare',
       mobile_hl_2_after: ' again',
       lead:
-        'We provide comprehensive care — annual physicals, sick visits, pediatrics, women\u2019s health, chronic-condition care — plus gastro, podiatry, and on-site labs, delivered by clinicians who live in Cenla too.',
+        'We provide comprehensive care — annual physicals, sick visits, women\u2019s health, chronic-condition care — plus gastro, podiatry, and on-site labs, delivered by clinicians who live in Cenla too.',
       cta_primary: 'Request a visit',
       cta_secondary: 'Explore services',
       cta_tertiary: 'Same-day care',
@@ -57,10 +57,10 @@ const STRINGS = {
         d: 'Match with a primary care provider who takes your insurance and your pace.',
         cta: 'Find my doctor',
       },
-      pediatrics: {
-        t: 'My child needs a doctor',
-        d: 'Well-child checks, school physicals, and sick visits with providers who see kids.',
-        cta: 'Request a pediatric visit',
+      chronic: {
+        t: 'I manage an ongoing condition',
+        d: 'Diabetes, blood pressure, thyroid, and more — followed by a provider who knows your history.',
+        cta: 'Request a follow-up',
       },
     },
     insurance: {
@@ -79,7 +79,7 @@ const STRINGS = {
       title_em: 'plus the rest',
       title_b: '.',
       lead:
-        'We offer a wide range of services — annual physicals, pediatrics, women\u2019s health, chronic-condition care. Gastro, podiatry, labs, and X-ray fill in the rest.',
+        'We offer a wide range of services — annual physicals, women\u2019s health, chronic-condition care. Gastro, podiatry, labs, and X-ray fill in the rest.',
       all: 'View all services',
     },
     urgent: {
@@ -128,7 +128,6 @@ const STRINGS = {
         'Board-certified physicians and nurse practitioners who chose to live and serve in Central Louisiana.',
       filters_all: 'All providers',
       filters_primary: 'Primary care',
-      filters_pediatrics: 'Pediatrics',
       filters_urgent: 'Same-day',
       filters_womens: 'Women health',
       schedule_with: 'Schedule with this provider',
@@ -179,7 +178,7 @@ const STRINGS = {
       title_em: 'you are',
       title_b: '.',
       lead:
-        'Comprehensive care, pediatrics, same-day care — request your visit through the patient portal and our team replies within one business hour.',
+        'Comprehensive care, women\u2019s health, same-day care — request your visit through the patient portal and our team replies within one business hour.',
       btn_a: 'Request a visit',
       btn_b: 'Open patient portal',
     },
@@ -195,7 +194,6 @@ const STRINGS = {
       sub_time: 'Choose a time that fits your week.',
       reason_primary: 'Primary care',
       reason_urgent: 'Same-day visit',
-      reason_pediatrics: 'Pediatric visit',
       reason_womens: 'Women health',
       reason_other: 'Something else',
       next: 'Continue',
@@ -251,7 +249,7 @@ const STRINGS = {
       mobile_hl_2_em: 'cuidado de salud',
       mobile_hl_2_after: '',
       lead:
-        'Brindamos atención integral — exámenes anuales, pediatría, salud de la mujer, manejo de enfermedades crónicas — más gastroenterología, podiatría y laboratorio en sitio, con clínicos que también viven en Cenla.',
+        'Brindamos atención integral — exámenes anuales, salud de la mujer, manejo de enfermedades crónicas — más gastroenterología, podiatría y laboratorio en sitio, con clínicos que también viven en Cenla.',
       cta_primary: 'Solicitar visita',
       cta_secondary: 'Ver servicios',
       cta_tertiary: 'Atención el mismo día',
@@ -280,10 +278,10 @@ const STRINGS = {
         d: 'Encuentre un médico de atención primaria que acepte su seguro y su ritmo.',
         cta: 'Encontrar médico',
       },
-      pediatrics: {
-        t: 'Mi hijo necesita un médico',
-        d: 'Chequeos, exámenes escolares y visitas por enfermedad con proveedores que atienden niños.',
-        cta: 'Solicitar visita pediátrica',
+      chronic: {
+        t: 'Manejo una condición crónica',
+        d: 'Diabetes, presión arterial, tiroides y más — con un proveedor que conoce su historial.',
+        cta: 'Solicitar seguimiento',
       },
     },
     insurance: {
@@ -302,7 +300,7 @@ const STRINGS = {
       title_em: 'más lo demás',
       title_b: '.',
       lead:
-        'Ofrecemos una amplia gama de servicios — exámenes anuales, pediatría, salud de la mujer, enfermedades crónicas. Gastro, podiatría, laboratorio y rayos X completan el resto.',
+        'Ofrecemos una amplia gama de servicios — exámenes anuales, salud de la mujer, enfermedades crónicas. Gastro, podiatría, laboratorio y rayos X completan el resto.',
       all: 'Ver todos los servicios',
     },
     urgent: {
@@ -351,7 +349,6 @@ const STRINGS = {
         'Médicos certificados y enfermeros que decidieron vivir y servir en el centro de Louisiana.',
       filters_all: 'Todos',
       filters_primary: 'Atención primaria',
-      filters_pediatrics: 'Pediatría',
       filters_urgent: 'Mismo día',
       filters_womens: 'Salud mujer',
       schedule_with: 'Reservar con este proveedor',
@@ -401,7 +398,7 @@ const STRINGS = {
       title_em: 'usted lo esté',
       title_b: '.',
       lead:
-        'Atención integral, pediatría, atención el mismo día — solicite su visita a través del portal y respondemos en una hora hábil.',
+        'Atención integral, salud de la mujer, atención el mismo día — solicite su visita a través del portal y respondemos en una hora hábil.',
       btn_a: 'Solicitar visita',
       btn_b: 'Abrir portal del paciente',
     },
@@ -417,7 +414,6 @@ const STRINGS = {
       sub_time: 'Elija una hora que le funcione.',
       reason_primary: 'Atención primaria',
       reason_urgent: 'Mismo día',
-      reason_pediatrics: 'Visita pediátrica',
       reason_womens: 'Salud de la mujer',
       reason_other: 'Otra cosa',
       next: 'Continuar',

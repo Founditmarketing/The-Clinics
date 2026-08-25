@@ -2,7 +2,7 @@
 
 ## What it is
 
-A family-practice-first clinic group serving Central Louisiana ("Cenla") for decades. **Two clinics** — flagship in Alexandria at 1587 N Bolton Ave and a second clinic in Pineville. **18 providers** across both sites (mix of MDs and NPs). About **90% of visits are family practice** — annual physicals, pediatrics, women's health, chronic-condition care, refills, and same-day sick visits via Access2Day. We also offer gastroenterology, podiatry, lab work, X-ray, bone density, and pulmonary function. **We do not have a cardiologist on staff.**
+A family-practice-first clinic group serving Central Louisiana ("Cenla") for decades. **Two clinics** — flagship in Alexandria at 1587 N Bolton Ave and a second clinic in Pineville. **18 providers** across both sites (mix of MDs and NPs). About **90% of visits are family practice** — annual physicals, women's health, chronic-condition care, refills, and same-day sick visits via Access2Day. We also offer gastroenterology, podiatry, lab work, X-ray, bone density, and pulmonary function. **We do not have a cardiologist on staff, and we do not offer pediatrics** — primary care providers see patients from certain ages up and do not treat the specific needs of younger children.
 
 Founded inside Cenla Family Medicine Associates.
 
@@ -28,7 +28,7 @@ The site's job is to make the answer obvious within ten seconds: yes, yes, yes, 
 
 1. **Hometown gravity.** Cenla is a real place with real geography (Red River, Pineville, Ball, Tioga, Boyce). The brand doesn't whisper about "the community" in the abstract. It names the towns. It holds the dirt.
 
-2. **Family practice, done well.** The differentiator vs. corporate medicine is continuity — the same provider, who knows your story, manages roughly 90% of your visits. Pediatrics through geriatrics. The site must make that legible.
+2. **Family practice, done well.** The differentiator vs. corporate medicine is continuity — the same provider, who knows your story, manages roughly 90% of your visits. Adolescents through geriatrics. The site must make that legible.
 
 3. **Provider-led trust.** Trust transfers from a face, not a logo. Faces and bios are central. We do not hide behind brand abstraction.
 

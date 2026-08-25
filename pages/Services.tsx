@@ -69,8 +69,8 @@ const Services: React.FC = () => {
               The rest, on the same chart.
             </h1>
             <p className="lead lead-lg">
-              About 90% of what we do is family medicine — physicals, pediatrics,
-              women&rsquo;s health, chronic-condition care, and same-day sick visits. Gastro,
+              About 90% of what we do is family medicine — physicals, women&rsquo;s
+              health, chronic-condition care, and same-day sick visits. Gastro,
               podiatry, and on-site labs fill in the rest, across both Cenla clinics.
             </p>
           </Reveal>

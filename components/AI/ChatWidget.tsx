@@ -8,7 +8,7 @@ const SUGGESTION_CHIPS = [
   "Schedule Appointment",
   "Who are your doctors?",
   "Clinic Hours",
-  "Do you offer Pediatrics?",
+  "What services do you offer?",
   "Where are you located?"
 ];
 
