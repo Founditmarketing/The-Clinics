@@ -18,25 +18,8 @@ interface LocationsMapProps {
   zoom?: number;
 }
 
-const RASTER_STYLE = {
-  version: 8 as const,
-  sources: {
-    'carto-light': {
-      type: 'raster' as const,
-      tiles: [
-        'https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
-        'https://b.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
-        'https://c.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
-      ],
-      tileSize: 256,
-      attribution: '© OpenStreetMap contributors © CARTO',
-    },
-  },
-  layers: [
-    { id: 'background', type: 'background' as const, paint: { 'background-color': '#ede6d6' } },
-    { id: 'carto-light', type: 'raster' as const, source: 'carto-light' },
-  ],
-};
+// OpenFreeMap's hosted Positron style — keyless vector tiles, no usage caps.
+const MAP_STYLE = 'https://tiles.openfreemap.org/styles/positron';
 
 const LocationsMap: React.FC<LocationsMapProps> = ({
   locations,
@@ -56,7 +39,7 @@ const LocationsMap: React.FC<LocationsMapProps> = ({
     if (mapRef.current || !containerRef.current) return;
     const map = new maplibregl.Map({
       container: containerRef.current,
-      style: RASTER_STYLE as any,
+      style: MAP_STYLE,
       center: center as [number, number],
       zoom,
       minZoom: 5,
