@@ -30,7 +30,7 @@ const About: React.FC = () => {
     <>
       <PageSEO
         title="About & Our Care Team"
-        description={`Meet the ${PROVIDER_COUNT} physicians and nurse practitioners of theCLINICS, serving Alexandria and Pineville, LA with primary care, gastroenterology, and podiatry.`}
+        description={`Meet the ${PROVIDER_COUNT} physicians and nurse practitioners of theCLINICS, serving Alexandria and Marksville, LA with primary care, gastroenterology, and podiatry.`}
         path="/about"
       />
       <section className="hh-page-hero grain">

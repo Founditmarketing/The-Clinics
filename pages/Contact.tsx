@@ -39,7 +39,7 @@ const Contact: React.FC = () => {
     <>
       <PageSEO
         title="Contact & Locations"
-        description="Contact theCLINICS or find directions, hours, and phone numbers for our Alexandria and Pineville, LA locations."
+        description="Contact theCLINICS or find directions, hours, and phone numbers for our Alexandria and Marksville, LA locations."
         path="/contact"
       >
         {getAllLocationSchemas().map((schema, i) => (
@@ -56,7 +56,7 @@ const Contact: React.FC = () => {
               Two clinics in <span className="hh-em">Cenla.</span>
             </h1>
             <p className="lead lead-lg">
-              Alexandria and Pineville. Ample parking. Wheelchair accessible. Open status updated live.
+              Alexandria and Marksville. Ample parking. Wheelchair accessible. Open status updated live.
             </p>
           </Reveal>
         </div>

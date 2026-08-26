@@ -398,7 +398,7 @@ export const SERVICES: ServiceItem[] = [
 ];
 
 /* ------------------------------------------------------------------
-   Locations — Alexandria + Pineville
+   Locations — Alexandria + Marksville
    ------------------------------------------------------------------ */
 
 export interface ClinicLocation {
@@ -461,22 +461,22 @@ export const LOCATIONS: ClinicLocation[] = [
       'https://www.google.com/maps/place/The+Clinics/@31.314633,-92.4693039,17z/data=!3m1!4b1!4m6!3m5!1s0x86254b45d31c8a13:0x6670722edf39a203!8m2!3d31.314633!4d-92.4693039!16s%2Fg%2F1tdnfmbj',
   },
   {
-    key: 'pineville',
-    name: 'theCLINICS · Pineville',
-    city: 'Pineville',
+    key: 'marksville',
+    name: 'theCLINICS · Marksville',
+    city: 'Marksville',
     state: 'LA',
     region: 'Central Louisiana',
-    address: '1135 Expressway Dr, Suite 200, Pineville, LA 71360',
-    streetAddress: '1135 Expressway Dr, Suite 200',
-    zip: '71360',
-    phone: '(318) 445-9823',
-    tel: '3184459823',
+    address: '4242 Highway 1192, Marksville, LA 71351',
+    streetAddress: '4242 Highway 1192',
+    zip: '71351',
+    phone: '(318) 409-4073',
+    tel: '3184094073',
     email: 'info@theclinics.us',
-    coords: { lat: 31.322127, lng: -92.423895 },
+    coords: { lat: 31.142463, lng: -92.064369 },
     hoursLabel: 'Mon–Thu · 7:45a–5p · Friday · 7:45a–12p',
     hours: STANDARD_HOURS,
     services: FAMILY_PRACTICE_SERVICES,
-    mapsUrl: 'https://www.google.com/maps/search/?api=1&query=theCLINICS+Pineville+1135+Expressway+Dr+Suite+200+Pineville+LA+71360',
+    mapsUrl: 'https://www.google.com/maps/search/?api=1&query=theCLINICS+Marksville+4242+Highway+1192+Marksville+LA+71351',
   },
 ];
 
@@ -594,7 +594,7 @@ export const FAQS = [
   },
   {
     q: 'Where are your locations?',
-    a: 'We have two clinics in Cenla — our flagship in Alexandria on N Bolton Ave, and a second location in Pineville on Expressway Drive.',
+    a: 'We have two clinics in Cenla — our flagship in Alexandria on N Bolton Ave, and a second location in Marksville on Highway 1192.',
   },
   {
     q: 'Is there a patient portal?',
@@ -614,7 +614,7 @@ export const TESTIMONIALS = [
     visit: 'Primary care',
     featured: true,
   },
-  { q: 'The team are experienced and caring individuals.', n: 'Grace W.', l: 'Pineville, LA', visit: 'Annual physical' },
+  { q: 'The team are experienced and caring individuals.', n: 'Grace W.', l: 'Marksville, LA', visit: 'Annual physical' },
   {
     q: "I had an amazing experience taking my son. He has always been afraid of the doctor's office, but the team was so patient.",
     n: 'Ryan P.',

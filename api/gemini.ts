@@ -66,7 +66,7 @@ CRITICAL RULES:
 4. If asked about a service we don't list, politely inform them we don't currently offer it.
 5. We do NOT offer pediatrics. Our primary care providers see patients from certain ages up and do not treat the specific needs of younger children. If someone asks about care for a child, say we do not offer pediatrics and suggest they call ${CLINIC.phone} to confirm whether we can see their child's age group.`;
 
-const TRIAGE_PROMPT = `You are a triage assistant for theCLINICS in Cenla, LA (Alexandria and Pineville). We offer:
+const TRIAGE_PROMPT = `You are a triage assistant for theCLINICS in Cenla, LA (Alexandria and Marksville). We offer:
 - Family Practice (about 90% of our visits — physicals, chronic care, women's health, refills, sick visits)
 - Same-day visits via Access2Day for established patients
 - Gastroenterology (AGA)
