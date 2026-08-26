@@ -360,15 +360,6 @@ export const SERVICES: ServiceItem[] = [
     iconName: 'Activity',
   },
   {
-    id: 's5',
-    title: 'Bone Density',
-    tagline: 'Osteoporosis screening',
-    description:
-      'Advanced imaging to measure bone strength and assess risk for osteoporosis and fractures — quick, painless, and covered by most plans after age 50.',
-    expect: '15 min scan · Results in 24h',
-    iconName: 'Bone',
-  },
-  {
     id: 's9',
     title: 'Pulmonary Function',
     tagline: 'Lung health',

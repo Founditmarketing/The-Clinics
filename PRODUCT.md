@@ -2,7 +2,7 @@
 
 ## What it is
 
-A family-practice-first clinic group serving Central Louisiana ("Cenla") for decades. **Two clinics** — flagship in Alexandria at 1587 N Bolton Ave and a second clinic in Marksville at 4242 Highway 1192. **18 providers** across both sites (mix of MDs and NPs). About **90% of visits are family practice** — annual physicals, women's health, chronic-condition care, refills, and same-day sick visits via Access2Day. We also offer gastroenterology, podiatry, lab work, X-ray, bone density, and pulmonary function. **We do not have a cardiologist on staff, and we do not offer pediatrics** — primary care providers see patients from certain ages up and do not treat the specific needs of younger children.
+A family-practice-first clinic group serving Central Louisiana ("Cenla") for decades. **Two clinics** — flagship in Alexandria at 1587 N Bolton Ave and a second clinic in Marksville at 4242 Highway 1192. **18 providers** across both sites (mix of MDs and NPs). About **90% of visits are family practice** — annual physicals, women's health, chronic-condition care, refills, and same-day sick visits via Access2Day. We also offer gastroenterology, podiatry, lab work, X-ray, and pulmonary function. **We do not offer bone density scans.** **We do not have a cardiologist on staff, and we do not offer pediatrics** — primary care providers see patients from certain ages up and do not treat the specific needs of younger children.
 
 Founded inside Cenla Family Medicine Associates.
 

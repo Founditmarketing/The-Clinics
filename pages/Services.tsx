@@ -57,7 +57,7 @@ const Services: React.FC = () => {
     <>
       <PageSEO
         title="Services"
-        description="Primary care, Access2Day same-day visits, gastroenterology, podiatry, bone density, pulmonary function, lab work, and X-ray services at theCLINICS in Alexandria, LA."
+        description="Primary care, Access2Day same-day visits, gastroenterology, podiatry, pulmonary function, lab work, and X-ray services at theCLINICS in Alexandria, LA."
         path="/services"
       />
       <section className="hh-page-hero grain">

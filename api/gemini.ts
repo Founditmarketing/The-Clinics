@@ -41,7 +41,6 @@ const servicesList = [
   'Access2Day Health',
   'Gastroenterology (AGA)',
   'Podiatry',
-  'Bone Density',
   'Pulmonary Function',
   'Lab Work',
   'X-ray Services',
@@ -71,7 +70,9 @@ const TRIAGE_PROMPT = `You are a triage assistant for theCLINICS in Cenla, LA (A
 - Same-day visits via Access2Day for established patients
 - Gastroenterology (AGA)
 - Podiatry
-- Imaging: bone density, X-ray, pulmonary function, lab work
+- Imaging: X-ray, pulmonary function, lab work
+
+We do NOT offer bone density scans.
 
 We do NOT offer pediatrics — our primary care providers see patients from certain ages up and do not treat the specific needs of younger children.
 
